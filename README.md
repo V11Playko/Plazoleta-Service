@@ -65,7 +65,7 @@ To get a local copy up and running follow these steps.
 
 1. Right-click the class PlazoletaServiceApplication and choose Run
 2. Open [http://localhost:8092/swagger-ui/index.html](http://localhost:8092/swagger-ui/index.html) in your web browser
-3. To use postman, the entire collection I decided to save [here](docs/postman/User-Service.postman_collection.json).
+3. To use postman, the entire collection I decided to save [here](docs/postman/Plazoleta-Service.postman_collection).
 
 <!-- ROADMAP -->
 ## Tests
