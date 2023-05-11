@@ -1,6 +1,7 @@
 package com.pragma.powerup.usermicroservice.configuration;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.MailAlreadyExistsException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.NitAlreadyExists;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.NoDataFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.PersonAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.PersonNotFoundException;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.pragma.powerup.usermicroservice.configuration.Constants.MAIL_ALREADY_EXISTS_MESSAGE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.NIT_ALREADY_EXISTS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_NOT_FOUND_MESSAGE;
@@ -103,5 +105,13 @@ public class ControllerAdvisor {
             ValidateRoleOwner validateRoleOwner) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, VALIDATE_ROLE_OWNER));
+    }
+
+    @ExceptionHandler(NitAlreadyExists.class)
+    public ResponseEntity<Map<String, String>> handleNitAlreadyExist(
+            NitAlreadyExists nitAlreadyExists) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, NIT_ALREADY_EXISTS));
+
     }
 }

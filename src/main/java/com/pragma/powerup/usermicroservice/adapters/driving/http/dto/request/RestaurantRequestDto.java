@@ -18,7 +18,7 @@ public class RestaurantRequestDto {
     @NotBlank(message = "Field 'idOwner' it's required")
     private String idOwner;
 
-    @Pattern(regexp = "^\\+?57\\s(3[0-2]|7[0-1])\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +57 3...")
+    @Pattern(regexp = "^\\+?57\\s(3[0-2]|7[0-1])\\d{8}$", message = "Field 'numberPhone' must be a valid number phone. Enter the format +57 313..")
     @NotBlank(message = "Field 'phoneNumber' it's required")
     private String phone;
     @NotBlank(message = "Field 'urlLogo' it's required")
