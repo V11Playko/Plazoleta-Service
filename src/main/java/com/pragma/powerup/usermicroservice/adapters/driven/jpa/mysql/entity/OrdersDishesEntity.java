@@ -1,10 +1,14 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -12,30 +16,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
-@Table(name = "restaurant")
+@Table(name = "order_dish")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class RestaurantEntity implements Serializable {
+public class OrdersDishesEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "restaurant_id", nullable = false)
-    private Long id;
-    private String name;
-    private String address;
-    private String idOwner;
-    private String phone;
-    private String urlLogo;
-    @Column(unique = true, nullable = false, length = 20)
-    private String nit;
-    @OneToMany(mappedBy = "restaurant")
-    private List<DishEntity> dishes;
+    @Column(name = "order_plate_id", nullable = false)
+    private Long idOrderPlate;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="id_orders")
+    private OrderEntity order;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="plate_id")
+    private DishEntity dish;
+    @Column(name = "amount", nullable = false)
+    private String amount;
 }
