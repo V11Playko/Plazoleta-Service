@@ -1,8 +1,5 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request;
 
-
-import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
-import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

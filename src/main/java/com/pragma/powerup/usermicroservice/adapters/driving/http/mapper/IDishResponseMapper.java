@@ -4,7 +4,6 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.Di
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
