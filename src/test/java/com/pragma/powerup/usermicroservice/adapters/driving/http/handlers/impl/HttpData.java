@@ -3,7 +3,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 
-public class HttpDataTest {
+public class HttpData {
     public static RestaurantModel obtainRestaurant() {
         return new RestaurantModel(
                 1L,

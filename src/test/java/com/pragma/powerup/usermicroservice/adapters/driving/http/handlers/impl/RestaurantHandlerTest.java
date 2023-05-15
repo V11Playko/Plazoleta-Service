@@ -30,8 +30,8 @@ class RestaurantHandlerTest {
 
     @Test
     void saveRestaurant() {
-        RestaurantModel restaurantModel = HttpDataTest.obtainRestaurant();
-        RestaurantRequestDto restaurantRequest = HttpDataTest.obtainRestaurantRequest();
+        RestaurantModel restaurantModel = HttpData.obtainRestaurant();
+        RestaurantRequestDto restaurantRequest = HttpData.obtainRestaurantRequest();
 
         when(restaurantRequestMapper.toRestaurantRequest(restaurantRequest)).thenReturn(restaurantModel);
         restaurantHandler.saveRestaurant(restaurantRequest);
