@@ -10,7 +10,7 @@ public class DishModel {
     private String urlImage;
     private boolean state;
 
-    public DishModel(OrdersDishesModel idDish, String name, CategoryDishModel category, String description, Long price, RestaurantModel restaurant, String urlImage, Boolean state) {
+    public DishModel(OrdersDishesModel idDish, String name, CategoryDishModel category, String description, Long price, RestaurantModel restaurant, String urlImage, boolean state) {
         this.idDish = idDish;
         this.name = name;
         this.category = category;
@@ -77,11 +77,11 @@ public class DishModel {
         this.urlImage = urlImage;
     }
 
-    public Boolean getState() {
+    public boolean getState() {
         return state;
     }
 
-    public void setState(Boolean state) {
+    public void setState(boolean state) {
         this.state = state;
     }
 }

@@ -1,6 +1,5 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
-
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
@@ -20,6 +19,7 @@ public class DishHandler implements IDishHandler {
     @Override
     public void saveDish(DishRequestDto dishRequestDto) {
         DishModel dishModel = dishRequestMapper.toDishRequest(dishRequestDto);
+        dishModel.setState(true);
         dishServicePort.saveDish(dishModel);
     }
 }

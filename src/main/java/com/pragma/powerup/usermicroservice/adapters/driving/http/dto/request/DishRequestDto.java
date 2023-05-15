@@ -30,6 +30,4 @@ public class DishRequestDto {
     private String restaurant;
     @NotBlank(message = "Field 'urlImage' it's required")
     private String urlImage;
-    @NotNull(message = "Field 'state' it's required")
-    private Boolean state;
 }
