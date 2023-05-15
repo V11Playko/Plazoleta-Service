@@ -5,12 +5,12 @@ public class DishModel {
     private String name;
     private CategoryDishModel category;
     private String description;
-    private String price;
+    private Long price;
     private RestaurantModel restaurant;
     private String urlImage;
     private boolean state;
 
-    public DishModel(OrdersDishesModel idDish, String name, CategoryDishModel category, String description, String price, RestaurantModel restaurant, String urlImage, Boolean state) {
+    public DishModel(OrdersDishesModel idDish, String name, CategoryDishModel category, String description, Long price, RestaurantModel restaurant, String urlImage, Boolean state) {
         this.idDish = idDish;
         this.name = name;
         this.category = category;
@@ -53,11 +53,11 @@ public class DishModel {
         this.description = description;
     }
 
-    public String getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 

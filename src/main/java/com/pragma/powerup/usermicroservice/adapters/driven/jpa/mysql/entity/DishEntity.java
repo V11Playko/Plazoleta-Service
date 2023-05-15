@@ -33,20 +33,15 @@ public class DishEntity implements Serializable {
     @Id
     @Column(name = "dish_id", nullable = false)
     private Long id;
-    @Column(name="name")
     private String name;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name="category_id")
     private CategoryEntity category;
-    @Column(name = "description", nullable = false)
     private String description;
-    @Column(name = "price", nullable = false)
-    private String price;
+    private Long price;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_Restaurant", nullable = false)
     private RestaurantEntity restaurant;
-    @Column(name = "url_image", nullable = false)
     private String urlImage;
-    @Column(name = "active", nullable = false)
-    private boolean active;
+    private boolean state;
 }
