@@ -2,7 +2,7 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 
-public class DomainDataTest {
+public class DomainData {
 
     public static RestaurantModel obtainRestaurant() {
         return new RestaurantModel(

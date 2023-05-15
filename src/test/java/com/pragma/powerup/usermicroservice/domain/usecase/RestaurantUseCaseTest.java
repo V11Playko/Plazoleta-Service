@@ -24,7 +24,7 @@ class RestaurantUseCaseTest {
 
     @Test
     void saveRestaurant() {
-        RestaurantModel restaurant = DomainDataTest.obtainRestaurant();
+        RestaurantModel restaurant = DomainData.obtainRestaurant();
 
         assertDoesNotThrow(() -> restaurantUseCase.saveRestaurant(restaurant));
     }
