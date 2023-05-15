@@ -1,6 +1,12 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.CategoryEntity;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.DishEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.RestaurantEntity;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
+import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 
 public class MySqlData {
@@ -29,5 +35,33 @@ public class MySqlData {
         restaurantEntity.setNit("31534564");
 
         return restaurantEntity;
+    }
+
+    public static DishModel obtainDish() {
+        return new DishModel(
+                new OrdersDishesModel(1L, 2L, "50"),
+                "Burguer",
+                new CategoryDishModel(1L, "Comida rapida", "rico"),
+                "Deliciosa",
+                5000L,
+                new RestaurantModel(1L, "Aja", "cll 4 lemuer",
+                        "2", "+57 3208265245","https://example.com/logos.png",
+                        "5464654564251"),
+                "https://burguer.com",
+                true
+        );
+    }
+    public static DishEntity obtainDishEntity() {
+        DishEntity dish = new DishEntity();
+
+        dish.setId(1L);
+        dish.setName("Burguer");
+        dish.setCategory(new CategoryEntity());
+        dish.setDescription("Rico");
+        dish.setPrice(5000L);
+        dish.setRestaurant(new RestaurantEntity());
+        dish.setUrlImage("https://burguer.com");
+
+        return dish;
     }
 }
