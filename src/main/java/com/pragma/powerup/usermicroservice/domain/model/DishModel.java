@@ -1,7 +1,7 @@
 package com.pragma.powerup.usermicroservice.domain.model;
 
 public class DishModel {
-    private OrdersDishesModel idDish;
+    private Long id;
     private String name;
     private CategoryDishModel category;
     private String description;
@@ -10,8 +10,8 @@ public class DishModel {
     private String urlImage;
     private boolean state;
 
-    public DishModel(OrdersDishesModel idDish, String name, CategoryDishModel category, String description, Long price, RestaurantModel restaurant, String urlImage, boolean state) {
-        this.idDish = idDish;
+    public DishModel(Long id, String name, CategoryDishModel category, String description, Long price, RestaurantModel restaurant, String urlImage, boolean state) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.description = description;
@@ -21,12 +21,12 @@ public class DishModel {
         this.state = state;
     }
 
-    public OrdersDishesModel getIdDish() {
-        return idDish;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdDish(OrdersDishesModel idDish) {
-        this.idDish = idDish;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

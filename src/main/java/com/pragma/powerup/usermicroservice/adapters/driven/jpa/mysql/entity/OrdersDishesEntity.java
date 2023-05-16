@@ -28,13 +28,13 @@ public class OrdersDishesEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "order_plate_id", nullable = false)
-    private Long idOrderPlate;
+    @Column(name = "id", nullable = false)
+    private Long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="id_orders")
     private OrderEntity order;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="plate_id")
+    @JoinColumn(name="dish_id")
     private DishEntity dish;
     @Column(name = "amount", nullable = false)
     private String amount;

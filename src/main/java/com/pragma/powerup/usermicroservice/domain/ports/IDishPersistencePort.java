@@ -5,4 +5,6 @@ import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 
 public interface IDishPersistencePort {
     DishEntity saveDish(DishModel dishModel);
+    DishModel getDish(Long id);
+    void updateDish(DishModel dishModel);
 }
