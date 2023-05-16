@@ -9,7 +9,7 @@ public class DomainData {
 
     public static DishModel obtainDish() {
         return new DishModel(
-                new OrdersDishesModel(1L, 2L, "50"),
+                1L,
                 "Burguer",
                 new CategoryDishModel(1L, "Comida rapida", "rico"),
                 "Deliciosa",

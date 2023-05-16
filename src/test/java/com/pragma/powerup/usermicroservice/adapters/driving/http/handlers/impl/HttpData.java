@@ -1,6 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
@@ -33,7 +34,7 @@ public class HttpData {
 
     public static DishModel obtainDish() {
         return new DishModel(
-                new OrdersDishesModel(1L, 2L, "50"),
+                1L,
                 "Burguer",
                 new CategoryDishModel(1L, "Comida rapida", "rico"),
                 "Deliciosa",
@@ -55,6 +56,14 @@ public class HttpData {
                 5000L,
                 "2",
                 "https://burguer.com"
+        );
+    }
+
+    public static DishUpdateRequest obtainDishUpdate() {
+        return new DishUpdateRequest(
+                1L,
+                "Memorable",
+                4500L
         );
     }
 }

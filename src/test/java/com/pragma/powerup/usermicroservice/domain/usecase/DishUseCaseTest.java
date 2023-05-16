@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,5 +26,20 @@ class DishUseCaseTest {
 
         dishUseCase.saveDish(dish);
         verify(dishPersistencePort).saveDish(dish);
+    }
+
+    @Test
+    void getDish() {
+        dishUseCase.getDish(anyLong());
+
+        verify(dishPersistencePort).getDish(anyLong());
+    }
+
+    @Test
+    void updateDish() {
+        DishModel dish = DomainData.obtainDish();
+
+        dishUseCase.updateDish(dish);
+        verify(dishPersistencePort).updateDish(dish);
     }
 }
