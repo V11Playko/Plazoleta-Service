@@ -1,5 +1,7 @@
 package com.pragma.powerup.usermicroservice.configuration;
 
+import org.bouncycastle.pqc.crypto.newhope.NHOtherInfoGenerator;
+
 public class Constants {
 
     private Constants() {
@@ -32,4 +34,6 @@ public class Constants {
     public static final String SWAGGER_TERMS_OF_SERVICE_MESSAGE = "http://swagger.io/terms/";
     public static final String VALIDATE_ROLE_OWNER = "You don't have owner permissions or that user does not exist.";
     public static final String NIT_ALREADY_EXISTS = "This NIT already exists";
+    public static final String AUTHENTICATION_EXCEPTION = "Authorization failed when trying to connect to user service";
+    public static final String DATA_ALREADY_EXIST = "Data already exists";
 }
