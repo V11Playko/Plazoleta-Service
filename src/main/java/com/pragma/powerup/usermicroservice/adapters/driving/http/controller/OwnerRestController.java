@@ -33,7 +33,7 @@ public class OwnerRestController {
             @ApiResponse(responseCode = "201", description = "Dish created", content = @Content),
             @ApiResponse(responseCode = "409", description = "Dish already exists", content = @Content)
     })
-    @PostMapping
+    @PostMapping("/dish")
     public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto) {
         dishHandler.saveDish(dishRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -46,7 +46,7 @@ public class OwnerRestController {
                                     array = @ArraySchema(schema = @Schema(implementation = DishResponseDto.class)))),
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @GetMapping("/{id}")
+    @GetMapping("/dish/{id}")
     public ResponseEntity<DishResponseDto> getRole(@PathVariable Long id) {
         return ResponseEntity.ok(dishHandler.getDish(id));
     }

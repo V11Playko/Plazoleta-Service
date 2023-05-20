@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/restaurant")
+@RequestMapping("/food-court/v1/admin")
 @RequiredArgsConstructor
 public class AdminRestController {
     private final IRestaurantHandler restaurantHandler;
@@ -28,7 +28,7 @@ public class AdminRestController {
             @ApiResponse(responseCode = "201", description = "Restaurant created", content = @Content),
             @ApiResponse(responseCode = "409", description = "Restaurant already exists", content = @Content)
     })
-    @PostMapping
+    @PostMapping("/restaurant")
     public ResponseEntity<Void> saveRestaurant(@Valid @RequestBody RestaurantRequestDto restaurantRequestDto){
         restaurantHandler.saveRestaurant(restaurantRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

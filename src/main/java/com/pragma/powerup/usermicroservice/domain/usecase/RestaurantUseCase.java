@@ -21,8 +21,8 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     public void saveRestaurant(RestaurantModel restaurantModel) {
         //Traer usuario con el usecase
         try {
-            Optional<User> user = userClient.getOwner(restaurantModel.getIdOwner());
-            if (user.get().getIdRole().equals("2")) {
+            User user = userClient.getOwner(restaurantModel.getIdOwner());
+            if (user.getIdRole().equals("2")) {
                 restaurantPersistencePort.saveRestaurant(restaurantModel);
             }
         } catch (RuntimeException e) {
