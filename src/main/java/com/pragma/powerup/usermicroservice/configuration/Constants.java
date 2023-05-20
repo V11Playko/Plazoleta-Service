@@ -32,8 +32,9 @@ public class Constants {
     public static final String SWAGGER_LICENSE_NAME_MESSAGE = "Apache 2.0";
     public static final String SWAGGER_LICENSE_URL_MESSAGE = "http://springdoc.org";
     public static final String SWAGGER_TERMS_OF_SERVICE_MESSAGE = "http://swagger.io/terms/";
-    public static final String VALIDATE_ROLE_OWNER = "You don't have owner permissions or that user does not exist.";
+    public static final String VALIDATE_ROLE_OWNER = "Possible three errors: You don't have owner permissions, that user does not exist or the NIT already exists.";
     public static final String NIT_ALREADY_EXISTS = "This NIT already exists";
     public static final String AUTHENTICATION_EXCEPTION = "Authorization failed when trying to connect to user service";
     public static final String DATA_ALREADY_EXIST = "Data already exists";
+    public static final String BAD_REQUEST = "Incorrect data to send message";
 }
