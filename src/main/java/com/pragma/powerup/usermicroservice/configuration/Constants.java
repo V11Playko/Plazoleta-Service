@@ -1,7 +1,5 @@
 package com.pragma.powerup.usermicroservice.configuration;
 
-import org.bouncycastle.pqc.crypto.newhope.NHOtherInfoGenerator;
-
 public class Constants {
 
     private Constants() {

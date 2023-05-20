@@ -8,7 +8,6 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 
-import java.util.Optional;
 
 public class RestaurantUseCase implements IRestaurantServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
