@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -34,8 +35,8 @@ public class OwnerRestController {
             @ApiResponse(responseCode = "409", description = "Dish already exists", content = @Content)
     })
     @PostMapping("/dish")
-    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto) {
-        dishHandler.saveDish(dishRequestDto);
+    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto,@RequestParam("id_owner") String id_owner) {
+        dishHandler.saveDish(dishRequestDto, id_owner);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -59,9 +60,9 @@ public class OwnerRestController {
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PutMapping("/putDish/{id}")
-    public ResponseEntity<Void> updateDish(@PathVariable("id") Long id, @RequestBody DishUpdateRequest dishUpdateRequest) {
+    public ResponseEntity<Void> updateDish(@PathVariable("id") Long id, @RequestBody DishUpdateRequest dishUpdateRequest,@RequestParam("id_owner") String id_owner) {
         dishUpdateRequest.setId(id);
-        dishHandler.updateDish(dishUpdateRequest);
+        dishHandler.updateDish(dishUpdateRequest, id_owner);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

@@ -52,7 +52,7 @@ public class BeanConfiguration {
         return new DishJpaAdapter(dishRepository, dishEntityMapper);
     }
     @Bean
-    public IDishServicePort dishServicePort(IDishPersistencePort dishPersistencePort,IRestaurantServicePort restaurantServicePort, UserClient userClient) {
-        return new DishUseCase(dishPersistencePort, restaurantServicePort, userClient);
+    public IDishServicePort dishServicePort(IDishPersistencePort dishPersistencePort,IRestaurantServicePort restaurantServicePort) {
+        return new DishUseCase(dishPersistencePort, restaurantServicePort);
     }
 }
