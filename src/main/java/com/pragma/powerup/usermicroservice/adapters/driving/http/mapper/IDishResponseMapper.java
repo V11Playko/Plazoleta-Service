@@ -10,7 +10,6 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IDishResponseMapper {
-    @Mapping(target = "idDish", source = "idDish.idOrder")
     @Mapping(target = "category", source = "category.id")
     @Mapping(target = "restaurant", source = "restaurant.id")
     DishResponseDto toResponseDish(DishModel dishModel);

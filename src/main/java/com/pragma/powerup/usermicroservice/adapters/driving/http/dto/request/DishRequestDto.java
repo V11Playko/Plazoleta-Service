@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class DishRequestDto {
-    private Long idDish;
+    private Long id;
     @NotBlank(message = "Field 'name' it's required")
     private String name;
     @NotBlank(message = "Field 'category' it's required")

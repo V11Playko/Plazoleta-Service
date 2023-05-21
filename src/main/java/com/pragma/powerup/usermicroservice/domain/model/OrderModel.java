@@ -1,14 +1,14 @@
 package com.pragma.powerup.usermicroservice.domain.model;
 
 public class OrderModel {
-    private OrdersDishesModel idOrder;
+    private Long idOrder;
     private String idClient;
     private String date;
     private String state;
     private String idChef;
     private RestaurantModel restaurant;
 
-    public OrderModel(OrdersDishesModel idOrder, String idClient, String date, String state, String idChef, RestaurantModel restaurant) {
+    public OrderModel(Long idOrder, String idClient, String date, String state, String idChef, RestaurantModel restaurant) {
         this.idOrder = idOrder;
         this.idClient = idClient;
         this.date = date;
@@ -17,11 +17,11 @@ public class OrderModel {
         this.restaurant = restaurant;
     }
 
-    public OrdersDishesModel getIdOrder() {
+    public Long getIdOrder() {
         return idOrder;
     }
 
-    public void setIdOrder(OrdersDishesModel idOrder) {
+    public void setIdOrder(Long idOrder) {
         this.idOrder = idOrder;
     }
 

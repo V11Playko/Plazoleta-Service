@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DishResponseDto {
 
-    private Long idDish;
+    private Long id;
     private String name;
     private String category;
     private String description;

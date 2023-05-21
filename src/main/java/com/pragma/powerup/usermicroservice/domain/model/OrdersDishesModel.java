@@ -1,30 +1,30 @@
 package com.pragma.powerup.usermicroservice.domain.model;
 
 public class OrdersDishesModel {
-    private Long idOrder;
-    private Long idDish;
+    private OrderModel order;
+    private DishModel dish;
     private String amount;
 
-    public OrdersDishesModel(Long idOrder, Long idDish, String amount) {
-        this.idOrder = idOrder;
-        this.idDish = idDish;
+    public OrdersDishesModel(OrderModel order, DishModel dish, String amount) {
+        this.order = order;
+        this.dish = dish;
         this.amount = amount;
     }
 
-    public Long getIdOrder() {
-        return idOrder;
+    public OrderModel getOrder() {
+        return order;
     }
 
-    public void setIdOrder(Long idOrder) {
-        this.idOrder = idOrder;
+    public void setOrder(OrderModel order) {
+        this.order = order;
     }
 
-    public Long getIdDish() {
-        return idDish;
+    public DishModel getDish() {
+        return dish;
     }
 
-    public void setIdDish(Long idDish) {
-        this.idDish = idDish;
+    public void setDish(DishModel dish) {
+        this.dish = dish;
     }
 
     public String getAmount() {
