@@ -12,6 +12,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RoleNotFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,7 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPON
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_ALREADY_EXISTS_MESSAGE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_IS_NOT_OWNER_RESTAURANT;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.VALIDATE_ROLE_OWNER;
 
@@ -140,5 +142,12 @@ public class ControllerAdvisor {
             BadRequestException badRequestException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, BAD_REQUEST));
+    }
+
+    @ExceptionHandler(UserNotIsOwner.class)
+    public ResponseEntity<Map<String, String>> hadnleUserNotIsOwner(
+            UserNotIsOwner userNotIsOwner) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, USER_IS_NOT_OWNER_RESTAURANT));
     }
 }

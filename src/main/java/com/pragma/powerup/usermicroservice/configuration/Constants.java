@@ -35,4 +35,6 @@ public class Constants {
     public static final String AUTHENTICATION_EXCEPTION = "Authorization failed when trying to connect to user service";
     public static final String DATA_ALREADY_EXIST = "Data already exists";
     public static final String BAD_REQUEST = "Incorrect data to send message";
+    public static final String USER_IS_NOT_OWNER_RESTAURANT = "User is not owner of the restaurant.";
+
 }
