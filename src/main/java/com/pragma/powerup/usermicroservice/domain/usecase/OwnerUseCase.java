@@ -3,6 +3,8 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
+import com.pragma.powerup.usermicroservice.domain.exceptions.DishNotExistException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
@@ -19,11 +21,11 @@ public class OwnerUseCase implements IOwnerServicePort {
     }
 
     @Override
-    public void saveDish(DishModel dishModel, String id_owner) {
+    public void saveDish(DishModel dishModel, String idOwner) {
 
         RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
 
-            if (!restaurantModel.getIdOwner().equals(id_owner)) {
+            if (!restaurantModel.getIdOwner().equals(idOwner)) {
                 throw new UserNotIsOwner();
             }
             dishPersistencePort.saveDish(dishModel);
@@ -35,12 +37,24 @@ public class OwnerUseCase implements IOwnerServicePort {
     }
 
     @Override
-    public void updateDish(DishModel dishModel,String id_owner) {
+    public void updateDish(DishModel dishModel,String idOwner) {
         RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
 
-        if (!restaurantModel.getIdOwner().equals(id_owner)) {
+        if (!restaurantModel.getIdOwner().equals(idOwner)) {
             throw new UserNotIsOwner();
         }
         dishPersistencePort.updateDish(dishModel);
     }
+
+    @Override
+    public void updateDishState(DishModel dishModel, String idOwner) {
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
+
+        if (!restaurantModel.getIdOwner().equals(idOwner)) {
+            throw new UserNotIsOwner();
+        }
+
+        dishPersistencePort.updateSate(dishModel);
+    }
+
 }
