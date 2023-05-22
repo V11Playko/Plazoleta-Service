@@ -8,7 +8,6 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 
-import java.util.Optional;
 
 public class RestaurantUseCase implements IRestaurantServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
@@ -21,13 +20,18 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     public void saveRestaurant(RestaurantModel restaurantModel) {
         //Traer usuario con el usecase
         try {
-            Optional<User> user = userClient.getOwner(restaurantModel.getIdOwner());
-            if (user.get().getIdRole().equals("2")) {
+            User user = userClient.getUser(restaurantModel.getIdOwner());
+            if (user.getIdRole().equals("2")) {
                 restaurantPersistencePort.saveRestaurant(restaurantModel);
             }
         } catch (RuntimeException e) {
             throw new ValidateRoleOwner();
         }
 
+    }
+
+    @Override
+    public RestaurantModel getRestaurant(Long id) {
+        return restaurantPersistencePort.getRestaurant(id);
     }
 }

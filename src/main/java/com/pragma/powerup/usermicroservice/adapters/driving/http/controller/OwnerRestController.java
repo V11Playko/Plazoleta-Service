@@ -20,12 +20,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/dish")
+@RequestMapping("/food-court/v1/owner")
 @RequiredArgsConstructor
-public class DishRestController {
+public class OwnerRestController {
     private final IDishHandler dishHandler;
 
     @Operation(summary = "Add a new Dish")
@@ -33,9 +34,9 @@ public class DishRestController {
             @ApiResponse(responseCode = "201", description = "Dish created", content = @Content),
             @ApiResponse(responseCode = "409", description = "Dish already exists", content = @Content)
     })
-    @PostMapping
-    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto) {
-        dishHandler.saveDish(dishRequestDto);
+    @PostMapping("/dish")
+    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto,@RequestParam("id_owner") String id_owner) {
+        dishHandler.saveDish(dishRequestDto, id_owner);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -46,7 +47,7 @@ public class DishRestController {
                                     array = @ArraySchema(schema = @Schema(implementation = DishResponseDto.class)))),
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @GetMapping("/{id}")
+    @GetMapping("/dish/{id}")
     public ResponseEntity<DishResponseDto> getRole(@PathVariable Long id) {
         return ResponseEntity.ok(dishHandler.getDish(id));
     }
@@ -59,9 +60,9 @@ public class DishRestController {
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PutMapping("/putDish/{id}")
-    public ResponseEntity<Void> updateDish(@PathVariable("id") Long id, @RequestBody DishUpdateRequest dishUpdateRequest) {
+    public ResponseEntity<Void> updateDish(@PathVariable("id") Long id, @RequestBody DishUpdateRequest dishUpdateRequest,@RequestParam("id_owner") String id_owner) {
         dishUpdateRequest.setId(id);
-        dishHandler.updateDish(dishUpdateRequest);
+        dishHandler.updateDish(dishUpdateRequest, id_owner);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

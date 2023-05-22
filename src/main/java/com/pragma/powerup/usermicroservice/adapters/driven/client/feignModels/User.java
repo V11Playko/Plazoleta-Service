@@ -11,7 +11,7 @@ public class User {
     private String dniNumber;
     private String phone;
     private LocalDate birthdate;
-    private String mail;
+    private String email;
     private String password;
     private String idRole;
 }

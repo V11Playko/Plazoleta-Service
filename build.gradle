@@ -30,9 +30,6 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.4'
 
-	implementation 'org.springframework.boot:spring-boot-starter-security:3.0.4'
-	implementation 'org.springframework.security.oauth:spring-security-oauth2:2.5.2.RELEASE'
-
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	compileOnly 'org.projectlombok:lombok:1.18.26'
