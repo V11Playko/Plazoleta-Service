@@ -3,16 +3,16 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
-import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 
 
-public class RestaurantUseCase implements IRestaurantServicePort {
+public class AdminUseCase implements IAdminServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final UserClient userClient;
-    public RestaurantUseCase(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient) {
+    public AdminUseCase(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.userClient = userClient;
     }

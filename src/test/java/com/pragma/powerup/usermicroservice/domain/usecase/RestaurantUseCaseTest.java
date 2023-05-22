@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RestaurantUseCaseTest {
 
     @InjectMocks
-    private RestaurantUseCase restaurantUseCase;
+    private AdminUseCase restaurantUseCase;
     @Mock
     private IRestaurantPersistencePort restaurantPersistencePort;
 

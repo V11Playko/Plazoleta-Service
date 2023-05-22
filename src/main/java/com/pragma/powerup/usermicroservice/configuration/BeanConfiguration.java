@@ -10,15 +10,15 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IRe
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IRestaurantRepository;
-import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
-import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
-import com.pragma.powerup.usermicroservice.domain.usecase.DishUseCase;
+import com.pragma.powerup.usermicroservice.domain.usecase.OwnerUseCase;
 import com.pragma.powerup.usermicroservice.domain.usecase.OrderUseCase;
-import com.pragma.powerup.usermicroservice.domain.usecase.RestaurantUseCase;
+import com.pragma.powerup.usermicroservice.domain.usecase.AdminUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,8 +33,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IRestaurantServicePort restaurantServicePort(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient){
-        return new RestaurantUseCase(restaurantPersistencePort, userClient);
+    public IAdminServicePort restaurantServicePort(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient){
+        return new AdminUseCase(restaurantPersistencePort, userClient);
     }
 
     // Order
@@ -52,7 +52,7 @@ public class BeanConfiguration {
         return new DishJpaAdapter(dishRepository, dishEntityMapper);
     }
     @Bean
-    public IDishServicePort dishServicePort(IDishPersistencePort dishPersistencePort,IRestaurantServicePort restaurantServicePort) {
-        return new DishUseCase(dishPersistencePort, restaurantServicePort);
+    public IOwnerServicePort dishServicePort(IDishPersistencePort dishPersistencePort, IAdminServicePort restaurantServicePort) {
+        return new OwnerUseCase(dishPersistencePort, restaurantServicePort);
     }
 }

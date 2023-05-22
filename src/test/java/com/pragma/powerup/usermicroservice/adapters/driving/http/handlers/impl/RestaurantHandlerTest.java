@@ -2,7 +2,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IRestaurantRequestMapper;
-import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,16 +10,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class RestaurantHandlerTest {
 
     @InjectMocks
-    private RestaurantHandler restaurantHandler;
+    private AdminHandler restaurantHandler;
     @Mock
-    IRestaurantServicePort restaurantServicePort;
+    IAdminServicePort restaurantServicePort;
     @Mock
     IRestaurantRequestMapper restaurantRequestMapper;
 

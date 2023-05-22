@@ -3,7 +3,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOwnerHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/food-court/v1/owner")
 @RequiredArgsConstructor
 public class OwnerRestController {
-    private final IDishHandler dishHandler;
+    private final IOwnerHandler dishHandler;
 
     @Operation(summary = "Add a new Dish")
     @ApiResponses(value = {
