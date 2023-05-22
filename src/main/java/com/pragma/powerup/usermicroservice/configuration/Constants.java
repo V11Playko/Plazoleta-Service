@@ -36,5 +36,7 @@ public class Constants {
     public static final String DATA_ALREADY_EXIST = "Data already exists";
     public static final String BAD_REQUEST = "Incorrect data to send message";
     public static final String USER_IS_NOT_OWNER_RESTAURANT = "User is not owner of the restaurant.";
+    public static final String DISH_NOT_EXIST = "This dish does not exist";
+    public static final String SAME_STATE = "You must change the state of the plate to a different one";
 
 }
