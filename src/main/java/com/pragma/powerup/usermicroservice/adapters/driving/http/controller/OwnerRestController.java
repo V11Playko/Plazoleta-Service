@@ -36,8 +36,8 @@ public class OwnerRestController {
             @ApiResponse(responseCode = "409", description = "Dish already exists", content = @Content)
     })
     @PostMapping("/dish")
-    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto,@RequestParam("id_owner") String id_owner) {
-        dishHandler.saveDish(dishRequestDto, id_owner);
+    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto,@RequestParam("idOwner") String idOwner) {
+        dishHandler.saveDish(dishRequestDto, idOwner);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
