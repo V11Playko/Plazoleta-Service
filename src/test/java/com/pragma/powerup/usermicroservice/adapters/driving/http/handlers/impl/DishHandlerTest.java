@@ -2,9 +2,10 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishResponseMapper;
-import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -20,9 +20,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DishHandlerTest {
     @InjectMocks
-    DishHandler dishHandler;
+    OwnerHandler dishHandler;
     @Mock
-    IDishServicePort dishServicePort;
+    IOwnerServicePort dishServicePort;
     @Mock
     IDishRequestMapper dishRequestMapper;
     @Mock
@@ -32,12 +32,13 @@ class DishHandlerTest {
     void saveDish() {
         DishModel dishModel = HttpData.obtainDish();
         DishRequestDto dishRequestDto = HttpData.obtainDishRequest();
+        String idOwner = "2";
 
         when(dishRequestMapper.toDishRequest(dishRequestDto)).thenReturn(dishModel);
 
-        dishHandler.saveDish(dishRequestDto);
+        dishHandler.saveDish(dishRequestDto, idOwner);
 
-        verify(dishServicePort).saveDish(dishModel);
+        verify(dishServicePort).saveDish(dishModel, idOwner);
     }
 
     @Test
@@ -54,10 +55,23 @@ class DishHandlerTest {
     void updateDish() {
         DishModel dish = HttpData.obtainDish();
         DishUpdateRequest dishUpdateRequest = HttpData.obtainDishUpdate();
+        String idOwner = "2";
 
         when(dishServicePort.getDish(anyLong())).thenReturn(dish);
-        dishHandler.updateDish(dishUpdateRequest);
+        dishHandler.updateDish(dishUpdateRequest, idOwner);
 
-        verify(dishServicePort).updateDish(dish);
+        verify(dishServicePort).updateDish(dish, idOwner);
+    }
+
+    @Test
+    void updateDishState() {
+        DishModel dish = HttpData.obtainDish();
+        UpdateDishStateRequestDto dishRequest = HttpData.obtainDishState();
+        String idOwner = "2";
+
+        when(dishServicePort.getDish(anyLong())).thenReturn(dish);
+        dishHandler.updateState(dishRequest, idOwner);
+
+        verify(dishServicePort).updateDishState(dish, idOwner);
     }
 }

@@ -4,6 +4,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.Aut
 import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.BadRequestException;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.DataExistException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.MailAlreadyExistsException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.DishNotExistException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NitAlreadyExists;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.NoDataFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.PersonAlreadyExistsException;
@@ -12,6 +13,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RoleNotFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ import java.util.Map;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.AUTHENTICATION_EXCEPTION;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.BAD_REQUEST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.DATA_ALREADY_EXIST;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.DISH_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.MAIL_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NIT_ALREADY_EXISTS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
@@ -38,6 +41,7 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.SAME_STATE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_IS_NOT_OWNER_RESTAURANT;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_NOT_FOUND_MESSAGE;
@@ -149,5 +153,19 @@ public class ControllerAdvisor {
             UserNotIsOwner userNotIsOwner) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, USER_IS_NOT_OWNER_RESTAURANT));
+    }
+
+    @ExceptionHandler(DishNotExistException.class)
+    public ResponseEntity<Map<String, String>> handleDishNotExist(
+            DishNotExistException dishNotExistException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, DISH_NOT_EXIST));
+    }
+
+    @ExceptionHandler(SameStateException.class)
+    public ResponseEntity<Map<String, String>> handleSameState(
+            SameStateException sameStateException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, SAME_STATE));
     }
 }

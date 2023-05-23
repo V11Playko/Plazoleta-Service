@@ -2,8 +2,9 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOwnerHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/food-court/v1/owner")
 @RequiredArgsConstructor
 public class OwnerRestController {
-    private final IDishHandler dishHandler;
+    private final IOwnerHandler dishHandler;
 
     @Operation(summary = "Add a new Dish")
     @ApiResponses(value = {
@@ -60,9 +61,23 @@ public class OwnerRestController {
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PutMapping("/putDish/{id}")
-    public ResponseEntity<Void> updateDish(@PathVariable("id") Long id, @RequestBody DishUpdateRequest dishUpdateRequest,@RequestParam("id_owner") String id_owner) {
+    public ResponseEntity<Void> updateDish(@PathVariable("id") Long id, @RequestBody DishUpdateRequest dishUpdateRequest,@RequestParam("idOwner") String idOwner) {
         dishUpdateRequest.setId(id);
-        dishHandler.updateDish(dishUpdateRequest, id_owner);
+        dishHandler.updateDish(dishUpdateRequest, idOwner);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Operation(summary = "Update dish",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "The dish update",
+                            content = @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = DishResponseDto.class)))),
+                    @ApiResponse(responseCode = "404", description = "No data found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @PutMapping("/putDishState/{id}")
+    public ResponseEntity<DishResponseDto> updateDishState(@PathVariable("id") Long id, @RequestBody UpdateDishStateRequestDto dishUpdateRequest, @RequestParam("idOwner") String idOwner) {
+        dishUpdateRequest.setDishId(id);
+        dishHandler.updateState(dishUpdateRequest, idOwner);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

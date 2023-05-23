@@ -2,7 +2,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IRestaurantHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IAdminHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/food-court/v1/admin")
 @RequiredArgsConstructor
 public class AdminRestController {
-    private final IRestaurantHandler restaurantHandler;
+    private final IAdminHandler restaurantHandler;
 
     @Operation(summary = "Add a new Restaurant")
     @ApiResponses(value = {

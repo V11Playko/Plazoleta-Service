@@ -1,32 +1,29 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
-import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
-import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
-import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
-import com.pragma.powerup.usermicroservice.domain.exceptions.DomainException;
+import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 
 
-public class DishUseCase implements IDishServicePort {
+public class OwnerUseCase implements IOwnerServicePort {
     private final IDishPersistencePort dishPersistencePort;
-    private final IRestaurantServicePort restaurantServicePort;
+    private final IAdminServicePort restaurantServicePort;
 
-    public DishUseCase(IDishPersistencePort dishPersistencePort, IRestaurantServicePort restaurantServicePort) {
+    public OwnerUseCase(IDishPersistencePort dishPersistencePort, IAdminServicePort restaurantServicePort) {
         this.dishPersistencePort = dishPersistencePort;
         this.restaurantServicePort = restaurantServicePort;
     }
 
     @Override
-    public void saveDish(DishModel dishModel, String id_owner) {
+    public void saveDish(DishModel dishModel, String idOwner) {
 
         RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
 
-            if (!restaurantModel.getIdOwner().equals(id_owner)) {
+            if (!restaurantModel.getIdOwner().equals(idOwner)) {
                 throw new UserNotIsOwner();
             }
             dishPersistencePort.saveDish(dishModel);
@@ -38,12 +35,24 @@ public class DishUseCase implements IDishServicePort {
     }
 
     @Override
-    public void updateDish(DishModel dishModel,String id_owner) {
+    public void updateDish(DishModel dishModel,String idOwner) {
         RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
 
-        if (!restaurantModel.getIdOwner().equals(id_owner)) {
+        if (!restaurantModel.getIdOwner().equals(idOwner)) {
             throw new UserNotIsOwner();
         }
         dishPersistencePort.updateDish(dishModel);
     }
+
+    @Override
+    public void updateDishState(DishModel dishModel, String idOwner) {
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
+
+        if (!restaurantModel.getIdOwner().equals(idOwner)) {
+            throw new UserNotIsOwner();
+        }
+
+        dishPersistencePort.updateSate(dishModel);
+    }
+
 }

@@ -1,17 +1,17 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
-import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOwnerHandler;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishResponseMapper;
-import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
-import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
+import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
-import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -21,32 +21,46 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class DishHandler implements IDishHandler {
-    private final IDishServicePort dishServicePort;
+public class OwnerHandler implements IOwnerHandler {
+    private final IOwnerServicePort ownerServicePort;
     private final IDishRequestMapper dishRequestMapper;
     private final IDishResponseMapper dishResponseMapper;
-    private final IRestaurantServicePort restaurantServicePort;
+    private final IAdminServicePort restaurantServicePort;
     private final UserClient userClient;
     @Override
-    public void saveDish(DishRequestDto dishRequestDto, String id_owner) {
+    public void saveDish(DishRequestDto dishRequestDto, String idOwner) {
         DishModel dishModel = dishRequestMapper.toDishRequest(dishRequestDto);
         dishModel.setState(true);
-        dishServicePort.saveDish(dishModel, id_owner);
+        ownerServicePort.saveDish(dishModel, idOwner);
     }
 
     @Override
     public DishResponseDto getDish(Long id) {
-        DishModel dish = dishServicePort.getDish(id);
+        DishModel dish = ownerServicePort.getDish(id);
         return dishResponseMapper.toResponseDish(dish);
     }
 
     @Override
-    public void updateDish(DishUpdateRequest dishUpdateRequest,String id_owner) {
-        DishModel dish = dishServicePort.getDish(dishUpdateRequest.getId());
+    public void updateDish(DishUpdateRequest dishUpdateRequest,String idOwner) {
+        DishModel dish = ownerServicePort.getDish(dishUpdateRequest.getId());
 
         if(Strings.isNotBlank(dishUpdateRequest.getDescription()) || Strings.isNotEmpty(dishUpdateRequest.getDescription())) dish.setDescription(dishUpdateRequest.getDescription());
         if(dishUpdateRequest.getPrice() > 0) dish.setPrice(dishUpdateRequest.getPrice());
 
-        dishServicePort.updateDish(dish, id_owner);
+        ownerServicePort.updateDish(dish, idOwner);
     }
+
+    @Override
+    public void updateState(UpdateDishStateRequestDto dishUpdateStateRequestDto, String idOwner) {
+        DishModel dish = ownerServicePort.getDish(dishUpdateStateRequestDto.getDishId());
+
+        if (dishUpdateStateRequestDto.isState() && dish.getState()) {
+            throw new SameStateException();
+        }
+        dish.setState(dishUpdateStateRequestDto.isState());
+
+        ownerServicePort.updateDishState(dish, idOwner);
+    }
+
+
 }
