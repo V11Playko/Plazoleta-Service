@@ -48,4 +48,12 @@ class DishJpaAdapterTest {
         dishJpaAdapter.updateDish(dish);
         verify(dishRepository).save(dishEntityMapper.toEntityDish(dish));
     }
+
+    @Test
+    void updateDishState() {
+        DishModel dishModel = MySqlData.obtainDish();
+
+        dishJpaAdapter.updateSate(dishModel);
+        verify(dishRepository).save(dishEntityMapper.toEntityDish(dishModel));
+    }
 }

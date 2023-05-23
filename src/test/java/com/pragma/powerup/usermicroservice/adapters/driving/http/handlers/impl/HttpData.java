@@ -3,6 +3,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
@@ -64,6 +65,13 @@ public class HttpData {
                 1L,
                 "Memorable",
                 4500L
+        );
+    }
+
+    public static UpdateDishStateRequestDto obtainDishState() {
+        return new UpdateDishStateRequestDto(
+                1L,
+                false
         );
     }
 }
