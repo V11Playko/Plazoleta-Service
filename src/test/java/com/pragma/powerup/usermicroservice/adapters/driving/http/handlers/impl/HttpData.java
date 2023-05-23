@@ -6,7 +6,6 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Res
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
-import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 
 public class HttpData {

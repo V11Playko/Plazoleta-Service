@@ -3,8 +3,6 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
-import com.pragma.powerup.usermicroservice.domain.exceptions.DishNotExistException;
-import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
