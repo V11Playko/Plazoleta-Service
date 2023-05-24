@@ -21,6 +21,10 @@ public class DishModel {
         this.state = state;
     }
 
+    public DishModel() {
+
+    }
+
     public Long getId() {
         return id;
     }

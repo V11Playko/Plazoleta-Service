@@ -23,6 +23,10 @@ public class RestaurantModel {
         this.dishes = dishes;
     }
 
+    public RestaurantModel() {
+
+    }
+
     public Long getId() {
         return id;
     }

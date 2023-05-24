@@ -11,6 +11,10 @@ public class CategoryDishModel {
         this.description = description;
     }
 
+    public CategoryDishModel() {
+
+    }
+
     public Long getId() {
         return id;
     }

@@ -6,7 +6,10 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Upd
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishResponseMapper;
 import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
+import com.pragma.powerup.usermicroservice.domain.usecase.DomainData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +33,9 @@ class DishHandlerTest {
 
     @Test
     void saveDish() {
-        DishModel dishModel = HttpData.obtainDish();
+        RestaurantModel restaurant = HttpData.obtainRestaurant();
+        CategoryDishModel categoryModel = HttpData.getCategoryModel();
+        DishModel dishModel = HttpData.obtainDish(categoryModel, restaurant);
         DishRequestDto dishRequestDto = HttpData.obtainDishRequest();
         String idOwner = "2";
 
@@ -43,35 +48,41 @@ class DishHandlerTest {
 
     @Test
     void getDish() {
-        DishModel dish = HttpData.obtainDish();
+        RestaurantModel restaurant = HttpData.obtainRestaurant();
+        CategoryDishModel categoryModel = HttpData.getCategoryModel();
+        DishModel dishModel = HttpData.obtainDish(categoryModel, restaurant);
 
-        when(dishServicePort.getDish(anyLong())).thenReturn(dish);
+        when(dishServicePort.getDish(anyLong())).thenReturn(dishModel);
         dishHandler.getDish(anyLong());
 
-        verify(dishResponseMapper).toResponseDish(dish);
+        verify(dishResponseMapper).toResponseDish(dishModel);
     }
 
     @Test
     void updateDish() {
-        DishModel dish = HttpData.obtainDish();
+        RestaurantModel restaurant = HttpData.obtainRestaurant();
+        CategoryDishModel categoryModel = HttpData.getCategoryModel();
+        DishModel dishModel = HttpData.obtainDish(categoryModel, restaurant);
         DishUpdateRequest dishUpdateRequest = HttpData.obtainDishUpdate();
         String idOwner = "2";
 
-        when(dishServicePort.getDish(anyLong())).thenReturn(dish);
+        when(dishServicePort.getDish(anyLong())).thenReturn(dishModel);
         dishHandler.updateDish(dishUpdateRequest, idOwner);
 
-        verify(dishServicePort).updateDish(dish, idOwner);
+        verify(dishServicePort).updateDish(dishModel, idOwner);
     }
 
     @Test
     void updateDishState() {
-        DishModel dish = HttpData.obtainDish();
+        RestaurantModel restaurant = HttpData.obtainRestaurant();
+        CategoryDishModel categoryModel = HttpData.getCategoryModel();
+        DishModel dishModel = HttpData.obtainDish(categoryModel, restaurant);
         UpdateDishStateRequestDto dishRequest = HttpData.obtainDishState();
         String idOwner = "2";
 
-        when(dishServicePort.getDish(anyLong())).thenReturn(dish);
+        when(dishServicePort.getDish(anyLong())).thenReturn(dishModel);
         dishHandler.updateState(dishRequest, idOwner);
 
-        verify(dishServicePort).updateDishState(dish, idOwner);
+        verify(dishServicePort).updateDishState(dishModel, idOwner);
     }
 }
