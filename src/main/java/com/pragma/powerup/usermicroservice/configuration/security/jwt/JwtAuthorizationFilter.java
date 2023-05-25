@@ -51,8 +51,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
 
             List<String> roles = JwtUtils.getRoles(token);
-            if (!roles.contains("ROLE_ADMIN") && !roles.contains("ROLE_OWNER") && !roles.contains("ROLE_CLIENT")) {
-                response.sendError(HttpStatus.UNAUTHORIZED.value());
+             if (!roles.stream().anyMatch(rolesEndpointsMap::containsKey)) {
+             response.sendError(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
 
@@ -76,7 +76,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 response.sendError(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
-
             filterChain.doFilter(request, response);
         } catch (RuntimeException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());

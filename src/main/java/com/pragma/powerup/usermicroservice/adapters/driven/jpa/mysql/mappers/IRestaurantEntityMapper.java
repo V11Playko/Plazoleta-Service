@@ -13,7 +13,4 @@ public interface IRestaurantEntityMapper {
     RestaurantEntity toEntityRestaurant(RestaurantModel restaurantModel);
     RestaurantModel toRestaurantModel(RestaurantEntity restaurantEntity);
 
-    @Named("toModelNoDishes")
-    @Mapping(target = "dishes", ignore = true)
-    RestaurantModel toModelNoDishes(RestaurantEntity restaurantEntity);
 }
