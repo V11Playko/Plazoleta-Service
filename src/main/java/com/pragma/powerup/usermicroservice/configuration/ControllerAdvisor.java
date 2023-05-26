@@ -13,9 +13,11 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RoleNotFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -39,6 +41,7 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DAT
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.SAME_STATE;
@@ -167,5 +170,12 @@ public class ControllerAdvisor {
             SameStateException sameStateException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, SAME_STATE));
+    }
+
+    @ExceptionHandler(RestaurantNotExist.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantNotExist(
+            RestaurantNotExist restaurantNotExist) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_NOT_EXIST));
     }
 }
