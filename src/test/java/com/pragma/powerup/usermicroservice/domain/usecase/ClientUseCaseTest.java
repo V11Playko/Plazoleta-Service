@@ -19,7 +19,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ClientUseCaseTest {
+class ClientUseCaseTest {
     @InjectMocks
     ClientUseCase clientUseCase;
 

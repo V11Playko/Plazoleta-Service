@@ -1,7 +1,5 @@
 package com.pragma.powerup.usermicroservice.domain.model;
 
-import java.util.List;
-
 public class RestaurantModel {
     private Long id;
     private String name;
