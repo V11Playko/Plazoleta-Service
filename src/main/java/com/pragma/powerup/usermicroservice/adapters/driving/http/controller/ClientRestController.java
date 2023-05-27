@@ -1,6 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.ListRestaurantForClientResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IClientHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,5 +40,14 @@ public class ClientRestController {
             @Positive @RequestParam("elementsXPage") int elementsXPage
     ){
         return ResponseEntity.ok(clientHandler.listRestaurant(page, elementsXPage));
+    }
+
+    @GetMapping("/list-dishes-restaurant")
+    public ResponseEntity<List<CategoryDishesResponseDto>> getListDishesByRestaurant(
+            @RequestParam("idRestaurant") String idRestaurant,
+            @Positive @RequestParam("page") int page,
+            @Positive @RequestParam("elementsXPage") int elementsXPage
+    ) {
+        return ResponseEntity.ok(clientHandler.getDishesCategorizedByRestaurant(idRestaurant, page, elementsXPage));
     }
 }
