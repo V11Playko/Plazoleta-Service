@@ -1,7 +1,5 @@
 package com.pragma.powerup.usermicroservice.domain.model;
 
-import java.util.List;
-
 public class RestaurantModel {
     private Long id;
     private String name;
@@ -10,9 +8,8 @@ public class RestaurantModel {
     private String phone;
     private String urlLogo;
     private String nit;
-    private List<DishModel> dishes;
 
-    public RestaurantModel(Long id, String name, String address, String idOwner, String phone, String urlLogo, String nit, List<DishModel> dishes) {
+    public RestaurantModel(Long id, String name, String address, String idOwner, String phone, String urlLogo, String nit) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -20,7 +17,6 @@ public class RestaurantModel {
         this.phone = phone;
         this.urlLogo = urlLogo;
         this.nit = nit;
-        this.dishes = dishes;
     }
 
     public RestaurantModel() {
@@ -81,13 +77,5 @@ public class RestaurantModel {
 
     public void setNit(String nit) {
         this.nit = nit;
-    }
-
-    public List<DishModel> getDishes() {
-        return dishes;
-    }
-
-    public void setDishes(List<DishModel> dishes) {
-        this.dishes = dishes;
     }
 }

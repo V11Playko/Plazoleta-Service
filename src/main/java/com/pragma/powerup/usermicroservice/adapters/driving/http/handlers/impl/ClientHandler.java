@@ -1,9 +1,13 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.ListRestaurantForClientResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IClientHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListDishesCategoryByRestaurantMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListRestaurantClientMapper;
 import com.pragma.powerup.usermicroservice.domain.api.IClientServicePort;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +21,26 @@ import java.util.stream.Collectors;
 public class ClientHandler implements IClientHandler {
     private final IClientServicePort clientServicePort;
     private final IListRestaurantClientMapper listRestaurantClientMapper;
+    private final IListDishesCategoryByRestaurantMapper listDishesCategoryByRestaurantMapper;
 
     @Override
     public List<ListRestaurantForClientResponseDto> listRestaurant(int page, int numberOfElements) {
         return clientServicePort.listRestaurant(page, numberOfElements).stream()
                 .map(listRestaurantClientMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CategoryDishesResponseDto> getDishesCategorizedByRestaurant(String idRestaurant, int page, int elementsXpage) {
+        List<CategoryWithDishesModel> categoryWithDishes;
+
+        try {
+            categoryWithDishes = clientServicePort.getDishesCategorizedByRestaurant(idRestaurant, page, elementsXpage);
+        } catch (RestaurantNotExist e) {
+            throw new RestaurantNotExist();
+        }
+        return categoryWithDishes.stream()
+                .map(listDishesCategoryByRestaurantMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

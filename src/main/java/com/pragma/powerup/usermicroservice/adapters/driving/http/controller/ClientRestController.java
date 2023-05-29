@@ -1,21 +1,16 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
-import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.ListRestaurantForClientResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IClientHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +34,14 @@ public class ClientRestController {
             @Positive @RequestParam("elementsXPage") int elementsXPage
     ){
         return ResponseEntity.ok(clientHandler.listRestaurant(page, elementsXPage));
+    }
+
+    @GetMapping("/list-dishes-restaurant")
+    public ResponseEntity<List<CategoryDishesResponseDto>> getListDishesByRestaurant(
+            @RequestParam("idRestaurant") String idRestaurant,
+            @Positive @RequestParam("page") int page,
+            @Positive @RequestParam("elementsXPage") int elementsXPage
+    ) {
+        return ResponseEntity.ok(clientHandler.getDishesCategorizedByRestaurant(idRestaurant, page, elementsXPage));
     }
 }

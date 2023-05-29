@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // Agrega más roles y sus respectivos endpoints según sea necesario
         rolesEndpointsMap.put("ROLE_ADMIN", Arrays.asList("/food-court/v1/admin/restaurant"));
         rolesEndpointsMap.put("ROLE_OWNER", Arrays.asList("/food-court/v1/owner/dish", "/food-court/v1/owner/dish/{id}", "/food-court/v1/owner/putDish/{id}", "/food-court/v1/owner/putDishState/{id}"));
-        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/food-court/v1/client/list-restaurants"));
+        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/food-court/v1/client/list-restaurants", "/food-court/v1/client/list-dishes-restaurant"));
 
 
         // Hacer la excepcion para el token
@@ -51,8 +51,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
 
             List<String> roles = JwtUtils.getRoles(token);
-            if (!roles.contains("ROLE_ADMIN") && !roles.contains("ROLE_OWNER") && !roles.contains("ROLE_CLIENT")) {
-                response.sendError(HttpStatus.UNAUTHORIZED.value());
+             if (!roles.stream().anyMatch(rolesEndpointsMap::containsKey)) {
+             response.sendError(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
 
@@ -76,7 +76,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 response.sendError(HttpStatus.UNAUTHORIZED.value());
                 return;
             }
-
             filterChain.doFilter(request, response);
         } catch (RuntimeException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
