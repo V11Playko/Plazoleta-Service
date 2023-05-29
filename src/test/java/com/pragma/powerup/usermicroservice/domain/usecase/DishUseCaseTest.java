@@ -2,6 +2,7 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
@@ -26,7 +27,9 @@ class DishUseCaseTest {
 
     @Test
     void saveDish() {
-        DishModel dish = DomainData.obtainDish();
+        RestaurantModel restaurant = DomainData.obtainRestaurant();
+        CategoryDishModel categoryModel = DomainData.getCategoryModel();
+        DishModel dish = DomainData.obtainDish(categoryModel, restaurant);
         String idOwner = "2";
         RestaurantModel restaurantModel = adminServicePort.getRestaurant(Long.valueOf(idOwner));
 
@@ -52,7 +55,9 @@ class DishUseCaseTest {
 
     @Test
     void updateDish() {
-        DishModel dish = DomainData.obtainDish();
+        RestaurantModel restaurant = DomainData.obtainRestaurant();
+        CategoryDishModel categoryModel = DomainData.getCategoryModel();
+        DishModel dish = DomainData.obtainDish(categoryModel, restaurant);
         String idOwner = "2";
         RestaurantModel restaurantModel = adminServicePort.getRestaurant(Long.valueOf(idOwner));
 
@@ -72,7 +77,9 @@ class DishUseCaseTest {
 
     @Test
     void updateDishState() {
-        DishModel dish = DomainData.obtainDish();
+        RestaurantModel restaurant = DomainData.obtainRestaurant();
+        CategoryDishModel categoryModel = DomainData.getCategoryModel();
+        DishModel dish = DomainData.obtainDish(categoryModel, restaurant);
         String idOwner = "2";
         RestaurantModel restaurantModel = adminServicePort.getRestaurant(Long.valueOf(idOwner));
 

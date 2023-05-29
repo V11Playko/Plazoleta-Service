@@ -3,7 +3,11 @@ package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.DishEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl.HttpData;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
+import com.pragma.powerup.usermicroservice.domain.usecase.DomainData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,7 +28,9 @@ class DishJpaAdapterTest {
 
     @Test
     void saveDish() {
-        DishModel dishModel = MySqlData.obtainDish();
+        RestaurantModel restaurant = MySqlData.obtainRestaurant();
+        CategoryDishModel categoryModel = MySqlData.getCategoryModel();
+        DishModel dishModel = MySqlData.obtainDish(categoryModel, restaurant);
         DishEntity dishEntity = MySqlData.obtainDishEntity();
 
         when(dishEntityMapper.toEntityDish(dishModel)).thenReturn(dishEntity);
@@ -41,15 +47,19 @@ class DishJpaAdapterTest {
 
     @Test
     void updateDish() {
-        DishModel dish = MySqlData.obtainDish();
+        RestaurantModel restaurant = MySqlData.obtainRestaurant();
+        CategoryDishModel categoryModel = MySqlData.getCategoryModel();
+        DishModel dishModel = MySqlData.obtainDish(categoryModel, restaurant);
 
-        dishJpaAdapter.updateDish(dish);
-        verify(dishRepository).save(dishEntityMapper.toEntityDish(dish));
+        dishJpaAdapter.updateDish(dishModel);
+        verify(dishRepository).save(dishEntityMapper.toEntityDish(dishModel));
     }
 
     @Test
     void updateDishState() {
-        DishModel dishModel = MySqlData.obtainDish();
+        RestaurantModel restaurant = MySqlData.obtainRestaurant();
+        CategoryDishModel categoryModel = MySqlData.getCategoryModel();
+        DishModel dishModel = MySqlData.obtainDish(categoryModel, restaurant);
 
         dishJpaAdapter.updateSate(dishModel);
         verify(dishRepository).save(dishEntityMapper.toEntityDish(dishModel));

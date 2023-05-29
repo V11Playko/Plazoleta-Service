@@ -12,15 +12,15 @@ import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 public class MySqlData {
 
     public static RestaurantModel obtainRestaurant() {
-        return new RestaurantModel(
-                1L,
-                "Mons",
-                "Cll addams",
-                "3205",
-                "+57 3208265245",
-                "https://example.com/logos.png",
-                "546465456"
-        );
+        RestaurantModel restaurantModel = new RestaurantModel();
+        restaurantModel.setId(1L);
+        restaurantModel.setNit("11010101L");
+        restaurantModel.setName("Giorno's pizza");
+        restaurantModel.setPhone("12323243");
+        restaurantModel.setAddress("Home#4");
+        restaurantModel.setUrlLogo("asdfsdf.com/img.png");
+
+        return restaurantModel;
     }
 
     public static RestaurantEntity obtainRestaurantEntity() {
@@ -37,19 +37,15 @@ public class MySqlData {
         return restaurantEntity;
     }
 
-    public static DishModel obtainDish() {
-        return new DishModel(
-                1L,
-                "Burguer",
-                new CategoryDishModel(1L, "Comida rapida", "rico"),
-                "Deliciosa",
-                5000L,
-                new RestaurantModel(1L, "Aja", "cll 4 lemuer",
-                        "2", "+57 3208265245","https://example.com/logos.png",
-                        "5464654564251"),
-                "https://burguer.com",
-                true
-        );
+    public static DishModel obtainDish(CategoryDishModel categoryModel, RestaurantModel restaurantModel) {
+        DishModel dishModel = new DishModel();
+
+        dishModel.setName("Pizza");
+        dishModel.setCategory(categoryModel);
+        dishModel.setPrice(60000L);
+        dishModel.setRestaurant(restaurantModel);
+
+        return dishModel;
     }
     public static DishEntity obtainDishEntity() {
         DishEntity dish = new DishEntity();
@@ -63,5 +59,13 @@ public class MySqlData {
         dish.setUrlImage("https://burguer.com");
 
         return dish;
+    }
+
+    public static CategoryDishModel getCategoryModel() {
+        CategoryDishModel categoryModel = new CategoryDishModel();
+        categoryModel.setId(1L);
+        categoryModel.setName("Italian");
+        categoryModel.setDescription("Italian food");
+        return categoryModel;
     }
 }
