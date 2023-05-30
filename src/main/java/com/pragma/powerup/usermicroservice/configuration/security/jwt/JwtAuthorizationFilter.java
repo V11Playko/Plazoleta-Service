@@ -39,7 +39,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // Agrega más roles y sus respectivos endpoints según sea necesario
         rolesEndpointsMap.put("ROLE_ADMIN", Arrays.asList("/food-court/v1/admin/restaurant"));
         rolesEndpointsMap.put("ROLE_OWNER", Arrays.asList("/food-court/v1/owner/dish", "/food-court/v1/owner/dish/{id}", "/food-court/v1/owner/putDish/{id}", "/food-court/v1/owner/putDishState/{id}"));
-        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/food-court/v1/client/list-restaurants", "/food-court/v1/client/list-dishes-restaurant"));
+        rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/food-court/v1/client/list-restaurants", "/food-court/v1/client/list-dishes-restaurant", "/food-court/v1/client/new-order"));
 
 
         // Hacer la excepcion para el token
