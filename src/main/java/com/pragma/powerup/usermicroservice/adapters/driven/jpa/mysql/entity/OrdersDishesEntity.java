@@ -30,12 +30,13 @@ public class OrdersDishesEntity implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="id_orders")
     private OrderEntity order;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="dish_id")
     private DishEntity dish;
     @Column(name = "amount", nullable = false)
-    private String amount;
+    private int amount;
+
 }

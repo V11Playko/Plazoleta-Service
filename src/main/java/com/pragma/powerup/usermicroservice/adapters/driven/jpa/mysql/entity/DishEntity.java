@@ -38,7 +38,7 @@ public class DishEntity implements Serializable {
     private CategoryEntity category;
     private String description;
     private Long price;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_Restaurant", nullable = false)
     private RestaurantEntity restaurant;
     private String urlImage;

@@ -18,6 +18,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -34,15 +35,17 @@ public class OrderEntity implements Serializable {
     @Column(name = "order_id", nullable = false)
     private Long id;
     @Column(name="client_id")
-    private Long clientId;
+    private Long idClient;
     @Column(name="date_order")
-    private LocalDate date;
+    private LocalDateTime date;
     @Column(name="state")
-    private String status;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private String state;
+    @ManyToOne
     @JoinColumn(name="restaurant_id")
     private RestaurantEntity restaurant;
 
+    @Column(name="id_chef")
+    private String chefId;
     @OneToMany(mappedBy="order")
-    private List<OrdersDishesEntity> orderPlate;
+    private List<OrdersDishesEntity> orderDish;
 }
