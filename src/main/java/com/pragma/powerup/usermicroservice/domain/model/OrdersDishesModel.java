@@ -3,12 +3,16 @@ package com.pragma.powerup.usermicroservice.domain.model;
 public class OrdersDishesModel {
     private OrderModel order;
     private DishModel dish;
-    private String amount;
+    private int amount;
 
-    public OrdersDishesModel(OrderModel order, DishModel dish, String amount) {
+    public OrdersDishesModel(OrderModel order, DishModel dish, int amount) {
         this.order = order;
         this.dish = dish;
         this.amount = amount;
+    }
+
+    public OrdersDishesModel(){
+
     }
 
     public OrderModel getOrder() {
@@ -27,11 +31,11 @@ public class OrdersDishesModel {
         this.dish = dish;
     }
 
-    public String getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 }
