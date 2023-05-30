@@ -40,4 +40,13 @@ public class Constants {
     public static final String SAME_STATE = "You must change the state of the plate to a different one";
     public static final String RESTAURANT_NOT_EXIST = "The restaurant does not exist";
 
+    public static final String ORDER_PENDING_STATE = "PENDING";
+    public static final String ORDER_PREPARATION_STATE = "PREPARATION";
+    public static final String ORDER_READY_STATE = "READY";
+    public static final String ORDER_DELIVERED_STATE = "DELIVERED";
+    public static final String ORDER_CANCELED_STATE = "CANCELED";
+
+    public static final String USER_HAVE_A_ORDER = "The user already has an order pending, in preparation or ready.";
+    public static final String ORDER_CREATED = "Order created successfully";
+    public static final String RESTAURANT_NOT_HAVE_THESE_DISHES = "These dishes do not belong to this restaurant";
 }

@@ -5,9 +5,11 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.Dis
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.OrderJpaAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.RestaurantJpaAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDishEntityMapper;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOrderDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOrderEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderDishRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IRestaurantRepository;
 import com.pragma.powerup.usermicroservice.domain.api.IClientServicePort;
@@ -18,8 +20,8 @@ import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.usecase.ClientUseCase;
-import com.pragma.powerup.usermicroservice.domain.usecase.OwnerUseCase;
 import com.pragma.powerup.usermicroservice.domain.usecase.OrderUseCase;
+import com.pragma.powerup.usermicroservice.domain.usecase.OwnerUseCase;
 import com.pragma.powerup.usermicroservice.domain.usecase.AdminUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -41,8 +43,9 @@ public class BeanConfiguration {
 
     // Order
     @Bean
-    public IOrderPersistencePort orderPersistencePort(IOrderRepository orderRepository, IOrderEntityMapper orderEntityMapper){
-        return new OrderJpaAdapter(orderRepository, orderEntityMapper);
+    public IOrderPersistencePort orderPersistencePort(IOrderRepository orderRepository, IOrderEntityMapper orderEntityMapper,
+                                                      IOrderDishRepository orderDishRepository, IOrderDishEntityMapper orderDishEntityMapper){
+        return new OrderJpaAdapter(orderRepository, orderEntityMapper, orderDishRepository, orderDishEntityMapper);
     }
     @Bean
     public IOrderServicePort orderServicePort(IOrderPersistencePort orderPersistencePort) {
@@ -59,7 +62,7 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IClientServicePort clientServicePort(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort) {
-        return new ClientUseCase(restaurantPersistencePort, dishPersistencePort);
+    public IClientServicePort clientServicePort(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, UserClient userClient) {
+        return new ClientUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, userClient);
     }
 }
