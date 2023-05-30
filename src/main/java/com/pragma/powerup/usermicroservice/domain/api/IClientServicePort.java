@@ -1,7 +1,6 @@
 package com.pragma.powerup.usermicroservice.domain.api;
 
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
-import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 
