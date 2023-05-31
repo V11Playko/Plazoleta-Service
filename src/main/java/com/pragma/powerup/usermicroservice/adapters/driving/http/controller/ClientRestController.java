@@ -3,7 +3,9 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.OrderRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.ListRestaurantForClientResponseDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IClientHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOrderHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IRestaurantHandler;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +31,9 @@ import java.util.Map;
 @RequestMapping("/food-court/v1/client")
 @RequiredArgsConstructor
 public class ClientRestController {
-    private final IClientHandler clientHandler;
+    private final IOrderHandler clientHandler;
+    private final IDishHandler dishHandler;
+    private final IRestaurantHandler restaurantHandler;
 
     @Operation(summary = "Get all the restaurants")
     @ApiResponses(value = {
@@ -41,7 +45,7 @@ public class ClientRestController {
             @Positive @RequestParam("page") int page,
             @Positive @RequestParam("elementsXPage") int elementsXPage
     ){
-        return ResponseEntity.ok(clientHandler.listRestaurant(page, elementsXPage));
+        return ResponseEntity.ok(restaurantHandler.listRestaurant(page, elementsXPage));
     }
     @Operation(summary = "Get all dishes of a restaurant")
     @ApiResponses(value = {
@@ -54,7 +58,7 @@ public class ClientRestController {
             @Positive @RequestParam("page") int page,
             @Positive @RequestParam("elementsXPage") int elementsXPage
     ) {
-        return ResponseEntity.ok(clientHandler.getDishesCategorizedByRestaurant(idRestaurant, page, elementsXPage));
+        return ResponseEntity.ok(dishHandler.getDishesCategorizedByRestaurant(idRestaurant, page, elementsXPage));
     }
 
     @PostMapping("/new-order")
