@@ -1,32 +1,49 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
-import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ClientUseCaseTest {
-    @InjectMocks
-    ClientUseCase clientUseCase;
+    @Mock
+    private IRestaurantPersistencePort restaurantPersistencePort;
 
     @Mock
-    IRestaurantPersistencePort restaurantPersistencePort;
+    private IDishPersistencePort dishPersistencePort;
+
     @Mock
-    IDishPersistencePort dishPersistencePort;
+    private IOrderPersistencePort orderPersistencePort;
+
+    private ClientUseCase clientUseCase;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        clientUseCase = new ClientUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort);
+    }
 
     @Test
     void listRestaurant() {
@@ -50,5 +67,21 @@ class ClientUseCaseTest {
 
         Assertions.assertInstanceOf(List.class, clientUseCase.getDishesCategorizedByRestaurant
                 (String.valueOf(restaurantModel.getId()), 0, 2));
+    }
+
+    @Test
+    void testNewOrder_UserHaveOrder_ThrowsUserHaveOrderException() {
+        // Arrange
+        String idRestaurant = "1";
+        String idClient = "1";
+
+        when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(Long.valueOf(idClient)))
+                .thenReturn(1);
+
+        // Act & Assert
+        assertThrows(UserHaveOrderException.class,
+                () -> clientUseCase.newOrder(idRestaurant, idClient, Collections.emptyList()));
+
+        verify(orderPersistencePort, never()).saveOrder(any(OrderModel.class), anyList());
     }
 }

@@ -62,7 +62,7 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IClientServicePort clientServicePort(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, UserClient userClient) {
-        return new ClientUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, userClient);
+    public IClientServicePort clientServicePort(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort) {
+        return new ClientUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort);
     }
 }
