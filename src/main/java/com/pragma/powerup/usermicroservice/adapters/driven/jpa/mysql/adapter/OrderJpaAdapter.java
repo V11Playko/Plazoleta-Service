@@ -7,6 +7,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOr
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderDishRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.DomainException;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
@@ -24,23 +25,23 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderDishRepository orderDishRepository;
     private final IOrderDishEntityMapper orderDishEntityMapper;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+//    @PersistenceContext
+//    private EntityManager entityManager;
 
     @Override
     public void saveOrder(OrderModel orderModel, List<OrdersDishesModel> ordersDishesModelList) {
-        Long countPedidosPendientes = (Long) entityManager
-                .createNativeQuery("SELECT COUNT(*) FROM orders "
-                        + "WHERE (state = 'PENDING' OR state = 'PREPARATION' OR state = 'READY') "
-                        + "AND client_id = :idClient "
-                        + "AND state IS NOT NULL")
-                .setParameter("idClient", orderModel.getIdClient())
-                .getSingleResult();
-
-        // Verificar si hay pedidos pendientes
-        if (countPedidosPendientes > 0) {
-            throw new UserHaveOrderException();
-        }
+//        Long countPedidosPendientes = (Long) entityManager
+//                .createNativeQuery("SELECT COUNT(*) FROM orders "
+//                        + "WHERE (state = 'PENDING' OR state = 'PREPARATION' OR state = 'READY') "
+//                        + "AND client_id = :idClient "
+//                        + "AND state IS NOT NULL")
+//                .setParameter("idClient", orderModel.getIdClient())
+//                .getSingleResult();
+//
+//        // Verificar si hay pedidos pendientes
+//        if (countPedidosPendientes > 0) {
+//            throw new DomainException("Aja ya tu sabe");
+//        }
 
         OrderEntity orderEntity = orderEntityMapper.toEntityOrder(orderModel);
         orderRepository.save(orderEntity);

@@ -11,11 +11,10 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
 
     @Query(
             value =
-                    "SELECT state FROM orders "
-                            + "WHERE (state = 'PENDING' "
-                            + "OR state = 'PREPARATION' "
-                            + "OR state = 'READY') "
-                            + "AND client_id = :idClient",
-            nativeQuery = true)
+                    "SELECT COUNT(*) FROM orders "
+                            + "WHERE (state = 'PENDING' OR state = 'PREPARATION' OR state = 'READY') "
+                            + "AND client_id = :idClient "
+                            + "AND state IS NOT NULL",
+    nativeQuery = true)
     Integer getNumberOfOrdersWithStateInPreparationPendingOrReady(@Param("idClient") Long idClient);
 }
