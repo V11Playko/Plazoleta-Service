@@ -12,8 +12,13 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IOrderDishEntityMapper {
 
-    @Mapping(target = "order", source = "order")
+    @Mapping(target = "order", source = "order", qualifiedByName = {"orderEntityMapper", "toEntity"})
     @Mapping(target = "dish", source = "dish")
     @Mapping(target = "amount", source = "amount")
     OrdersDishesEntity toEntity(OrdersDishesModel ordersDishesModel);
+
+    @Mapping(target = "dish", source = "dish", qualifiedByName = {"dishEntityMapper", "toModel"})
+    @Mapping(target = "order", source = "order", qualifiedByName = {"orderEntityMapper", "toModel"})
+    @Mapping(target = "amount", source = "amount")
+    OrdersDishesModel toModel(OrdersDishesEntity orderDishEntity);
 }
