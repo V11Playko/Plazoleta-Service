@@ -49,4 +49,5 @@ public class Constants {
     public static final String USER_HAVE_A_ORDER = "The user already has an order pending, in preparation or ready.";
     public static final String ORDER_CREATED = "Order created successfully";
     public static final String RESTAURANT_NOT_HAVE_THESE_DISHES = "These dishes do not belong to this restaurant";
+    public static final String EMPLOYEE_NOT_BELONG_RESTAURANT = "Employee does not belong to any restaurant";
 }

@@ -5,6 +5,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.Bad
 import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.DataExistException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.MailAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.DishNotExistException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NitAlreadyExists;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.NoDataFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.PersonAlreadyExistsException;
@@ -36,6 +37,7 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.AUTHEN
 import static com.pragma.powerup.usermicroservice.configuration.Constants.BAD_REQUEST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.DATA_ALREADY_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.DISH_NOT_EXIST;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.EMPLOYEE_NOT_BELONG_RESTAURANT;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.MAIL_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NIT_ALREADY_EXISTS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
@@ -194,5 +196,12 @@ public class ControllerAdvisor {
             RestaurantNotHaveTheseDishes restaurantNotHaveTheseDishes) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_NOT_HAVE_THESE_DISHES));
+    }
+
+    @ExceptionHandler(EmployeeNotBelongAnyRestaurant.class)
+    public ResponseEntity<Map<String, String>> handleEmployeeDoesNotBelongAnyRestaurant(
+            EmployeeNotBelongAnyRestaurant employeeNotBelongAnyRestaurant) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, EMPLOYEE_NOT_BELONG_RESTAURANT));
     }
 }
