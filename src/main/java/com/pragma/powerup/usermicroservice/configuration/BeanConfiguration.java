@@ -62,8 +62,12 @@ public class BeanConfiguration {
         return new DishJpaAdapter(dishRepository, dishEntityMapper);
     }
     @Bean
-    public IDishServicePort dishServicePort(IDishPersistencePort dishPersistencePort, IRestaurantPersistencePort restaurantPersistencePort, IRestaurantServicePort restaurantServicePort) {
-        return new DishUseCase(dishPersistencePort, restaurantPersistencePort, restaurantServicePort, userClient);
+    public IDishServicePort dishServicePort(IDishPersistencePort dishPersistencePort,
+                                            IRestaurantPersistencePort restaurantPersistencePort,
+                                            IRestaurantServicePort restaurantServicePort,
+                                            IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort,
+                                            UserClient userClient) {
+        return new DishUseCase(dishPersistencePort, restaurantPersistencePort, restaurantServicePort, restaurantEmployeePersistencePort, userClient);
     }
 
     @Bean
