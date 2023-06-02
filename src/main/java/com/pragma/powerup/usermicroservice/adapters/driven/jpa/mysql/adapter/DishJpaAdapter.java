@@ -42,7 +42,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
     @Override
     public List<DishModel> listDishesByRestaurant(String idRestaurant, int page, int elementsXpage) {
         Pageable pageable = PageRequest.of(page, elementsXpage);
-        Page<DishEntity> dishEntityPage = dishRepository.findByRestaurantIdAndState(idRestaurant, true, pageable);
+        Page<DishEntity> dishEntityPage = dishRepository.findByRestaurantIdAndActive(idRestaurant, true, pageable);
         List<DishEntity> dishEntityList = dishEntityPage.getContent();
         return dishEntityList.stream()
                 .map(dishEntityMapper::toDishModel)

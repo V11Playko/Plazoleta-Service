@@ -42,5 +42,5 @@ public class DishEntity implements Serializable {
     @JoinColumn(name = "id_Restaurant", nullable = false)
     private RestaurantEntity restaurant;
     private String urlImage;
-    private boolean state;
+    private boolean active;
 }

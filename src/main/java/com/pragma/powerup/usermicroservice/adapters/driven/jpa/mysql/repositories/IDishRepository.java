@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IDishRepository extends JpaRepository<DishEntity, Long> {
 
-    Page<DishEntity> findByRestaurantIdAndState(String restaurantId, boolean state, Pageable pageable);
+    Page<DishEntity> findByRestaurantIdAndActive(String restaurantId, boolean active, Pageable pageable);
 }

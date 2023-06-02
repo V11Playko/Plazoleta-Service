@@ -12,5 +12,5 @@ public class UpdateDishStateRequestDto {
     @NotNull(message = "Dish id is required")
     private Long dishId;
     @NotNull(message = "new state is required")
-    private boolean state;
+    private boolean active;
 }
