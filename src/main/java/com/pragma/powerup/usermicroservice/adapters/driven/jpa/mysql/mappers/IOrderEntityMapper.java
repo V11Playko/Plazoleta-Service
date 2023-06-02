@@ -1,6 +1,6 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers;
 
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.EOrderStateType;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrderStateType;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrderEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrdersDishesEntity;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
@@ -21,8 +21,8 @@ public interface IOrderEntityMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "date", source = "date")
     @Mapping(target = "idClient", source = "idClient")
-    @Mapping(target = "restaurant", qualifiedByName = {"restaurantEntityMapper", "toModelNoDishes"})
-    @Mapping(target = "idChef", source = "idChef", qualifiedByName = {"restaurantEmployeeEntityMapper", "toModel"})
+    @Mapping(target = "restaurant", qualifiedByName = {"restaurantEntityMapper"})
+    @Mapping(target = "emailChef", source = "emailChef", qualifiedByName = {"restaurantEmployeeEntityMapper", "toModel"})
     @Mapping(target = "state", source = "state", qualifiedByName = "stateEnumToString")
     OrderModel toModel(OrderEntity orderEntity);
 
@@ -32,14 +32,14 @@ public interface IOrderEntityMapper {
     @Mapping(target = "idClient", source = "idClient")
     @Mapping(target = "state", source = "state", qualifiedByName = "stateStringToEnum")
     @Mapping(target = "restaurant", source = "restaurant")
-    @Mapping(target = "idChef", source = "idChef")
+    @Mapping(target = "emailChef", source = "emailChef")
     OrderEntity toEntityOrder(OrderModel orderModel);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "date", source = "date")
     @Mapping(target = "client", source = "idClient")
     @Mapping(target = "state", source = "state", qualifiedByName = "stateEnumToString")
-    @Mapping(target = "chef", source = "idChef.userEmail")
+    @Mapping(target = "chef", source = "emailChef.userEmail")
     @Mapping(target = "orderDishes", source = "orderDish", qualifiedByName = {"toOrderDishModel"})
     OrderWithDishesModel toOrderWithDishesModel(OrderEntity orderEntity);
 
@@ -50,35 +50,35 @@ public interface IOrderEntityMapper {
     OrdersDishesModel toOrderDishModel(OrdersDishesEntity orderDishEntity);
 
     @Named("stateStringToEnum")
-    static EOrderStateType stateStringToEnum(String stateString) {
+    static OrderStateType stateStringToEnum(String stateString) {
         switch (stateString) {
             case "PENDING":
-                return EOrderStateType.PENDING;
+                return OrderStateType.PENDIENTE;
             case "PREPARATION":
-                return EOrderStateType.PREPARATION;
+                return OrderStateType.EN_PREPARACION;
             case "CANCELED":
-                return EOrderStateType.CANCELED;
+                return OrderStateType.CANCELADO;
             case "READY":
-                return EOrderStateType.READY;
+                return OrderStateType.LISTO;
             case "DELIVERED":
-                return EOrderStateType.DELIVERED;
+                return OrderStateType.ENTREGADO;
             default:
-                return EOrderStateType.CANCELED;
+                return OrderStateType.CANCELADO;
         }
     }
 
     @Named("stateEnumToString")
-    static String stateEnumToString(EOrderStateType orderStateType) {
+    static String stateEnumToString(OrderStateType orderStateType) {
         switch (orderStateType) {
-            case PENDING:
+            case PENDIENTE:
                 return "PENDING";
-            case PREPARATION:
+            case EN_PREPARACION:
                 return "PREPARATION";
-            case CANCELED:
+            case CANCELADO:
                 return "CANCELED";
-            case READY:
+            case LISTO:
                 return "READY";
-            case DELIVERED:
+            case ENTREGADO:
                 return "DELIVERED";
             default:
                 return "CANCELED";

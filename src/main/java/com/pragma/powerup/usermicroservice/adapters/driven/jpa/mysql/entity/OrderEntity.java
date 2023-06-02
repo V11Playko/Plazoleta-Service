@@ -2,6 +2,8 @@ package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,14 +37,15 @@ public class OrderEntity implements Serializable {
     private Long idClient;
     @Column(name="date_order")
     private LocalDateTime date;
+    @Enumerated(EnumType.STRING)
     @Column(name="state")
-    private String state;
+    private OrderStateType state;
+    @ManyToOne
+    @JoinColumn(name = "email_chef", referencedColumnName = "email_persona")
+    private RestaurantEmployeeEntity emailChef;
     @ManyToOne
     @JoinColumn(name="restaurant_id")
     private RestaurantEntity restaurant;
-
-    @Column(name="id_chef")
-    private String chefId;
     @OneToMany(mappedBy="order")
     private List<OrdersDishesEntity> orderDish;
 }

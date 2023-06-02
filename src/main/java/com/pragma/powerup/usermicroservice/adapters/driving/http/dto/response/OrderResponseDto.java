@@ -4,15 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class OrderResponseDto {
 
-    private Long idOrder;
-    private String idClient;
+    private Long id;
+    private String client;
     private String date;
     private String state;
-    private String idChef;
+    private String chef;
     private String restaurant;
+    private List<DishResponseDto> orderDishes;
 }
