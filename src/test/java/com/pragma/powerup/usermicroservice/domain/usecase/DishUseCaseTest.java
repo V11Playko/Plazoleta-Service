@@ -1,29 +1,37 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
-import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DishUseCaseTest {
     @InjectMocks
-    OwnerUseCase dishUseCase;
+    DishUseCase dishUseCase;
     @Mock
     IDishPersistencePort dishPersistencePort;
     @Mock
-    IAdminServicePort adminServicePort;
+    IRestaurantPersistencePort restaurantPersistencePort;
+    @Mock
+    IRestaurantServicePort restaurantServicePort;
 
     @Test
     void saveDish() {
@@ -31,7 +39,7 @@ class DishUseCaseTest {
         CategoryDishModel categoryModel = DomainData.getCategoryModel();
         DishModel dish = DomainData.obtainDish(categoryModel, restaurant);
         String idOwner = "2";
-        RestaurantModel restaurantModel = adminServicePort.getRestaurant(Long.valueOf(idOwner));
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(Long.valueOf(idOwner));
 
         if (restaurantModel != null) {
             String ownerId = restaurantModel.getIdOwner();
@@ -59,7 +67,7 @@ class DishUseCaseTest {
         CategoryDishModel categoryModel = DomainData.getCategoryModel();
         DishModel dish = DomainData.obtainDish(categoryModel, restaurant);
         String idOwner = "2";
-        RestaurantModel restaurantModel = adminServicePort.getRestaurant(Long.valueOf(idOwner));
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(Long.valueOf(idOwner));
 
 
         if (restaurantModel != null) {
@@ -81,7 +89,7 @@ class DishUseCaseTest {
         CategoryDishModel categoryModel = DomainData.getCategoryModel();
         DishModel dish = DomainData.obtainDish(categoryModel, restaurant);
         String idOwner = "2";
-        RestaurantModel restaurantModel = adminServicePort.getRestaurant(Long.valueOf(idOwner));
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(Long.valueOf(idOwner));
 
 
         if (restaurantModel != null) {
@@ -95,5 +103,18 @@ class DishUseCaseTest {
             dishUseCase.updateDishState(dish, idOwner);
             verify(dishPersistencePort).updateSate(dish);
         }
+    }
+    @Test
+    void getDishesCategorizedByRestaurant() {
+        RestaurantModel restaurantModel = DomainData.obtainRestaurant();
+        CategoryDishModel categoryModel = DomainData.getCategoryModel();
+        DishModel dishModel = DomainData.obtainDish(categoryModel, restaurantModel);
+
+        when(restaurantPersistencePort.getRestaurant(restaurantModel.getId())).thenReturn(restaurantModel);
+        when(dishPersistencePort.listDishesByRestaurant(String.valueOf(restaurantModel.getId()), 0, 2))
+                .thenReturn(Collections.singletonList(dishModel));
+
+        Assertions.assertInstanceOf(List.class, dishUseCase.getDishesCategorizedByRestaurant
+                (String.valueOf(restaurantModel.getId()), 0, 2));
     }
 }

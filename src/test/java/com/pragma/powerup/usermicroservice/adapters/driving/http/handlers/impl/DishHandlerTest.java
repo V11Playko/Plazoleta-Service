@@ -5,11 +5,10 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Dis
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishResponseMapper;
-import com.pragma.powerup.usermicroservice.domain.api.IOwnerServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
-import com.pragma.powerup.usermicroservice.domain.usecase.DomainData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +22,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DishHandlerTest {
     @InjectMocks
-    OwnerHandler dishHandler;
+    DishHandler dishHandler;
     @Mock
-    IOwnerServicePort dishServicePort;
+    IDishServicePort dishServicePort;
     @Mock
     IDishRequestMapper dishRequestMapper;
     @Mock

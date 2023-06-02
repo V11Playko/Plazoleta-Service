@@ -1,8 +1,9 @@
 package com.pragma.powerup.usermicroservice.domain.api;
 
+import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 
-import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
+import java.util.List;
 
 public interface IOrderServicePort {
-    void saveOrder(OrderModel orderModel);
+    void newOrder(String idRestaurant,String idClient, List<OrdersDishesModel> ordersDishesModels);
 }

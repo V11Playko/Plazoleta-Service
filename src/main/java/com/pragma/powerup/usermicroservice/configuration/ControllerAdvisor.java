@@ -14,7 +14,9 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import org.springframework.http.HttpStatus;
@@ -41,9 +43,11 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_EXIST;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_HAVE_THESE_DISHES;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.SAME_STATE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_HAVE_A_ORDER;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_IS_NOT_OWNER_RESTAURANT;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_NOT_FOUND_MESSAGE;
@@ -176,5 +180,19 @@ public class ControllerAdvisor {
             RestaurantNotExist restaurantNotExist) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_NOT_EXIST));
+    }
+
+    @ExceptionHandler(UserHaveOrderException.class)
+    public ResponseEntity<Map<String, String>> handleUserHaveAOrder(
+            UserHaveOrderException userHaveOrderException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, USER_HAVE_A_ORDER));
+    }
+
+    @ExceptionHandler(RestaurantNotHaveTheseDishes.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantNotHaveTheseDishes(
+            RestaurantNotHaveTheseDishes restaurantNotHaveTheseDishes) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_NOT_HAVE_THESE_DISHES));
     }
 }

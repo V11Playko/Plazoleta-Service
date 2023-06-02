@@ -2,7 +2,11 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
+import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
+
+import java.time.LocalDateTime;
 
 public class DomainData {
 
@@ -25,6 +29,7 @@ public class DomainData {
         restaurantModel.setPhone("12323243");
         restaurantModel.setAddress("Home#4");
         restaurantModel.setUrlLogo("asdfsdf.com/img.png");
+        restaurantModel.setIdOwner("2");
 
         return restaurantModel;
     }
@@ -35,5 +40,18 @@ public class DomainData {
         categoryModel.setName("Italian");
         categoryModel.setDescription("Italian food");
         return categoryModel;
+    }
+
+    public static OrdersDishesModel getOrderDishModelWithDish(DishModel dishModel) {
+        OrdersDishesModel orderDishModel = new OrdersDishesModel();
+        orderDishModel.setDish(dishModel);
+        orderDishModel.setAmount(2);
+        return orderDishModel;
+    }
+
+    public static OrderModel getOrderModel() {
+        OrderModel orderModel = new OrderModel();
+        orderModel.setDate(LocalDateTime.now());
+        return orderModel;
     }
 }

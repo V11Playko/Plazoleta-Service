@@ -1,8 +1,9 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers;
 
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.OrderDishRequestDto;
 
-import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.OrderRequestDto;
+import java.util.List;
 
 public interface IOrderHandler {
-    void saveOrder(OrderRequestDto orderRequestDto);
+    void newOrder(String idRestaurant,String idClient, List<OrderDishRequestDto> ordersDishesModels);
 }

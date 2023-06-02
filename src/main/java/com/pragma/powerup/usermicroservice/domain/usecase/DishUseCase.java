@@ -1,7 +1,10 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
-import com.pragma.powerup.usermicroservice.domain.api.IClientServicePort;
+
+import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
+import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
@@ -13,18 +16,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ClientUseCase implements IClientServicePort {
-    private final IRestaurantPersistencePort restaurantPersistencePort;
-    private final IDishPersistencePort dishPersistencePort;
 
-    public ClientUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort) {
-        this.restaurantPersistencePort = restaurantPersistencePort;
+public class DishUseCase implements IDishServicePort {
+    private final IDishPersistencePort dishPersistencePort;
+    private final IRestaurantPersistencePort restaurantPersistencePort;
+    private final IRestaurantServicePort restaurantServicePort;
+
+    public DishUseCase(IDishPersistencePort dishPersistencePort, IRestaurantPersistencePort restaurantPersistencePort, IRestaurantServicePort restaurantServicePort) {
         this.dishPersistencePort = dishPersistencePort;
+        this.restaurantPersistencePort = restaurantPersistencePort;
+        this.restaurantServicePort = restaurantServicePort;
     }
 
     @Override
-    public List<RestaurantModel> listRestaurant(int page, int numberOfElements) {
-        return restaurantPersistencePort.listByPageAndElements(page, numberOfElements);
+    public void saveDish(DishModel dishModel, String idOwner) {
+
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
+
+            if (!restaurantModel.getIdOwner().equals(idOwner)) {
+                throw new UserNotIsOwner();
+            }
+            dishPersistencePort.saveDish(dishModel);
+    }
+
+    @Override
+    public DishModel getDish(Long id) {
+        return dishPersistencePort.getDish(id);
+    }
+
+    @Override
+    public void updateDish(DishModel dishModel,String idOwner) {
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
+
+        if (!restaurantModel.getIdOwner().equals(idOwner)) {
+            throw new UserNotIsOwner();
+        }
+        dishPersistencePort.updateDish(dishModel);
+    }
+
+    @Override
+    public void updateDishState(DishModel dishModel, String idOwner) {
+        RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
+
+        if (!restaurantModel.getIdOwner().equals(idOwner)) {
+            throw new UserNotIsOwner();
+        }
+
+        dishPersistencePort.updateSate(dishModel);
     }
 
     @Override
@@ -51,7 +89,7 @@ public class ClientUseCase implements IClientServicePort {
             category.setDescription(dishModels.get(0).getCategory().getDescription());
             category.setDishes(dishModels);
             categories.add(category);
-                });
+        });
         return categories;
     }
 }

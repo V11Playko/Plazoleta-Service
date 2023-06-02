@@ -6,6 +6,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.Us
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "user-service", url = "http://localhost:8091/users/v1", configuration = FeignClientInterceptor.class)
 public interface UserClient {
@@ -15,4 +16,8 @@ public interface UserClient {
 
     @GetMapping(value = "/owner/{id}")
     User getOwner(@PathVariable("id") String id);
+    @GetMapping(value = "/client/{id}")
+    User getClient(@PathVariable("id") String id);
+    @GetMapping(value = "/auth/getUser")
+    User getUserByEmail(@RequestParam("email") String email);
 }

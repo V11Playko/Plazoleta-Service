@@ -3,16 +3,26 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
-import com.pragma.powerup.usermicroservice.domain.api.IAdminServicePort;
+import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
+import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
+import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class AdminUseCase implements IAdminServicePort {
+
+public class RestaurantUseCase implements IRestaurantServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final UserClient userClient;
-    public AdminUseCase(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient) {
+    public RestaurantUseCase(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.userClient = userClient;
     }
@@ -33,5 +43,10 @@ public class AdminUseCase implements IAdminServicePort {
     @Override
     public RestaurantModel getRestaurant(Long id) {
         return restaurantPersistencePort.getRestaurant(id);
+    }
+
+    @Override
+    public List<RestaurantModel> listRestaurant(int page, int numberOfElements) {
+        return restaurantPersistencePort.listByPageAndElements(page, numberOfElements);
     }
 }
