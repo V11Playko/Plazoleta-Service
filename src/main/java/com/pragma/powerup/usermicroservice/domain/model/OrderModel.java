@@ -7,15 +7,15 @@ public class OrderModel {
     private String idClient;
     private LocalDateTime date;
     private String state;
-    private String idChef;
+    private RestaurantEmployeeModel emailChef;
     private RestaurantModel restaurant;
 
-    public OrderModel(Long id, String idClient, LocalDateTime date, String state, String idChef, RestaurantModel restaurant) {
+    public OrderModel(Long id, String idClient, LocalDateTime date, String state, RestaurantEmployeeModel emailChef, RestaurantModel restaurant) {
         this.id = id;
         this.idClient = idClient;
         this.date = date;
         this.state = state;
-        this.idChef = idChef;
+        this.emailChef = emailChef;
         this.restaurant = restaurant;
     }
 
@@ -55,12 +55,12 @@ public class OrderModel {
         this.state = state;
     }
 
-    public String getIdChef() {
-        return idChef;
+    public RestaurantEmployeeModel getEmailChef() {
+        return emailChef;
     }
 
-    public void setIdChef(String idChef) {
-        this.idChef = idChef;
+    public void setEmailChef(RestaurantEmployeeModel emailChef) {
+        this.emailChef = emailChef;
     }
 
     public RestaurantModel getRestaurant() {
