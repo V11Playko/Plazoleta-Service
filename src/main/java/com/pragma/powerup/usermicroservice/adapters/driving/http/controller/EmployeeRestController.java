@@ -1,6 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.ListOrdersRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.AssignOrderResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOrderHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,4 +39,20 @@ public class EmployeeRestController {
         return ResponseEntity.ok(orderHandler.listOrdersByState(listOrdersRequestDto.getOrderState(),
                 listOrdersRequestDto.getPage(), listOrdersRequestDto.getElementsXpage(), employeeEmail));
     }
+
+    @Operation(summary = "Assign multiple orders")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of orders", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Employee doesn't belong to any restaurant", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Order doesn't exists", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Order is already assigned", content = @Content)
+    })
+    @PutMapping("/assign-orders")
+    public ResponseEntity<List<AssignOrderResponseDto>> assignOrders(
+            @RequestBody @Valid List<Long> orderIds,
+            @RequestParam("employeeEmail") String employeeEmail
+    ) {
+        return ResponseEntity.ok(this.orderHandler.assignOrdersToEmployee(orderIds, employeeEmail));
+    }
+
 }

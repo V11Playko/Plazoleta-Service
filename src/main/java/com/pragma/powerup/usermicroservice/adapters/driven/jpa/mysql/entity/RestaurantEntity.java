@@ -38,4 +38,6 @@ public class RestaurantEntity implements Serializable {
     private String nit;
     @OneToMany(mappedBy = "restaurant")
     private List<DishEntity> dishes;
+    @OneToMany(mappedBy = "restaurant")
+    private List<RestaurantEmployeeEntity> restaurantEmployees;
 }
