@@ -1,19 +1,19 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrderStateType;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrderEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrdersDishesEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOrderDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOrderEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderDishRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderRepository;
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
-import com.pragma.powerup.usermicroservice.domain.exceptions.DomainException;
+import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
+import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,23 +25,8 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderDishRepository orderDishRepository;
     private final IOrderDishEntityMapper orderDishEntityMapper;
 
-//    @PersistenceContext
-//    private EntityManager entityManager;
-
     @Override
     public void saveOrder(OrderModel orderModel, List<OrdersDishesModel> ordersDishesModelList) {
-//        Long countPedidosPendientes = (Long) entityManager
-//                .createNativeQuery("SELECT COUNT(*) FROM orders "
-//                        + "WHERE (state = 'PENDING' OR state = 'PREPARATION' OR state = 'READY') "
-//                        + "AND client_id = :idClient "
-//                        + "AND state IS NOT NULL")
-//                .setParameter("idClient", orderModel.getIdClient())
-//                .getSingleResult();
-//
-//        // Verificar si hay pedidos pendientes
-//        if (countPedidosPendientes > 0) {
-//            throw new DomainException("Aja ya tu sabe");
-//        }
 
         OrderEntity orderEntity = orderEntityMapper.toEntityOrder(orderModel);
         orderRepository.save(orderEntity);
@@ -58,4 +43,43 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     public Integer getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient) {
         return orderRepository.getNumberOfOrdersWithStateInPreparationPendingOrReady(idClient);
     }
+
+    @Override
+    public List<OrderWithDishesModel> getOrdersByRestaurantIdAndState(Long restaurantId,
+                                                                      int page,
+                                                                      int elementsXpage,
+                                                                      String state) {
+        OrderStateType orderStateType = convertStringToOrderStateType(state);
+        PageRequest pageable = PageRequest.of(page, elementsXpage);
+
+        List<OrderEntity> orderEntities = orderRepository.findByRestaurantIdAndState(restaurantId,
+                orderStateType,
+                pageable);
+        return orderEntities.stream()
+                .map(orderEntityMapper::toOrderWithDishesModel)
+                .collect(Collectors.toList());
+    }
+
+    private OrderStateType convertStringToOrderStateType(String state) {
+        OrderStateType stateToProcess;
+        switch (state) {
+            case Constants.ORDER_PENDING_STATE:
+                stateToProcess = OrderStateType.PENDIENTE;
+                break;
+            case Constants.ORDER_CANCELED_STATE:
+                stateToProcess = OrderStateType.CANCELADO;
+                break;
+            case Constants.ORDER_DELIVERED_STATE:
+                stateToProcess = OrderStateType.ENTREGADO;
+                break;
+            case Constants.ORDER_READY_STATE:
+                stateToProcess = OrderStateType.LISTO;
+                break;
+            default:
+                stateToProcess = OrderStateType.EN_PREPARACION;
+                break;
+        }
+        return stateToProcess;
+    }
+
 }
