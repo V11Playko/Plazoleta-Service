@@ -62,14 +62,12 @@ class OrderUseCaseTest {
 
     @Test
     void testNewOrder_UserHaveOrder_ThrowsUserHaveOrderException() {
-        // Arrange
         String idRestaurant = "1";
         String idClient = "1";
 
         when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(Long.valueOf(idClient)))
                 .thenReturn(1);
 
-        // Act & Assert
         assertThrows(UserHaveOrderException.class,
                 () -> orderUseCase.newOrder(idRestaurant, idClient, Collections.emptyList()));
 
