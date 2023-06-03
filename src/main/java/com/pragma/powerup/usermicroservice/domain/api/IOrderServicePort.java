@@ -8,4 +8,6 @@ import java.util.List;
 public interface IOrderServicePort {
     void newOrder(String idRestaurant,String idClient, List<OrdersDishesModel> ordersDishesModels);
     List<OrderWithDishesModel> listOrdersByState(String orderState, int page, int elementsXpage, String employeeEmail);
+    OrderWithDishesModel assignOrder(String employeeEmail, Long orderId);
+
 }

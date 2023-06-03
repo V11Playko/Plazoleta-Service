@@ -5,6 +5,8 @@ import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.DomainException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
+import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
@@ -19,6 +21,7 @@ import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePo
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class OrderUseCase implements IOrderServicePort {
@@ -70,5 +73,31 @@ public class OrderUseCase implements IOrderServicePort {
         return orderPersistencePort
                 .getOrdersByRestaurantIdAndState(employeeModel.get().getRestaurant().getId(),
                 page, elementsXpage, orderState);
+    }
+
+    @Override
+    public OrderWithDishesModel assignOrder(String employeeEmail, Long orderId) {
+
+        Optional<RestaurantEmployeeModel> employeeModel = restaurantEmployeePersistencePort
+                .findByEmployeeEmail(employeeEmail);
+        if (employeeModel.isEmpty()) {
+            throw new EmployeeNotBelongAnyRestaurant();
+        }
+
+        Optional<OrderModel> orderModel = orderPersistencePort
+                .getOrderByRestaurantIdAndOrderId(employeeModel.get().getRestaurant().getId(), orderId);
+        if (orderModel.isEmpty()) {
+            throw new OrderNotExist();
+        }
+
+        if (!Objects.equals(orderModel.get().getState(), Constants.ORDER_PENDING_STATE) ||
+            orderModel.get().getEmailChef() != null) {
+            throw new OrderAssignedOrProcessException();
+        }
+
+        orderModel.get().setEmailChef(employeeModel.get());
+        orderModel.get().setState(Constants.ORDER_PREPARATION_STATE);
+
+        return  orderPersistencePort.saveOrderToOrderWithDishes(orderModel.get());
     }
 }
