@@ -16,7 +16,7 @@ public class Constants {
     public static final String USER_DELETED_MESSAGE = "User deleted successfully";
     public static final String RESPONSE_ERROR_MESSAGE_KEY = "error";
     public static final String WRONG_CREDENTIALS_MESSAGE = "Wrong credentials";
-    public static final String NO_DATA_FOUND_MESSAGE = "No data found for the requested petition";
+    public static final String NO_DATA_FOUND_MESSAGE = "No data found.";
     public static final String PERSON_ALREADY_EXISTS_MESSAGE = "A person already exists with the DNI number provided";
     public static final String MAIL_ALREADY_EXISTS_MESSAGE = "A person with that mail already exists";
     public static final String PERSON_NOT_FOUND_MESSAGE = "No person found with the id provided";
@@ -50,4 +50,6 @@ public class Constants {
     public static final String ORDER_CREATED = "Order created successfully";
     public static final String RESTAURANT_NOT_HAVE_THESE_DISHES = "These dishes do not belong to this restaurant";
     public static final String EMPLOYEE_NOT_BELONG_RESTAURANT = "Employee does not belong to any restaurant";
+    public static final String ORDER_NOT_EXIST = "This order does not exist";
+    public static final String ORDER_ALREADY_ASSIGNED_OR_PROCESS = "Order is already assigned or in process\n";
 }
