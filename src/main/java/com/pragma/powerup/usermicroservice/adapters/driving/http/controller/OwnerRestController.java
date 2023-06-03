@@ -1,9 +1,11 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.CreateEmployeeRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -79,5 +81,21 @@ public class OwnerRestController {
         dishUpdateRequest.setDishId(id);
         dishHandler.updateState(dishUpdateRequest, idOwner);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
+    @Operation(summary = "Creates a new employee")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Employee created", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Employee already exists", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Owner restaurant couldn't be found", content = @Content)
+    }
+    )
+    @PostMapping("/employee")
+    public ResponseEntity<RestaurantEmployeeResponseDto> createEmployee(
+            @RequestBody @Valid CreateEmployeeRequestDto createEmployeeRequestDto,
+            @RequestParam("idRestaurant") String idRestaurant,
+            @RequestParam("emailEmployee") String emailEmployee) {
+        return new ResponseEntity<>(this.dishHandler.createEmployee(createEmployeeRequestDto, idRestaurant, emailEmployee), HttpStatus.CREATED);
     }
 }

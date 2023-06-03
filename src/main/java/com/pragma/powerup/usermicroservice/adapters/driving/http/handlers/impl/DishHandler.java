@@ -1,12 +1,15 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.impl;
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.CreateEmployeeRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.ICreateEmployeeRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishResponseMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListDishesCategoryByRestaurantMapper;
@@ -16,6 +19,8 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
@@ -30,13 +35,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class DishHandler implements IDishHandler {
     private final IDishServicePort dishServicePort;
+    private final IRestaurantServicePort restaurantServicePort;
     private final IDishRequestMapper dishRequestMapper;
     private final IDishResponseMapper dishResponseMapper;
     private final IListDishesCategoryByRestaurantMapper listDishesCategoryByRestaurantMapper;
+    private final ICreateEmployeeRequestMapper createEmployeeRequestMapper;
     @Override
     public void saveDish(DishRequestDto dishRequestDto, String idOwner) {
         DishModel dishModel = dishRequestMapper.toDishRequest(dishRequestDto);
-        dishModel.setState(true);
+        dishModel.setActive(true);
         dishServicePort.saveDish(dishModel, idOwner);
     }
 
@@ -60,12 +67,25 @@ public class DishHandler implements IDishHandler {
     public void updateState(UpdateDishStateRequestDto dishUpdateStateRequestDto, String idOwner) {
         DishModel dish = dishServicePort.getDish(dishUpdateStateRequestDto.getDishId());
 
-        if (dishUpdateStateRequestDto.isState() && dish.getState()) {
+        if (dishUpdateStateRequestDto.isActive() && dish.getActive()) {
             throw new SameStateException();
         }
-        dish.setState(dishUpdateStateRequestDto.isState());
+        dish.setActive(dishUpdateStateRequestDto.isActive());
 
         dishServicePort.updateDishState(dish, idOwner);
+    }
+
+    @Override
+    public RestaurantEmployeeResponseDto createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto,
+                                                        String idRestaurant,
+                                                        String emailEmployee) {
+        RestaurantModel restaurant = restaurantServicePort.getRestaurant(Long.valueOf(idRestaurant));
+        User userModel = createEmployeeRequestMapper.toUserModel(createEmployeeRequestDto);
+
+        RestaurantEmployeeModel restaurantEmployeeModel = dishServicePort
+                .createEmployee(userModel, restaurant.getId(), emailEmployee);
+
+        return createEmployeeRequestMapper.toRestaurantEmployee(restaurantEmployeeModel);
     }
 
     @Override
