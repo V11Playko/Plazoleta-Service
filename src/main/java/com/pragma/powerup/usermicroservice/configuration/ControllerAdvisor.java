@@ -14,6 +14,8 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RoleNotFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
@@ -41,6 +43,8 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.EMPLOY
 import static com.pragma.powerup.usermicroservice.configuration.Constants.MAIL_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NIT_ALREADY_EXISTS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_ALREADY_ASSIGNED_OR_PROCESS;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
@@ -203,5 +207,19 @@ public class ControllerAdvisor {
             EmployeeNotBelongAnyRestaurant employeeNotBelongAnyRestaurant) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, EMPLOYEE_NOT_BELONG_RESTAURANT));
+    }
+
+    @ExceptionHandler(OrderNotExist.class)
+    public ResponseEntity<Map<String, String>> handleOrderNotExist(
+            OrderNotExist orderNotExist) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, ORDER_NOT_EXIST));
+    }
+
+    @ExceptionHandler(OrderAssignedOrProcessException.class)
+    public ResponseEntity<Map<String, String>> handleOrderAssignedOrProcessException(
+            OrderAssignedOrProcessException orderAssignedOrProcessException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, ORDER_ALREADY_ASSIGNED_OR_PROCESS));
     }
 }

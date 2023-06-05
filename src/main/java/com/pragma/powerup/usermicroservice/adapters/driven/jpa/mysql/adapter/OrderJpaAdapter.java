@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -58,6 +59,19 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         return orderEntities.stream()
                 .map(orderEntityMapper::toOrderWithDishesModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<OrderModel> getOrderByRestaurantIdAndOrderId(Long restaurantId, Long orderId) {
+        OrderEntity orderEntity = orderRepository
+                .findByRestaurantIdAndId(restaurantId, orderId).orElse(null);
+        return Optional.ofNullable(orderEntityMapper.toModel(orderEntity));
+    }
+
+    @Override
+    public OrderWithDishesModel saveOrderToOrderWithDishes(OrderModel orderModel) {
+        OrderEntity orderEntity = orderEntityMapper.toEntityOrder(orderModel);
+        return orderEntityMapper.toOrderWithDishesModel(orderRepository.save(orderEntity));
     }
 
     private OrderStateType convertStringToOrderStateType(String state) {

@@ -1,8 +1,12 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
+import com.pragma.powerup.usermicroservice.configuration.Constants;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
+import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
+import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
@@ -22,12 +26,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -56,14 +62,12 @@ class OrderUseCaseTest {
 
     @Test
     void testNewOrder_UserHaveOrder_ThrowsUserHaveOrderException() {
-        // Arrange
         String idRestaurant = "1";
         String idClient = "1";
 
         when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(Long.valueOf(idClient)))
                 .thenReturn(1);
 
-        // Act & Assert
         assertThrows(UserHaveOrderException.class,
                 () -> orderUseCase.newOrder(idRestaurant, idClient, Collections.emptyList()));
 
@@ -99,5 +103,43 @@ class OrderUseCaseTest {
                 .getOrdersByRestaurantIdAndState(employeeModel.getRestaurant().getId(), page, elementsPerPage, orderState);
     }
 
+
+    @Test
+    void assignOrder() {
+
+        String employeeEmail = "employee@example.com";
+        Long orderId = 1L;
+
+        RestaurantModel restaurantModel = DomainData.obtainRestaurant();
+        RestaurantEmployeeModel employeeModel = DomainData.getRestaurantEmployee(restaurantModel);
+        OrderModel orderModel = DomainData.getOrderModel();
+        orderModel.setId(orderId);
+        orderModel.setState(Constants.ORDER_PENDING_STATE);
+        CategoryDishModel categoryModel = DomainData.getCategoryModel();
+        DishModel dishModel = DomainData.obtainDish(categoryModel, restaurantModel);
+        OrdersDishesModel ordersDishesModel = DomainData.getOrderDishModel(dishModel, orderModel, 2);
+
+        OrderWithDishesModel orderWithDishesModel = new OrderWithDishesModel();
+        orderWithDishesModel.setOrderDishes(Collections.singletonList(ordersDishesModel));
+        orderWithDishesModel.setId(orderModel.getId());
+        orderWithDishesModel.setState(Constants.ORDER_PREPARATION_STATE);
+
+
+        when(restaurantEmployeePersistencePort.findByEmployeeEmail(employeeEmail))
+                .thenReturn(Optional.of(employeeModel));
+        when(orderPersistencePort.getOrderByRestaurantIdAndOrderId(anyLong(), anyLong()))
+                .thenReturn(Optional.of(orderModel));
+        when(orderPersistencePort.saveOrderToOrderWithDishes(any(OrderModel.class)))
+                .thenReturn(orderWithDishesModel);
+
+        OrderWithDishesModel result = orderUseCase.assignOrder(employeeEmail, orderId);
+
+        assertNotNull(result);
+        assertEquals(Constants.ORDER_PREPARATION_STATE, orderModel.getState());
+        assertEquals(employeeModel, orderModel.getEmailChef());
+        verify(restaurantEmployeePersistencePort, times(1)).findByEmployeeEmail(employeeEmail);
+        verify(orderPersistencePort, times(1)).getOrderByRestaurantIdAndOrderId(anyLong(), anyLong());
+        verify(orderPersistencePort, times(1)).saveOrderToOrderWithDishes(any(OrderModel.class));
+    }
 
 }

@@ -1,19 +1,24 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
 import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -21,11 +26,15 @@ public class DishUseCase implements IDishServicePort {
     private final IDishPersistencePort dishPersistencePort;
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IRestaurantServicePort restaurantServicePort;
+    private final IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
+    private final UserClient userClient;
 
-    public DishUseCase(IDishPersistencePort dishPersistencePort, IRestaurantPersistencePort restaurantPersistencePort, IRestaurantServicePort restaurantServicePort) {
+    public DishUseCase(IDishPersistencePort dishPersistencePort, IRestaurantPersistencePort restaurantPersistencePort, IRestaurantServicePort restaurantServicePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, UserClient userClient) {
         this.dishPersistencePort = dishPersistencePort;
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.restaurantServicePort = restaurantServicePort;
+        this.restaurantEmployeePersistencePort = restaurantEmployeePersistencePort;
+        this.userClient = userClient;
     }
 
     @Override
@@ -63,6 +72,19 @@ public class DishUseCase implements IDishServicePort {
         }
 
         dishPersistencePort.updateSate(dishModel);
+    }
+
+    @Override
+    public RestaurantEmployeeModel createEmployee(User user, Long idRestaurant, String emailEmployee) {
+        Optional<RestaurantModel> restaurantModel = Optional.ofNullable(restaurantPersistencePort.getRestaurant(idRestaurant));
+        if (restaurantModel.isEmpty()) {
+            throw new RestaurantNotExist();
+        }
+        User createUser = userClient.getUserByEmail(emailEmployee);
+
+        return restaurantEmployeePersistencePort.saveEmployee(
+                new RestaurantEmployeeModel(createUser.getEmail(), restaurantModel.get())
+        );
     }
 
     @Override

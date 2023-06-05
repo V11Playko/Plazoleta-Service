@@ -20,6 +20,10 @@ public class OrderWithDishesModel {
         this.orderDishes = orderDishes;
     }
 
+    public OrderWithDishesModel() {
+
+    }
+
     public Long getId() {
         return id;
     }

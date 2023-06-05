@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
@@ -16,7 +17,7 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     @Query(
             value =
                     "SELECT COUNT(*) FROM orders "
-                            + "WHERE (state = 'PENDING' OR state = 'PREPARATION' OR state = 'READY') "
+                            + "WHERE (state = 'PENDIENTE' OR state = 'EN_PREPARACION' OR state = 'LISTO') "
                             + "AND client_id = :idClient "
                             + "AND state IS NOT NULL",
     nativeQuery = true)
@@ -24,4 +25,5 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
 
     List<OrderEntity> findByRestaurantIdAndState(Long restaurantId, OrderStateType orderStateType, Pageable pageable);
 
+    Optional<OrderEntity> findByRestaurantIdAndId(Long restaurantId, Long orderId);
 }

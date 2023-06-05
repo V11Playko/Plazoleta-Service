@@ -4,6 +4,7 @@ import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 
 import java.time.LocalDateTime;
@@ -53,5 +54,20 @@ public class DomainData {
         OrderModel orderModel = new OrderModel();
         orderModel.setDate(LocalDateTime.now());
         return orderModel;
+    }
+
+    public static RestaurantEmployeeModel getRestaurantEmployee(RestaurantModel restaurantModel) {
+        RestaurantEmployeeModel restaurantEmployeeModel = new RestaurantEmployeeModel();
+        restaurantEmployeeModel.setUserEmail("employee@mail.com");
+        restaurantEmployeeModel.setRestaurant(restaurantModel);
+        return restaurantEmployeeModel;
+    }
+
+    public static OrdersDishesModel getOrderDishModel(DishModel dishModel, OrderModel orderModel, int amount) {
+        OrdersDishesModel orderDishModel = new OrdersDishesModel();
+        orderDishModel.setOrder(orderModel);
+        orderDishModel.setDish(dishModel);
+        orderDishModel.setAmount(amount);
+        return orderDishModel;
     }
 }
