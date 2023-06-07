@@ -1,4 +1,4 @@
-package com.pragma.powerup.usermicroservice.adapters.driven.client.adapter;
+package com.pragma.powerup.usermicroservice.adapters.driven.client.interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

@@ -1,8 +1,8 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.client;
 
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.adapter.FeignClientInterceptor;
-import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.interceptor.FeignClientInterceptor;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,7 @@ public interface UserClient {
 
     @GetMapping(value = "/owner/{id}")
     User getOwner(@PathVariable("id") String id);
-    @GetMapping(value = "/client/{id}")
+    @GetMapping(value = "/employee/client/{id}")
     User getClient(@PathVariable("id") String id);
     @GetMapping(value = "/auth/getUser")
     User getUserByEmail(@RequestParam("email") String email);
