@@ -7,14 +7,16 @@ public class OrderModel {
     private String idClient;
     private LocalDateTime date;
     private String state;
+    private String securityPin;
     private RestaurantEmployeeModel emailChef;
     private RestaurantModel restaurant;
 
-    public OrderModel(Long id, String idClient, LocalDateTime date, String state, RestaurantEmployeeModel emailChef, RestaurantModel restaurant) {
+    public OrderModel(Long id, String idClient, LocalDateTime date, String state, String securityPin, RestaurantEmployeeModel emailChef, RestaurantModel restaurant) {
         this.id = id;
         this.idClient = idClient;
         this.date = date;
         this.state = state;
+        this.securityPin = securityPin;
         this.emailChef = emailChef;
         this.restaurant = restaurant;
     }
@@ -53,6 +55,14 @@ public class OrderModel {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getSecurityPin() {
+        return securityPin;
+    }
+
+    public void setSecurityPin(String securityPin) {
+        this.securityPin = securityPin;
     }
 
     public RestaurantEmployeeModel getEmailChef() {

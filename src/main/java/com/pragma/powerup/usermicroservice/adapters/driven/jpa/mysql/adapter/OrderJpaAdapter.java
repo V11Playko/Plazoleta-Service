@@ -41,6 +41,12 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
+    public OrderModel saveOnlyOrder(OrderModel orderModel) {
+        OrderEntity orderEntity = orderEntityMapper.toEntityOrder(orderModel);
+        return orderEntityMapper.toModel(orderRepository.save(orderEntity));
+    }
+
+    @Override
     public Integer getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient) {
         return orderRepository.getNumberOfOrdersWithStateInPreparationPendingOrReady(idClient);
     }
@@ -72,6 +78,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     public OrderWithDishesModel saveOrderToOrderWithDishes(OrderModel orderModel) {
         OrderEntity orderEntity = orderEntityMapper.toEntityOrder(orderModel);
         return orderEntityMapper.toOrderWithDishesModel(orderRepository.save(orderEntity));
+    }
+
+    @Override
+    public List<OrderModel> getOrdersReadyBySecurityCode(String securityPin) {
+        List<OrderEntity> orderEntities = orderRepository
+                .findBySecurityPinAndState(securityPin, OrderStateType.LISTO);
+        return orderEntities.stream()
+                .map(orderEntityMapper::toModel)
+                .collect(Collectors.toList());
     }
 
     private OrderStateType convertStringToOrderStateType(String state) {

@@ -26,4 +26,6 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     List<OrderEntity> findByRestaurantIdAndState(Long restaurantId, OrderStateType orderStateType, Pageable pageable);
 
     Optional<OrderEntity> findByRestaurantIdAndId(Long restaurantId, Long orderId);
+
+    List<OrderEntity> findBySecurityPinAndState(String securityPin, OrderStateType orderStateType);
 }

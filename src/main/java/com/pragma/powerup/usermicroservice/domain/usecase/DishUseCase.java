@@ -2,7 +2,7 @@ package com.pragma.powerup.usermicroservice.domain.usecase;
 
 
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
-import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;

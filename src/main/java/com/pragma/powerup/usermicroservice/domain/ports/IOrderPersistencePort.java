@@ -9,9 +9,11 @@ import java.util.Optional;
 
 public interface IOrderPersistencePort {
     void saveOrder(OrderModel orderModel, List<OrdersDishesModel> ordersDishesModelList);
+    OrderModel saveOnlyOrder(OrderModel orderModel);
     Integer getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient);
     List<OrderWithDishesModel> getOrdersByRestaurantIdAndState(Long restaurantId, int page,
                                                                int elementsXpage, String state);
     Optional<OrderModel> getOrderByRestaurantIdAndOrderId(Long restaurantId, Long orderId);
     OrderWithDishesModel saveOrderToOrderWithDishes(OrderModel orderModel);
+    List<OrderModel> getOrdersReadyBySecurityCode(String securityPin);
 }

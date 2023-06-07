@@ -1,10 +1,14 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
+import com.pragma.powerup.usermicroservice.domain.exceptions.NotificationNotSend;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
+import com.pragma.powerup.usermicroservice.domain.exceptions.OrderStateCannotChange;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
@@ -13,6 +17,7 @@ import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
@@ -21,18 +26,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 public class OrderUseCase implements IOrderServicePort {
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IDishPersistencePort dishPersistencePort;
     private final IOrderPersistencePort orderPersistencePort;
     private final IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
+    private final IMessagingPersistencePort messagingClient;
+    private final UserClient userClient;
 
-    public OrderUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort ) {
+    public OrderUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, UserClient userClient, IMessagingPersistencePort messagingClient1) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.orderPersistencePort = orderPersistencePort;
         this.restaurantEmployeePersistencePort = restaurantEmployeePersistencePort;
+        this.userClient = userClient;
+        this.messagingClient = messagingClient1;
     }
     @Override
     public void newOrder(String idRestaurant, String idClient, List<OrdersDishesModel> ordersDishesModels) {
@@ -97,5 +107,54 @@ public class OrderUseCase implements IOrderServicePort {
         orderModel.get().setState(Constants.ORDER_PREPARATION_STATE);
 
         return  orderPersistencePort.saveOrderToOrderWithDishes(orderModel.get());
+    }
+
+    @Override
+    public OrderModel changeOrderToReady(String employeeEmail, Long orderId) {
+        List<OrderModel> foundOrders;
+        String pinGenerated;
+
+        Optional<RestaurantEmployeeModel> employeeModel = restaurantEmployeePersistencePort
+                .findByEmployeeEmail(employeeEmail);
+        if (employeeModel.isEmpty()) {
+            throw new EmployeeNotBelongAnyRestaurant();
+        }
+
+        Optional<OrderModel> orderModel = orderPersistencePort
+                .getOrderByRestaurantIdAndOrderId(employeeModel.get().getRestaurant().getId(), orderId);
+        if (orderModel.isEmpty()) {
+            throw new OrderNotExist();
+        }
+
+        if (!orderModel.get().getState().equals(Constants.ORDER_PREPARATION_STATE)) {
+            throw new OrderStateCannotChange();
+        }
+
+        do {
+            pinGenerated = generatedPinCode();
+            foundOrders = orderPersistencePort.getOrdersReadyBySecurityCode(pinGenerated);
+        } while (!foundOrders.isEmpty());
+        orderModel.get().setState(Constants.ORDER_READY_STATE);
+        orderModel.get().setSecurityPin(pinGenerated);
+        OrderModel saveOrder = orderPersistencePort.saveOnlyOrder(orderModel.get());
+
+        User user = userClient.getClient(orderModel.get().getIdClient());
+        String messageToSend = Constants.MESSAGE_TO_CLIENT + orderModel.get().getSecurityPin();
+        boolean notificationMade = messagingClient.notifyClient(messageToSend, user.getPhone());
+
+        if (!notificationMade) {
+            throw new NotificationNotSend();
+        }
+
+        return saveOrder;
+    }
+
+
+
+    private String generatedPinCode() {
+        Random rand = new Random();
+
+        int n = rand.nextInt(1000000);
+        return String.format("%06d", n);
     }
 }

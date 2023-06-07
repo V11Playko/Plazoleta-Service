@@ -1,5 +1,6 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,6 +41,8 @@ public class OrderEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name="state")
     private OrderStateType state;
+    @Column(name = "pin_seguridad")
+    private String securityPin;
     @ManyToOne
     @JoinColumn(name = "email_chef", referencedColumnName = "email_persona")
     private RestaurantEmployeeEntity emailChef;
