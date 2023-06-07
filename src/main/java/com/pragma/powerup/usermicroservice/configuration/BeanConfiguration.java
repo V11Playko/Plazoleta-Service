@@ -1,6 +1,8 @@
 package com.pragma.powerup.usermicroservice.configuration;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.MessagingClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.adapter.MessagingAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.DishJpaAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.OrderJpaAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.RestaurantEmployeeJpaAdapter;
@@ -19,6 +21,7 @@ import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
@@ -53,8 +56,8 @@ public class BeanConfiguration {
     public IOrderServicePort orderServicePort(IRestaurantPersistencePort restaurantPersistencePort,
                                               IDishPersistencePort dishPersistencePort,
                                               IOrderPersistencePort orderPersistencePort,
-                                              IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort) {
-        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort);
+                                              IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, IMessagingPersistencePort messagingClient, UserClient userClient) {
+        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient);
     }
     // Dish
     @Bean
@@ -69,16 +72,16 @@ public class BeanConfiguration {
                                             UserClient userClient) {
         return new DishUseCase(dishPersistencePort, restaurantPersistencePort, restaurantServicePort, restaurantEmployeePersistencePort, userClient);
     }
-
-    @Bean
-    public IOrderServicePort clientServicePort(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort) {
-        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort);
-    }
     // Employee
 
     @Bean
     public IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort(IRestaurantEmployeeRepository restaurantEmployeeRepository,
                                                                                 IRestaurantEmployeeEntityMapper restaurantEmployeeEntityMapper) {
-        return  new RestaurantEmployeeJpaAdapter(restaurantEmployeeRepository, restaurantEmployeeEntityMapper);
+        return new RestaurantEmployeeJpaAdapter(restaurantEmployeeRepository, restaurantEmployeeEntityMapper);
+    }
+
+    @Bean
+    public IMessagingPersistencePort messagingPersistencePort(MessagingClient messagingClient) {
+        return new MessagingAdapter(messagingClient);
     }
 }
