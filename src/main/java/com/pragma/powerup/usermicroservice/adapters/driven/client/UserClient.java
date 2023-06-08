@@ -18,8 +18,10 @@ public interface UserClient {
 
     @GetMapping(value = "/owner/{id}")
     User getOwner(@PathVariable("id") String id);
-    @GetMapping(value = "/employee/client/{id}")
+    @GetMapping(value = "/client/{id}")
     User getClient(@PathVariable("id") String id);
+    @GetMapping(value = "/employee/client/{id}")
+    User getClientByEmployee(@PathVariable("id") String id);
     @GetMapping(value = "/auth/getUser")
     User getUserByEmail(@RequestParam("email") String email);
 }
