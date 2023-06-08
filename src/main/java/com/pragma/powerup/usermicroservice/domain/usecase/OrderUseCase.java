@@ -4,6 +4,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
+import com.pragma.powerup.usermicroservice.domain.exceptions.CancelOrderErrorException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NotificationNotSend;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
@@ -139,7 +140,7 @@ public class OrderUseCase implements IOrderServicePort {
         orderModel.get().setSecurityPin(pinGenerated);
         OrderModel saveOrder = orderPersistencePort.saveOnlyOrder(orderModel.get());
 
-        User user = userClient.getClient(orderModel.get().getIdClient());
+        User user = userClient.getClientByEmployee(orderModel.get().getIdClient());
         String messageToSend = Constants.MESSAGE_TO_CLIENT + orderModel.get().getSecurityPin();
         boolean notificationMade = messagingClient.notifyClient(messageToSend, user.getPhone());
 
@@ -173,6 +174,22 @@ public class OrderUseCase implements IOrderServicePort {
 
         orderModel.get().setState(Constants.ORDER_DELIVERED_STATE);
         return orderPersistencePort.saveOnlyOrder(orderModel.get());
+    }
+
+    @Override
+    public void cancelOrder(String clientEmail, Long orderId) {
+        Optional<OrderModel> orderModel = orderPersistencePort.getOrderById(orderId);
+        User client = userClient.getClient(orderModel.get().getIdClient());
+        if (orderModel.isEmpty() || !Objects.equals(client.getEmail(), clientEmail)) {
+            throw new OrderNotExist();
+        }
+        if (!orderModel.get().getState().equals(Constants.ORDER_PENDING_STATE)){
+            messagingClient.notifyClient(Constants.MESSAGE_CANCEL_ORDER, client.getPhone());
+            throw new CancelOrderErrorException();
+        }
+
+        orderModel.get().setState(Constants.ORDER_CANCELED_STATE);
+        orderPersistencePort.saveOnlyOrder(orderModel.get());
     }
 
 

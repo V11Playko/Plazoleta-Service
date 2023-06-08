@@ -16,4 +16,5 @@ public interface IOrderPersistencePort {
     Optional<OrderModel> getOrderByRestaurantIdAndOrderId(Long restaurantId, Long orderId);
     OrderWithDishesModel saveOrderToOrderWithDishes(OrderModel orderModel);
     List<OrderModel> getOrdersReadyBySecurityCode(String securityPin);
+    Optional<OrderModel> getOrderById(Long orderId);
 }
