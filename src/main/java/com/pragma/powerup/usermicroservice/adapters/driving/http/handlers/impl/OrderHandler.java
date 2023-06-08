@@ -88,4 +88,11 @@ public class OrderHandler implements IOrderHandler {
 
         orderServicePort.changeOrderToDelivered(emailEmployee, orderId, securityCode);
     }
+
+    @Override
+    public void cancelOrder(Long orderId, String clientEmail) {
+        String emailClient = userClient.getUserByEmail(clientEmail).getEmail();
+
+        orderServicePort.cancelOrder(emailClient, orderId);
+    }
 }

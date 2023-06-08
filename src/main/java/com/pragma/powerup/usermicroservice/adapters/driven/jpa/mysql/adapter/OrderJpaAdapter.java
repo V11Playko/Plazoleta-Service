@@ -89,6 +89,12 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Optional<OrderModel> getOrderById(Long orderId) {
+        OrderEntity orderEntity = orderRepository.findById(orderId).orElse(null);
+        return Optional.ofNullable(orderEntityMapper.toModel(orderEntity));
+    }
+
     private OrderStateType convertStringToOrderStateType(String state) {
         OrderStateType stateToProcess;
         switch (state) {

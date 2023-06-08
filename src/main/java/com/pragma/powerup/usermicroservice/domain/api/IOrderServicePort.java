@@ -12,4 +12,5 @@ public interface IOrderServicePort {
     OrderWithDishesModel assignOrder(String employeeEmail, Long orderId);
     OrderModel changeOrderToReady(String employeeEmail, Long orderId);
     OrderModel changeOrderToDelivered(String employeeEmail, Long orderId, String securityCode);
+    void cancelOrder(String clientEmail, Long orderId);
 }

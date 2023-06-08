@@ -1,6 +1,5 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.MessagingClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
@@ -38,7 +37,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -171,7 +169,7 @@ class OrderUseCaseTest {
         when(orderPersistencePort.getOrderByRestaurantIdAndOrderId(anyLong(), anyLong()))
                 .thenReturn(Optional.of(orderModel));
         when(orderPersistencePort.saveOnlyOrder(orderModel)).thenReturn(orderModel);
-        when(userClient.getClient(orderModel.getIdClient())).thenReturn(user);
+        when(userClient.getClientByEmployee(orderModel.getIdClient())).thenReturn(user);
         when(messagingClient.notifyClient(anyString(), anyString())).thenReturn(true);
 
         OrderModel result = orderUseCase.changeOrderToReady(employeeEmail, orderId);
@@ -204,6 +202,28 @@ class OrderUseCaseTest {
         OrderModel result = orderUseCase.changeOrderToDelivered(employeeEmail, orderId, securityCode);
 
         Assertions.assertEquals(Constants.ORDER_DELIVERED_STATE, result.getState());
+        verify(orderPersistencePort, times(1)).saveOnlyOrder(orderModel);
+    }
+
+    @Test
+    void cancelOrder() {
+        String clientEmail = "employee@example.com";
+        Long orderId = 1L;
+
+        OrderModel orderModel = DomainData.getOrderModel();
+        orderModel.setState(Constants.ORDER_PENDING_STATE);
+        orderModel.setIdClient(clientEmail);
+
+        User client = new User();
+        client.setEmail(clientEmail);
+
+        when(orderPersistencePort.getOrderById(orderId)).thenReturn(Optional.ofNullable(orderModel));
+        when(userClient.getClient(clientEmail)).thenReturn(client);
+
+
+        orderUseCase.cancelOrder(clientEmail, orderId);
+
+        Assertions.assertEquals(Constants.ORDER_CANCELED_STATE, orderModel.getState());
         verify(orderPersistencePort, times(1)).saveOnlyOrder(orderModel);
     }
 }

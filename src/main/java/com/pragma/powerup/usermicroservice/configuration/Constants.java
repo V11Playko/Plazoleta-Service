@@ -57,4 +57,6 @@ public class Constants {
             "Check the clerk to receive your order: ";
     public static final String NOTIFICATION_NOT_SEND = "Notification could not be sent";
     public static final String SECURITY_CODE_INCORRECT = "Wrong security code";
+    public static final String MESSAGE_CANCEL_ORDER = "Sorry, your order is already being prepared and cannot be canceled";
+    public static final String CANCEL_ORDER_ERROR = "Order cannot be cancelled";
 }

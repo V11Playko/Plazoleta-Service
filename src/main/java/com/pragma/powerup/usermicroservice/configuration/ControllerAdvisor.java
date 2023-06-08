@@ -4,6 +4,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.Aut
 import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.BadRequestException;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.exceptions.DataExistException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.MailAlreadyExistsException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.CancelOrderErrorException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.DishNotExistException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NitAlreadyExists;
@@ -40,6 +41,7 @@ import java.util.Map;
 
 import static com.pragma.powerup.usermicroservice.configuration.Constants.AUTHENTICATION_EXCEPTION;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.BAD_REQUEST;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.CANCEL_ORDER_ERROR;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.DATA_ALREADY_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.DISH_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.EMPLOYEE_NOT_BELONG_RESTAURANT;
@@ -248,5 +250,12 @@ public class ControllerAdvisor {
             SecurityCodeIncorrectException securityCodeIncorrectException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, SECURITY_CODE_INCORRECT));
+    }
+
+    @ExceptionHandler(CancelOrderErrorException.class)
+    public ResponseEntity<Map<String, String>> handleCancelOrderError(
+            CancelOrderErrorException cancelOrderErrorException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, CANCEL_ORDER_ERROR));
     }
 }
