@@ -1,6 +1,6 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.mapper;
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.CreateEmployeeRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;

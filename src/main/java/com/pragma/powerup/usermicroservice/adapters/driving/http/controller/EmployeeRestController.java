@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,4 +56,17 @@ public class EmployeeRestController {
         return ResponseEntity.ok(this.orderHandler.assignOrdersToEmployee(orderIds, employeeEmail));
     }
 
+    @Operation(summary = "Change order to ready state")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "State changed and notified", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Server error", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
+    })
+    @PutMapping("/order-ready")
+    public ResponseEntity<Void> changeOrderToReady(
+            @RequestParam("orderId") @Valid Long orderId,
+            @RequestParam("employeeEmail") String employeeEmail) {
+        orderHandler.changeOrderToReady(orderId, employeeEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

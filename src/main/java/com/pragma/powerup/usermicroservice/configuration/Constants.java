@@ -51,5 +51,9 @@ public class Constants {
     public static final String RESTAURANT_NOT_HAVE_THESE_DISHES = "These dishes do not belong to this restaurant";
     public static final String EMPLOYEE_NOT_BELONG_RESTAURANT = "Employee does not belong to any restaurant";
     public static final String ORDER_NOT_EXIST = "This order does not exist";
-    public static final String ORDER_ALREADY_ASSIGNED_OR_PROCESS = "Order is already assigned or in process\n";
+    public static final String ORDER_ALREADY_ASSIGNED_OR_PROCESS = "Order is already assigned or in process";
+    public static final String ORDER_STATE_CANNOT_CHANGE = "The status of this order cannot be changed";
+    public static final String MESSAGE_TO_CLIENT = "Hello, your order is ready! Give him this code" +
+            "Check the clerk to receive your order: ";
+    public static final String NOTIFICATION_NOT_SEND = "Notification could not be sent";
 }

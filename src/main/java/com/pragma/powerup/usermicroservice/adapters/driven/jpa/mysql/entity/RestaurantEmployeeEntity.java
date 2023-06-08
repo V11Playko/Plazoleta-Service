@@ -15,7 +15,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "restaurant-employee")
+@Table(name = "restaurant_employee")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

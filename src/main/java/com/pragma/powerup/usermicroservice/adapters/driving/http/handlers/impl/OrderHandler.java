@@ -74,4 +74,11 @@ public class OrderHandler implements IOrderHandler {
                 .map(assignOrderResponseMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void changeOrderToReady(Long orderId, String employeeEmail) {
+        String emailEmployee = userClient.getUserByEmail(employeeEmail).getEmail();
+
+        orderServicePort.changeOrderToReady(emailEmployee, orderId);
+    }
 }

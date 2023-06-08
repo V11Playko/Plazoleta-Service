@@ -1,5 +1,8 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.MessagingClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
@@ -10,9 +13,11 @@ import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,13 +56,17 @@ class OrderUseCaseTest {
     IOrderPersistencePort orderPersistencePort;
     @Mock
     IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
+    @Mock
+    UserClient userClient;
+    @Mock
+    IMessagingPersistencePort messagingClient;
 
     private OrderUseCase orderUseCase;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        orderUseCase = new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort);
+        orderUseCase = new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient);
     }
 
     @Test
@@ -142,4 +151,36 @@ class OrderUseCaseTest {
         verify(orderPersistencePort, times(1)).saveOrderToOrderWithDishes(any(OrderModel.class));
     }
 
+    @Test
+    void changeOrderToReady() {
+        String employeeEmail = "employee@example.com";
+        Long orderId = 1L;
+
+        RestaurantEmployeeModel employeeModel = new RestaurantEmployeeModel();
+        employeeModel.setRestaurant(new RestaurantModel());
+        employeeModel.getRestaurant().setId(1L);
+
+        OrderModel orderModel = new OrderModel();
+        orderModel.setState(Constants.ORDER_PREPARATION_STATE);
+
+        User user = new User();
+        user.setPhone("+57 3134647020");
+
+        when(restaurantEmployeePersistencePort.findByEmployeeEmail(employeeEmail))
+                .thenReturn(Optional.of(employeeModel));
+        when(orderPersistencePort.getOrderByRestaurantIdAndOrderId(anyLong(), anyLong()))
+                .thenReturn(Optional.of(orderModel));
+        when(orderPersistencePort.saveOnlyOrder(orderModel)).thenReturn(orderModel);
+        when(userClient.getClient(orderModel.getIdClient())).thenReturn(user);
+        when(messagingClient.notifyClient(anyString(), anyString())).thenReturn(true);
+
+        when(userClient.getClient(orderModel.getIdClient())).thenReturn(user);
+        when(messagingClient.notifyClient(anyString(), anyString())).thenReturn(true);
+
+        OrderModel result = orderUseCase.changeOrderToReady(employeeEmail, orderId);
+
+        Assertions.assertEquals(Constants.ORDER_READY_STATE, result.getState());
+        verify(orderPersistencePort, times(1)).saveOnlyOrder(orderModel);
+        verify(messagingClient, times(1)).notifyClient(anyString(), anyString());
+    }
 }

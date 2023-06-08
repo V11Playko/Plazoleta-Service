@@ -1,7 +1,7 @@
 package com.pragma.powerup.usermicroservice.domain.api;
 
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels.User;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;

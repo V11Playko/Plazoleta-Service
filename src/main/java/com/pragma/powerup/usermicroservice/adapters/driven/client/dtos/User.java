@@ -1,9 +1,14 @@
-package com.pragma.powerup.usermicroservice.adapters.driven.client.feignModels;
+package com.pragma.powerup.usermicroservice.adapters.driven.client.dtos;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
-@Data
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class User {
     private Long id;
     private String name;
@@ -14,4 +19,8 @@ public class User {
     private String email;
     private String password;
     private String idRole;
+
+    public User() {
+
+    }
 }
