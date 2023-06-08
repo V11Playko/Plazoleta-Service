@@ -358,7 +358,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[ 4]",
+							"raw": "[6]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -610,6 +610,48 @@
 								{
 									"key": "idClient",
 									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJWZWdhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl0sImlhdCI6MTY4NjIyNjIzOSwiZXhwIjoxNjg5ODI2MjM5fQ.DpwSbJQRRQC7s5vO4cwujTCK2tWfOMCdZqYdzNu1S7ek1YyU9uN3DhxuHr9ve1-IeDWKTwM48JseExR0j4tVbg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/client/order-cancel?orderId=6&clientEmail=urek@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"client",
+								"order-cancel"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "6"
+								},
+								{
+									"key": "clientEmail",
+									"value": "urek@gmail.com"
 								}
 							]
 						}
