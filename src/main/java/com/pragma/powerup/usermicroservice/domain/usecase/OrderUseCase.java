@@ -11,6 +11,7 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderStateCannotChange;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.SecurityCodeIncorrectException;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
@@ -149,6 +150,30 @@ public class OrderUseCase implements IOrderServicePort {
         return saveOrder;
     }
 
+    @Override
+    public OrderModel changeOrderToDelivered(String employeeEmail, Long orderId, String securityCode) {
+        Optional<RestaurantEmployeeModel> employeeModel = restaurantEmployeePersistencePort
+                .findByEmployeeEmail(employeeEmail);
+        if (employeeModel.isEmpty()) {
+            throw new EmployeeNotBelongAnyRestaurant();
+        }
+
+        Optional<OrderModel> orderModel = orderPersistencePort
+                .getOrderByRestaurantIdAndOrderId(employeeModel.get().getRestaurant().getId(), orderId);
+        if (orderModel.isEmpty()) {
+            throw new OrderNotExist();
+        }
+        if (orderModel.get().getSecurityPin() == null || !orderModel.get().getSecurityPin().equals(securityCode)) {
+            throw new SecurityCodeIncorrectException();
+        }
+        if (orderModel.get().getState() == null || !orderModel.get().getState().equals(Constants.ORDER_READY_STATE)){
+            throw new OrderStateCannotChange();
+        }
+
+
+        orderModel.get().setState(Constants.ORDER_DELIVERED_STATE);
+        return orderPersistencePort.saveOnlyOrder(orderModel.get());
+    }
 
 
     private String generatedPinCode() {
