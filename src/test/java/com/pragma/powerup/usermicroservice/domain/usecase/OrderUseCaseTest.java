@@ -174,13 +174,36 @@ class OrderUseCaseTest {
         when(userClient.getClient(orderModel.getIdClient())).thenReturn(user);
         when(messagingClient.notifyClient(anyString(), anyString())).thenReturn(true);
 
-        when(userClient.getClient(orderModel.getIdClient())).thenReturn(user);
-        when(messagingClient.notifyClient(anyString(), anyString())).thenReturn(true);
-
         OrderModel result = orderUseCase.changeOrderToReady(employeeEmail, orderId);
 
         Assertions.assertEquals(Constants.ORDER_READY_STATE, result.getState());
         verify(orderPersistencePort, times(1)).saveOnlyOrder(orderModel);
         verify(messagingClient, times(1)).notifyClient(anyString(), anyString());
+    }
+
+    @Test
+    void changeOrderToDelivered() {
+        String employeeEmail = "employee@example.com";
+        Long orderId = 1L;
+        String securityCode = "123456";
+
+        RestaurantEmployeeModel employeeModel = new RestaurantEmployeeModel();
+        employeeModel.setRestaurant(new RestaurantModel());
+        employeeModel.getRestaurant().setId(1L);
+
+        OrderModel orderModel = new OrderModel();
+        orderModel.setState(Constants.ORDER_READY_STATE);
+        orderModel.setSecurityPin(securityCode);
+
+        when(restaurantEmployeePersistencePort.findByEmployeeEmail(employeeEmail))
+                .thenReturn(Optional.of(employeeModel));
+        when(orderPersistencePort.getOrderByRestaurantIdAndOrderId(anyLong(), anyLong()))
+                .thenReturn(Optional.of(orderModel));
+        when(orderPersistencePort.saveOnlyOrder(orderModel)).thenReturn(orderModel);
+
+        OrderModel result = orderUseCase.changeOrderToDelivered(employeeEmail, orderId, securityCode);
+
+        Assertions.assertEquals(Constants.ORDER_DELIVERED_STATE, result.getState());
+        verify(orderPersistencePort, times(1)).saveOnlyOrder(orderModel);
     }
 }
