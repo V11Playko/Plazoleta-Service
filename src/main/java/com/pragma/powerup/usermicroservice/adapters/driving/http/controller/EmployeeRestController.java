@@ -69,4 +69,18 @@ public class EmployeeRestController {
         orderHandler.changeOrderToReady(orderId, employeeEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "Change order to delivered state")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "State changed and notified", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Resource not found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
+    })
+    @PutMapping("/order-delivered")
+    public ResponseEntity<Void> changeOrderToDelivered(@RequestParam("orderId") @Valid Long orderId,
+                                                       @RequestParam("employeeEmail") @Valid String employeeEmail,
+                                                       @RequestParam("securityCode") @Valid String securityCode) {
+        orderHandler.changeOrderToDelivered(orderId, employeeEmail, securityCode);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

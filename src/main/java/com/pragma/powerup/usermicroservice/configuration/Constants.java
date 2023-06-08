@@ -56,4 +56,5 @@ public class Constants {
     public static final String MESSAGE_TO_CLIENT = "Hello, your order is ready! Give him this code" +
             "Check the clerk to receive your order: ";
     public static final String NOTIFICATION_NOT_SEND = "Notification could not be sent";
+    public static final String SECURITY_CODE_INCORRECT = "Wrong security code";
 }

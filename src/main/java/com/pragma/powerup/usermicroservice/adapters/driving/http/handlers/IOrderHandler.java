@@ -11,4 +11,5 @@ public interface IOrderHandler {
     List<OrderResponseDto> listOrdersByState(String orderState, int page, int elementsPerPage, String employeeEmail);
     List<AssignOrderResponseDto> assignOrdersToEmployee(List<Long> ordersId, String employeeEmail);
     void changeOrderToReady(Long orderId, String employeeEmail);
+    void changeOrderToDelivered(Long orderId, String employeeEmail, String securityCode);
 }

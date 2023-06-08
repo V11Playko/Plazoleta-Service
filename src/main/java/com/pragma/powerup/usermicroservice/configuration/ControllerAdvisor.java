@@ -22,6 +22,7 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.SecurityCodeIncorrectException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
 import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,7 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAU
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.SAME_STATE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.SECURITY_CODE_INCORRECT;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_HAVE_A_ORDER;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.USER_IS_NOT_OWNER_RESTAURANT;
@@ -239,5 +241,12 @@ public class ControllerAdvisor {
             NotificationNotSend notificationNotSend) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, NOTIFICATION_NOT_SEND));
+    }
+
+    @ExceptionHandler(SecurityCodeIncorrectException.class)
+    public ResponseEntity<Map<String, String>> handleSecurityCodeIncorrect(
+            SecurityCodeIncorrectException securityCodeIncorrectException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, SECURITY_CODE_INCORRECT));
     }
 }

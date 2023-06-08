@@ -30,7 +30,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Miss Take\",\r\n    \"address\": \"55 Cll. Miss Take\",\r\n    \"phone\": \"+57 3133065020\",\r\n    \"idOwner\": \"2\",\r\n    \"urlLogo\": \"https://MissTake.com/\",\r\n    \"nit\": \"1321234646\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Reino de Goa\",\r\n  \"address\": \"101 Cll. Este Azul\",\r\n  \"phone\": \"+57 3137894262\",\r\n  \"idOwner\": 3,\r\n  \"urlLogo\": \"https://reinoGoa.com/\",\r\n  \"nit\": \"156456879239920\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -67,7 +67,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZXlwaXJhdGFAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODUzNjAxMTQsImV4cCI6MTY4ODk2MDExNH0.HeYN30BIxr6N6YswahPWg0P97dUN3cyi1ukFcFRzKO7bg_cTm7CUzQHFgYtXo9VLi6sgWi7orXnhkuhZCKHJoQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
 									"type": "string"
 								}
 							]
@@ -100,7 +100,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZXlwaXJhdGFAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODUzNjAxMTQsImV4cCI6MTY4ODk2MDExNH0.HeYN30BIxr6N6YswahPWg0P97dUN3cyi1ukFcFRzKO7bg_cTm7CUzQHFgYtXo9VLi6sgWi7orXnhkuhZCKHJoQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
 									"type": "string"
 								}
 							]
@@ -109,7 +109,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Hamburguesa Roster\",\r\n  \"category\": \"1\",\r\n  \"description\": \"Mua muaaaaaa\",\r\n  \"price\": \"7500\",\r\n  \"restaurant\": \"5\",\r\n  \"urlImage\": \"https://hamburguesa.com/images/hamburguesa.jpg\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Hamburguesa Carmel\",\r\n  \"category\": \"1\",\r\n  \"description\": \"Que delicia\",\r\n  \"price\": \"4500\",\r\n  \"restaurant\": \"2\",\r\n  \"urlImage\": \"https://hamburguesa.com/images/hamburguesa.jpg\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -117,7 +117,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/dish?idOwner=6",
+							"raw": "http://localhost:8092/food-court/v1/owner/dish?idOwner=3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -132,7 +132,7 @@
 							"query": [
 								{
 									"key": "idOwner",
-									"value": "6"
+									"value": "3"
 								}
 							]
 						}
@@ -147,7 +147,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZXlwaXJhdGFAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODUzNjAxMTQsImV4cCI6MTY4ODk2MDExNH0.HeYN30BIxr6N6YswahPWg0P97dUN3cyi1ukFcFRzKO7bg_cTm7CUzQHFgYtXo9VLi6sgWi7orXnhkuhZCKHJoQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
 									"type": "string"
 								}
 							]
@@ -156,7 +156,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"1\",\r\n  \"name\": \"Jose\",\r\n  \"surname\": \"Juan\",\r\n  \"phone\": \"+57 3134758696\",\r\n  \"dniNumber\": \"231135465456\",\r\n  \"email\": \"juan@gmail.com\",\r\n  \"password\": \"Juan\"\r\n}",
+							"raw": "{\r\n    \"id\": 4,\r\n  \"name\": \"Juan\",\r\n  \"surname\": \"Vega\",\r\n  \"phone\": \"+57 3134659323\",\r\n  \"dniNumber\": \"1512346545\",\r\n  \"email\": \"juan@gmail.com\",\r\n  \"password\": \"Vega\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -198,7 +198,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZXlwaXJhdGFAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODUzNjAxMTQsImV4cCI6MTY4ODk2MDExNH0.HeYN30BIxr6N6YswahPWg0P97dUN3cyi1ukFcFRzKO7bg_cTm7CUzQHFgYtXo9VLi6sgWi7orXnhkuhZCKHJoQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
 									"type": "string"
 								}
 							]
@@ -207,7 +207,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Rico\",\r\n    \"price\": 3500\r\n}",
+							"raw": "{\r\n    \"description\": \"Ya tu sabe jeje\",\r\n    \"price\": 9500\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +215,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/putDish/4?idOwner=6",
+							"raw": "http://localhost:8092/food-court/v1/owner/putDish/1?idOwner=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -226,12 +226,12 @@
 								"v1",
 								"owner",
 								"putDish",
-								"4"
+								"1"
 							],
 							"query": [
 								{
 									"key": "idOwner",
-									"value": "6"
+									"value": "2"
 								}
 							]
 						}
@@ -246,7 +246,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZXlwaXJhdGFAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODUzNjAxMTQsImV4cCI6MTY4ODk2MDExNH0.HeYN30BIxr6N6YswahPWg0P97dUN3cyi1ukFcFRzKO7bg_cTm7CUzQHFgYtXo9VLi6sgWi7orXnhkuhZCKHJoQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
 									"type": "string"
 								}
 							]
@@ -263,7 +263,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/putDishState/3?idOwner=2",
+							"raw": "http://localhost:8092/food-court/v1/owner/putDishState/1?idOwner=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -274,7 +274,7 @@
 								"v1",
 								"owner",
 								"putDishState",
-								"3"
+								"1"
 							],
 							"query": [
 								{
@@ -311,7 +311,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"orderState\": \"PENDING\",\r\n  \"page\": 0,\r\n  \"elementsXpage\": 1\r\n}",
+							"raw": "{\r\n  \"orderState\": \"PENDING\",\r\n  \"page\": 0,\r\n  \"elementsXpage\": 5\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -358,7 +358,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[ 1, 2, 3]",
+							"raw": "[ 4]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -404,7 +404,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/employee/order-ready?orderId=1&employeeEmail=juan@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/employee/order-ready?orderId=4&employeeEmail=juan@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -419,11 +419,57 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "1"
+									"value": "4"
 								},
 								{
 									"key": "employeeEmail",
 									"value": "juan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Delivered",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqdWFuQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfRU1QTE9ZRUUiXSwiaWF0IjoxNjg1NjMxMDEzLCJleHAiOjE2ODkyMzEwMTN9.Bnq2TYZcabSWX-9yXrsaD6oKL_PnTF3xaAH2B6ijQ-hP_ggSFWz-1S9cOaNYUL0uCisM3TzqS5lQMvRroTySOg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/employee/order-delivered?orderId=4&employeeEmail=juan@gmail.com&securityCode=902857",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"employee",
+								"order-delivered"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "4"
+								},
+								{
+									"key": "employeeEmail",
+									"value": "juan@gmail.com"
+								},
+								{
+									"key": "securityCode",
+									"value": "902857"
 								}
 							]
 						}
@@ -443,7 +489,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJpYS5nb21lekBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX0NMSUVOVCJdLCJpYXQiOjE2ODUzNjA1MjUsImV4cCI6MTY4ODk2MDUyNX0.MD3AVtnHJCqs-AGFt0a4YR3zQJj_pHcQIAfwtS8ngoQwwTQBY3nhL4ZNwliMQaav6qN7g8Xp6U1Fvft96d3XDw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJWZWdhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl0sImlhdCI6MTY4NjIyNjIzOSwiZXhwIjoxNjg5ODI2MjM5fQ.DpwSbJQRRQC7s5vO4cwujTCK2tWfOMCdZqYdzNu1S7ek1YyU9uN3DhxuHr9ve1-IeDWKTwM48JseExR0j4tVbg",
 									"type": "string"
 								}
 							]
@@ -451,7 +497,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/list-restaurants?page=0&elementsXPage=4",
+							"raw": "http://localhost:8092/food-court/v1/client/list-restaurants?page=0&elementsXPage=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -470,7 +516,7 @@
 								},
 								{
 									"key": "elementsXPage",
-									"value": "4"
+									"value": "1"
 								}
 							]
 						}
@@ -485,7 +531,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJpYS5nb21lekBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX0NMSUVOVCJdLCJpYXQiOjE2ODUzNjA1MjUsImV4cCI6MTY4ODk2MDUyNX0.MD3AVtnHJCqs-AGFt0a4YR3zQJj_pHcQIAfwtS8ngoQwwTQBY3nhL4ZNwliMQaav6qN7g8Xp6U1Fvft96d3XDw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJWZWdhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl0sImlhdCI6MTY4NjIyNjIzOSwiZXhwIjoxNjg5ODI2MjM5fQ.DpwSbJQRRQC7s5vO4cwujTCK2tWfOMCdZqYdzNu1S7ek1YyU9uN3DhxuHr9ve1-IeDWKTwM48JseExR0j4tVbg",
 									"type": "string"
 								}
 							]
@@ -531,7 +577,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJpYS5nb21lekBnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX0NMSUVOVCJdLCJpYXQiOjE2ODUzNjA1MjUsImV4cCI6MTY4ODk2MDUyNX0.MD3AVtnHJCqs-AGFt0a4YR3zQJj_pHcQIAfwtS8ngoQwwTQBY3nhL4ZNwliMQaav6qN7g8Xp6U1Fvft96d3XDw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJWZWdhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl0sImlhdCI6MTY4NjIyNjIzOSwiZXhwIjoxNjg5ODI2MjM5fQ.DpwSbJQRRQC7s5vO4cwujTCK2tWfOMCdZqYdzNu1S7ek1YyU9uN3DhxuHr9ve1-IeDWKTwM48JseExR0j4tVbg",
 									"type": "string"
 								}
 							]
@@ -540,7 +586,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idRestaurant\": \"1\",\r\n    \"dishes\": [\r\n        {\r\n            \"idDish\": 1,\r\n            \"amount\": 1\r\n        },\r\n        {\r\n            \"idDish\": 2,\r\n            \"amount\": 3\r\n        },\r\n        {\r\n            \"idDish\": 3,\r\n            \"amount\": 5\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"idRestaurant\": \"1\",\r\n    \"dishes\": [\r\n        {\r\n            \"idDish\": 1,\r\n            \"amount\": 4\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -548,7 +594,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/new-order?idClient=9",
+							"raw": "http://localhost:8092/food-court/v1/client/new-order?idClient=8",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -563,7 +609,7 @@
 							"query": [
 								{
 									"key": "idClient",
-									"value": "9"
+									"value": "8"
 								}
 							]
 						}

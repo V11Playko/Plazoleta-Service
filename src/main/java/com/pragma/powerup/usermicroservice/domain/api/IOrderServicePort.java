@@ -11,5 +11,5 @@ public interface IOrderServicePort {
     List<OrderWithDishesModel> listOrdersByState(String orderState, int page, int elementsXpage, String employeeEmail);
     OrderWithDishesModel assignOrder(String employeeEmail, Long orderId);
     OrderModel changeOrderToReady(String employeeEmail, Long orderId);
-
+    OrderModel changeOrderToDelivered(String employeeEmail, Long orderId, String securityCode);
 }
