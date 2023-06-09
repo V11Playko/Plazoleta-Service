@@ -4,13 +4,16 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.NoDataFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.OrderDishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.AssignOrderResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IAssignOrderResponseMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListOrdersResponseMapper;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderWithDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOrderHandler;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IOrderDishRequestMapper;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IOrderResponseMapper;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
+import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import jakarta.transaction.Transactional;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,9 +31,16 @@ import java.util.stream.Collectors;
 public class OrderHandler implements IOrderHandler {
     private final IOrderServicePort orderServicePort;
     private final IOrderDishRequestMapper orderDishRequestMapper;
+    private final IOrderResponseMapper orderResponseMapper;
     private final IListOrdersResponseMapper listOrdersResponseMapper;
     private final IAssignOrderResponseMapper assignOrderResponseMapper;
     private final UserClient userClient;
+
+    @Override
+    public OrderResponseDto getOrder(Long id) {
+        OrderModel orderModel = orderServicePort.getOrder(id);
+        return orderResponseMapper.toResponse(orderModel);
+    }
 
     @Override
     public void newOrder(String idRestaurant, String idClient, List<OrderDishRequestDto> ordersDishesModels) {
@@ -40,7 +51,7 @@ public class OrderHandler implements IOrderHandler {
     }
 
     @Override
-    public List<OrderResponseDto> listOrdersByState(String orderState, int page, int elementsPerPage, String employeeEmail) {
+    public List<OrderWithDishesResponseDto> listOrdersByState(String orderState, int page, int elementsPerPage, String employeeEmail) {
         String email = String.valueOf(userClient.getUserByEmail(employeeEmail).getEmail());
         List<OrderWithDishesModel> orders;
 

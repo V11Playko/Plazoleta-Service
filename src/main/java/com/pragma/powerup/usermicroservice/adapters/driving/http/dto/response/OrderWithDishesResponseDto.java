@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class OrderResponseDto {
+public class OrderWithDishesResponseDto {
+
     private Long id;
-    private Long idClient;
-    private LocalDateTime date;
+    private String client;
+    private String date;
     private String state;
-    private String securityPin;
-    private String emailChef;
+    private String chef;
     private String restaurant;
+    private List<DishResponseDto> orderDishes;
 }

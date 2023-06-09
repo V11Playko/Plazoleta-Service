@@ -46,6 +46,12 @@ public class OrderUseCase implements IOrderServicePort {
         this.userClient = userClient;
         this.messagingClient = messagingClient1;
     }
+
+    @Override
+    public OrderModel getOrder(Long id) {
+        return orderPersistencePort.getOrder(id);
+    }
+
     @Override
     public void newOrder(String idRestaurant, String idClient, List<OrdersDishesModel> ordersDishesModels) {
 
