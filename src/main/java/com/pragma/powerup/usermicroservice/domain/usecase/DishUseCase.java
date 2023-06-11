@@ -37,6 +37,15 @@ public class DishUseCase implements IDishServicePort {
         this.userClient = userClient;
     }
 
+    /**
+     * Create a restaurant dish
+     *
+     * @param dishModel - dish information
+     * @param idOwner - restaurant owner id
+     * @throws UserNotIsOwner - user is not owner
+     *
+     * @return the dish model with active state and id generated
+     * */
     @Override
     public void saveDish(DishModel dishModel, String idOwner) {
 
@@ -53,6 +62,13 @@ public class DishUseCase implements IDishServicePort {
         return dishPersistencePort.getDish(id);
     }
 
+    /**
+     * Updates a dish
+     *
+     * @param dishModel - dish information
+     * @param idOwner - restaurant owner id
+     * @throws UserNotIsOwner - user is not owner
+     * */
     @Override
     public void updateDish(DishModel dishModel,String idOwner) {
         RestaurantModel restaurantModel = restaurantServicePort.getRestaurant(dishModel.getRestaurant().getId());
@@ -62,6 +78,14 @@ public class DishUseCase implements IDishServicePort {
         }
         dishPersistencePort.updateDish(dishModel);
     }
+
+    /**
+     * Updates a dish state to active or inactive. Checks beforehand if the user is the owner of the dish
+     *
+     * @param dishModel - dish information
+     * @param idOwner - restaurant owner id
+     * @throws UserNotIsOwner - user is not owner
+     * */
 
     @Override
     public void updateDishState(DishModel dishModel, String idOwner) {
@@ -74,6 +98,14 @@ public class DishUseCase implements IDishServicePort {
         dishPersistencePort.updateSate(dishModel);
     }
 
+    /**
+     * Creates an employee
+     *
+     * @param  user - employee information
+     * @param idRestaurant - restaurant to be linked with the employee
+     * @param emailEmployee - email of a employee
+     * @throws RestaurantNotExist - The restaurant does not exist
+     * */
     @Override
     public RestaurantEmployeeModel createEmployee(User user, Long idRestaurant, String emailEmployee) {
         Optional<RestaurantModel> restaurantModel = Optional.ofNullable(restaurantPersistencePort.getRestaurant(idRestaurant));
@@ -87,6 +119,14 @@ public class DishUseCase implements IDishServicePort {
         );
     }
 
+    /**
+     * List dishes of a specific restaurant, paginated, and grouped by category
+     *
+     * @param idRestaurant - restaurant id
+     * @param page - number of page of the dishes
+     * @param elementsXpage - max number of dishes to be returned in the list
+     * @throws RestaurantNotExist - The restaurant does not exist
+     * */
     @Override
     public List<CategoryWithDishesModel> getDishesCategorizedByRestaurant(String idRestaurant, int page, int elementsXpage) {
         RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurant(Long.valueOf(idRestaurant));
@@ -98,6 +138,12 @@ public class DishUseCase implements IDishServicePort {
         return dishesGroupByCategory(dishes);
     }
 
+    /**
+     * Groups a list of dishes by category
+     *
+     * @param dishes - dishes, each dish must have information about its category
+     * @return list of categories with the list of dishes it contains
+     * */
     private List<CategoryWithDishesModel> dishesGroupByCategory(List<DishModel> dishes) {
         Map<Long, List<DishModel>> dishesMap = dishes.stream()
                 .collect(Collectors.groupingBy(dishModel -> dishModel.getCategory().getId(),

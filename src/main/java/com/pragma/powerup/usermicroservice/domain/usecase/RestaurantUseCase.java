@@ -18,6 +18,15 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.userClient = userClient;
     }
+
+    /**
+     * Creates a restaurant, validating first if the user id correspond to a
+     * restaurant owner in the user service
+     *
+     * @param restaurantModel - restaurant information
+     * @throws ValidateRoleOwner - Role is not owned by an owner
+     *
+     * */
     @Override
     public void saveRestaurant(RestaurantModel restaurantModel) {
         //Traer usuario con el usecase
@@ -37,6 +46,13 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         return restaurantPersistencePort.getRestaurant(id);
     }
 
+    /**
+     * List restaurants
+     *
+     * @param page - number of the page of the restaurants
+     * @param numberOfElements - max number of restaurants to be returned in the list
+     * @return list of the restaurants sorted alphabetically
+     * */
     @Override
     public List<RestaurantModel> listRestaurant(int page, int numberOfElements) {
         return restaurantPersistencePort.listByPageAndElements(page, numberOfElements);

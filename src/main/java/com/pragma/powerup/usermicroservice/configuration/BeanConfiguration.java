@@ -1,6 +1,7 @@
 package com.pragma.powerup.usermicroservice.configuration;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.client.MessagingClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.TraceabilityClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.adapter.MessagingAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.DishJpaAdapter;
@@ -56,8 +57,11 @@ public class BeanConfiguration {
     public IOrderServicePort orderServicePort(IRestaurantPersistencePort restaurantPersistencePort,
                                               IDishPersistencePort dishPersistencePort,
                                               IOrderPersistencePort orderPersistencePort,
-                                              IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, IMessagingPersistencePort messagingClient, UserClient userClient) {
-        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient);
+                                              IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort,
+                                              IMessagingPersistencePort messagingClient,
+                                              UserClient userClient,
+                                              TraceabilityClient traceClient) {
+        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient, traceClient);
     }
     // Dish
     @Bean
