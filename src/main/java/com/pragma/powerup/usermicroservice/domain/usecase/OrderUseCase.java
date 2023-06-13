@@ -1,6 +1,8 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.TraceabilityClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.Trace;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
@@ -23,6 +25,7 @@ import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePor
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
+import com.pragma.powerup.usermicroservice.domain.utils.OrderIdGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,15 +40,36 @@ public class OrderUseCase implements IOrderServicePort {
     private final IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
     private final IMessagingPersistencePort messagingClient;
     private final UserClient userClient;
+    private final TraceabilityClient traceClient;
 
-    public OrderUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, UserClient userClient, IMessagingPersistencePort messagingClient1) {
+    public OrderUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, UserClient userClient, IMessagingPersistencePort messagingClient1, TraceabilityClient traceClient) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.orderPersistencePort = orderPersistencePort;
         this.restaurantEmployeePersistencePort = restaurantEmployeePersistencePort;
         this.userClient = userClient;
         this.messagingClient = messagingClient1;
+        this.traceClient = traceClient;
     }
+
+
+
+    @Override
+    public OrderModel getOrder(Long id) {
+        return orderPersistencePort.getOrder(id);
+    }
+
+    /**
+     * Create a new order verifying first the client doesn't have one already in process
+     *
+     * @param ordersDishesModels - dishes the client wants
+     * @param idRestaurant - the restaurant the dishes belongs to
+     * @param idClient - client id
+     * @throws UserHaveOrderException - the client already has an order in process
+     * @throws RestaurantNotHaveTheseDishes - These dishes do not belong to this restaurant
+     *
+     * */
+
     @Override
     public void newOrder(String idRestaurant, String idClient, List<OrdersDishesModel> ordersDishesModels) {
 
@@ -70,9 +94,33 @@ public class OrderUseCase implements IOrderServicePort {
             dishesModel.setOrder(orderModel);
         }
 
+//        User client = userClient.getClient(orderModel.getIdClient());
+//        Long orderId = OrderIdGenerator.generateOrderId();
+//
+//        Trace trace = new Trace();
+//        trace.setOrderId(orderId);
+//        trace.setClientId(orderModel.getIdClient());
+//        trace.setClientEmail(client.getEmail());
+//        trace.setDate(String.valueOf(LocalDateTime.now()));
+//        trace.setNewState("PENDIENTE");
+//        trace.setPreviousState("");
+//        trace.setEmployeeId("");
+//        trace.setEmployeeEmail("");
+//
+//        traceClient.saveTrace(trace);
         orderPersistencePort.saveOrder(orderModel, ordersDishesModels);
     }
 
+    /**
+     * Gets the orders from employee's restaurant filtered by the specified state
+     *
+     * @param orderState - Must be already validated
+     * @param page - page number to show. For pagination
+     * @param elementsXpage - elements to show per page. For pagination
+     * @param employeeEmail - employee email
+     * @throws EmployeeNotBelongAnyRestaurant - Employee does not belong to any restaurant
+     * @return list of orders with its dishes
+     * */
     @Override
     public List<OrderWithDishesModel> listOrdersByState(String orderState, int page, int elementsXpage, String employeeEmail) {
         Optional<RestaurantEmployeeModel> employeeModel = restaurantEmployeePersistencePort
@@ -85,6 +133,15 @@ public class OrderUseCase implements IOrderServicePort {
                 page, elementsXpage, orderState);
     }
 
+    /**
+     * Assigns a pending order to an employee and changes its state to in preparation
+     *
+     * @param orderId - order to find
+     * @param employeeEmail - employee email to assign to the order
+     * @throws EmployeeNotBelongAnyRestaurant - employee doesn't have a restaurant assigned
+     * @throws OrderNotExist - order with the id specified couldn't be found
+     * @throws OrderAssignedOrProcessException - Order is already assigned or in process"
+     * */
     @Override
     public OrderWithDishesModel assignOrder(String employeeEmail, Long orderId) {
 
@@ -108,9 +165,29 @@ public class OrderUseCase implements IOrderServicePort {
         orderModel.get().setEmailChef(employeeModel.get());
         orderModel.get().setState(Constants.ORDER_PREPARATION_STATE);
 
+//        Trace traceId = traceClient.getTrace(orderPersistencePort.getOrderById(orderId).get().getId());
+//
+//        Trace trace = new Trace();
+//        trace.setOrderId(traceId.getOrderId());
+//        trace.setNewState("EN_PREPARACION");
+//        trace.setPreviousState("PENDIENTE");
+//        trace.setEmployeeId("");
+//        trace.setEmployeeEmail(employeeModel.get().getUserEmail());
+//        traceClient.putTrace(trace);
         return  orderPersistencePort.saveOrderToOrderWithDishes(orderModel.get());
     }
 
+    /**
+     * Change order to ready state, and notifies the client with a pin code generated
+     *
+     * @param orderId - order id corresponding to the order to change
+     * @param employeeEmail - employee email
+     * @throws EmployeeNotBelongAnyRestaurant - employee doesn't have a restaurant assigned
+     * @throws OrderNotExist - order with the id specified couldn't be found
+     * @throws OrderStateCannotChange - The status of this order cannot be changed
+     * @throws NotificationNotSend - Notification could not be sent
+     * @return the order updated
+     * */
     @Override
     public OrderModel changeOrderToReady(String employeeEmail, Long orderId) {
         List<OrderModel> foundOrders;
@@ -151,6 +228,18 @@ public class OrderUseCase implements IOrderServicePort {
         return saveOrder;
     }
 
+    /**
+     * Changes the order to 'delivered', verifies the security code is correct
+     *
+     * @param employeeEmail employee email
+     * @param orderId order id
+     * @param securityCode security code to receive the order
+     * @throws EmployeeNotBelongAnyRestaurant - employee doesn't have a restaurant assigned
+     * @throws OrderNotExist - order with the id specified couldn't be found
+     * @throws SecurityCodeIncorrectException - Wrong security code
+     * @throws OrderStateCannotChange - The status of this order cannot be changed
+     * @return the order updated
+     * */
     @Override
     public OrderModel changeOrderToDelivered(String employeeEmail, Long orderId, String securityCode) {
         Optional<RestaurantEmployeeModel> employeeModel = restaurantEmployeePersistencePort
@@ -176,6 +265,14 @@ public class OrderUseCase implements IOrderServicePort {
         return orderPersistencePort.saveOnlyOrder(orderModel.get());
     }
 
+    /**
+     * Cancel an order with its id and has to belong the client email
+     *
+     * @param clientEmail client email
+     * @param orderId order id to be cancelled
+     * @throws OrderNotExist - order with the id specified couldn't be found
+     * @throws CancelOrderErrorException - Sorry, your order is already being prepared and cannot be canceled
+     * */
     @Override
     public void cancelOrder(String clientEmail, Long orderId) {
         Optional<OrderModel> orderModel = orderPersistencePort.getOrderById(orderId);
@@ -192,7 +289,11 @@ public class OrderUseCase implements IOrderServicePort {
         orderPersistencePort.saveOnlyOrder(orderModel.get());
     }
 
-
+    /**
+     * Generates a PIN Code of 6 digits randomly
+     *
+     * @return generatedPinCode
+     * */
     private String generatedPinCode() {
         Random rand = new Random();
 

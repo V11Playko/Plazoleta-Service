@@ -2,7 +2,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.ListOrdersRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.AssignOrderResponseDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderWithDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOrderHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +33,7 @@ public class EmployeeRestController {
             @ApiResponse(responseCode = "500", description = "Employee doesn't belong to any restaurant", content = @Content),
     })
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderResponseDto>> listOrders(
+    public ResponseEntity<List<OrderWithDishesResponseDto>> listOrders(
             @Valid @RequestBody ListOrdersRequestDto listOrdersRequestDto,
             @RequestParam("employeeEmail") String employeeEmail
     ) {

@@ -40,6 +40,14 @@ public class DishHandler implements IDishHandler {
     private final IDishResponseMapper dishResponseMapper;
     private final IListDishesCategoryByRestaurantMapper listDishesCategoryByRestaurantMapper;
     private final ICreateEmployeeRequestMapper createEmployeeRequestMapper;
+
+    /**
+     * Creates a new dish
+     *
+     * @param dishRequestDto - dish information and category name
+     * @param idOwner - restaurant owner id
+     * @return dish created
+     * */
     @Override
     public void saveDish(DishRequestDto dishRequestDto, String idOwner) {
         DishModel dishModel = dishRequestMapper.toDishRequest(dishRequestDto);
@@ -53,6 +61,12 @@ public class DishHandler implements IDishHandler {
         return dishResponseMapper.toResponseDish(dish);
     }
 
+    /**
+     * Updates a dish
+     *
+     * @param dishUpdateRequest - information to update with the dish id
+     * @param idOwner - restaurant owner id
+     * */
     @Override
     public void updateDish(DishUpdateRequest dishUpdateRequest,String idOwner) {
         DishModel dish = dishServicePort.getDish(dishUpdateRequest.getId());
@@ -63,6 +77,13 @@ public class DishHandler implements IDishHandler {
         dishServicePort.updateDish(dish, idOwner);
     }
 
+    /**
+     * Updates dish state
+     *
+     * @param dishUpdateStateRequestDto - dish id and new state
+     * @param idOwner - restaurant owner id
+     * @throws SameStateException - You must change the state of the plate to a different one
+     * */
     @Override
     public void updateState(UpdateDishStateRequestDto dishUpdateStateRequestDto, String idOwner) {
         DishModel dish = dishServicePort.getDish(dishUpdateStateRequestDto.getDishId());
@@ -75,6 +96,15 @@ public class DishHandler implements IDishHandler {
         dishServicePort.updateDishState(dish, idOwner);
     }
 
+    /**
+     * Creates an employee, takes the restaurant of the authenticated owner to create
+     * the employee relationship
+     *
+     * @param createEmployeeRequestDto - employee information
+     * @param idRestaurant - restaurant id
+     * @param emailEmployee - email employee of the restaurant
+     * @return employee email and related restaurant id
+     * */
     @Override
     public RestaurantEmployeeResponseDto createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto,
                                                         String idRestaurant,
@@ -88,6 +118,15 @@ public class DishHandler implements IDishHandler {
         return createEmployeeRequestMapper.toRestaurantEmployee(restaurantEmployeeModel);
     }
 
+    /**
+     * List of dishes of a specific restaurant paginated and grouped by category
+     *
+     * @param idRestaurant - restaurant id
+     * @param page - page number to list
+     * @param elementsXpage - elements to show per page
+     * @throws RestaurantNotExist - The restaurant does not exist
+     * @return list of categories with corresponding dishes
+     */
     @Override
     public List<CategoryDishesResponseDto> getDishesCategorizedByRestaurant(String idRestaurant, int page, int elementsXpage) {
         List<CategoryWithDishesModel> categoryWithDishes;

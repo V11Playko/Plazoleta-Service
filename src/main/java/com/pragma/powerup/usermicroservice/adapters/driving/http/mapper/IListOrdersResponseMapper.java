@@ -1,7 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.mapper;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
-import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderWithDishesResponseDto;
 import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import org.mapstruct.Mapper;
@@ -19,7 +19,7 @@ public interface IListOrdersResponseMapper {
     @Mapping(target = "state", source = "state")
     @Mapping(target = "chef", source = "chef")
     @Mapping(target = "orderDishes", source = "orderDishes", qualifiedByName = { "toDishResponseDto" })
-    OrderResponseDto toDto(OrderWithDishesModel order);
+    OrderWithDishesResponseDto toDto(OrderWithDishesModel order);
 
     @Named("toDishResponseDto")
     @Mapping(target = "id", source = "dish.id")

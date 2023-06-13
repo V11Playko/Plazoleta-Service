@@ -1,5 +1,6 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.TraceabilityClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
@@ -58,13 +59,15 @@ class OrderUseCaseTest {
     UserClient userClient;
     @Mock
     IMessagingPersistencePort messagingClient;
+    @Mock
+    TraceabilityClient traceClient;
 
     private OrderUseCase orderUseCase;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        orderUseCase = new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient);
+        orderUseCase = new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient, traceClient);
     }
 
     @Test

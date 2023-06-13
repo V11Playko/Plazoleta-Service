@@ -27,6 +27,12 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderDishEntityMapper orderDishEntityMapper;
 
     @Override
+    public OrderModel getOrder(Long id) {
+        OrderEntity orderEntity = orderRepository.findById(id).get();
+        return orderEntityMapper.toModel(orderEntity);
+    }
+
+    @Override
     public void saveOrder(OrderModel orderModel, List<OrdersDishesModel> ordersDishesModelList) {
 
         OrderEntity orderEntity = orderEntityMapper.toEntityOrder(orderModel);
@@ -90,8 +96,8 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
-    public Optional<OrderModel> getOrderById(Long orderId) {
-        OrderEntity orderEntity = orderRepository.findById(orderId).orElse(null);
+    public Optional<OrderModel> getOrderById(Long id) {
+        OrderEntity orderEntity = orderRepository.findById(id).get();
         return Optional.ofNullable(orderEntityMapper.toModel(orderEntity));
     }
 

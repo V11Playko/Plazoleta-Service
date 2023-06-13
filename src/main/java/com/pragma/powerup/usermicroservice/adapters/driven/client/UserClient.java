@@ -15,13 +15,14 @@ public interface UserClient {
 
     @GetMapping(value = "/admin/owner/{id}")
     User getUser(@PathVariable("id") String id);
-
     @GetMapping(value = "/owner/{id}")
     User getOwner(@PathVariable("id") String id);
-    @GetMapping(value = "/client/{id}")
-    User getClient(@PathVariable("id") String id);
     @GetMapping(value = "/employee/client/{id}")
     User getClientByEmployee(@PathVariable("id") String id);
     @GetMapping(value = "/auth/getUser")
     User getUserByEmail(@RequestParam("email") String email);
+    @GetMapping("/auth/employee/{id}")
+    User getEmployee(@PathVariable Long id);
+    @GetMapping(value = "/auth/client/{id}")
+    User getClient(@PathVariable("id") String id);
 }

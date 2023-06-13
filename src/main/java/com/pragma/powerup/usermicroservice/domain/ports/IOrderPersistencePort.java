@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IOrderPersistencePort {
+    OrderModel getOrder(Long id);
     void saveOrder(OrderModel orderModel, List<OrdersDishesModel> ordersDishesModelList);
     OrderModel saveOnlyOrder(OrderModel orderModel);
     Integer getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient);
@@ -16,5 +17,5 @@ public interface IOrderPersistencePort {
     Optional<OrderModel> getOrderByRestaurantIdAndOrderId(Long restaurantId, Long orderId);
     OrderWithDishesModel saveOrderToOrderWithDishes(OrderModel orderModel);
     List<OrderModel> getOrdersReadyBySecurityCode(String securityPin);
-    Optional<OrderModel> getOrderById(Long orderId);
+    Optional<OrderModel> getOrderById(Long id);
 }

@@ -5,8 +5,10 @@ import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IOrderServicePort {
+    OrderModel getOrder(Long id);
     void newOrder(String idRestaurant,String idClient, List<OrdersDishesModel> ordersDishesModels);
     List<OrderWithDishesModel> listOrdersByState(String orderState, int page, int elementsXpage, String employeeEmail);
     OrderWithDishesModel assignOrder(String employeeEmail, Long orderId);

@@ -3,6 +3,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.OrderRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.ListRestaurantForClientResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOrderHandler;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IRestaurantHandler;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +37,17 @@ public class ClientRestController {
     private final IOrderHandler orderHandler;
     private final IDishHandler dishHandler;
     private final IRestaurantHandler restaurantHandler;
+
+
+    @Operation(summary = "Get Order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order returned", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Order already exists", content = @Content)
+    })
+    @GetMapping(value = "/order/{id}")
+    public ResponseEntity<OrderResponseDto> getOrder(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(orderHandler.getOrder(id));
+    }
 
     @Operation(summary = "Get all the restaurants")
     @ApiResponses(value = {
