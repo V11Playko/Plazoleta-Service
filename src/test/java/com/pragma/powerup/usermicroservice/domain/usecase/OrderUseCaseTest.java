@@ -67,7 +67,7 @@ class OrderUseCaseTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        orderUseCase = new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient, traceClient);
+        orderUseCase = new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient);
     }
 
     @Test
@@ -75,7 +75,8 @@ class OrderUseCaseTest {
         String idRestaurant = "1";
         String idClient = "1";
 
-        when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(Long.valueOf(idClient)))
+        when(orderPersistencePort
+                .getNumberOfOrdersWithStateInPreparationPendingOrReady(Long.valueOf(idClient)))
                 .thenReturn(1);
 
         assertThrows(UserHaveOrderException.class,

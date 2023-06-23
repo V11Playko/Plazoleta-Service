@@ -1,8 +1,6 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
-import com.pragma.powerup.usermicroservice.adapters.driven.client.TraceabilityClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
-import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.Trace;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
@@ -25,7 +23,6 @@ import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePor
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
-import com.pragma.powerup.usermicroservice.domain.utils.OrderIdGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,16 +37,14 @@ public class OrderUseCase implements IOrderServicePort {
     private final IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
     private final IMessagingPersistencePort messagingClient;
     private final UserClient userClient;
-    private final TraceabilityClient traceClient;
 
-    public OrderUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, UserClient userClient, IMessagingPersistencePort messagingClient1, TraceabilityClient traceClient) {
+    public OrderUseCase(IRestaurantPersistencePort restaurantPersistencePort, IDishPersistencePort dishPersistencePort, IOrderPersistencePort orderPersistencePort, IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort, UserClient userClient, IMessagingPersistencePort messagingClient1) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.dishPersistencePort = dishPersistencePort;
         this.orderPersistencePort = orderPersistencePort;
         this.restaurantEmployeePersistencePort = restaurantEmployeePersistencePort;
         this.userClient = userClient;
         this.messagingClient = messagingClient1;
-        this.traceClient = traceClient;
     }
 
 
@@ -67,7 +62,7 @@ public class OrderUseCase implements IOrderServicePort {
      * @param idClient - client id
      * @throws UserHaveOrderException - the client already has an order in process
      * @throws RestaurantNotHaveTheseDishes - These dishes do not belong to this restaurant
-     *
+     * 
      * */
 
     @Override
@@ -94,20 +89,6 @@ public class OrderUseCase implements IOrderServicePort {
             dishesModel.setOrder(orderModel);
         }
 
-//        User client = userClient.getClient(orderModel.getIdClient());
-//        Long orderId = OrderIdGenerator.generateOrderId();
-//
-//        Trace trace = new Trace();
-//        trace.setOrderId(orderId);
-//        trace.setClientId(orderModel.getIdClient());
-//        trace.setClientEmail(client.getEmail());
-//        trace.setDate(String.valueOf(LocalDateTime.now()));
-//        trace.setNewState("PENDIENTE");
-//        trace.setPreviousState("");
-//        trace.setEmployeeId("");
-//        trace.setEmployeeEmail("");
-//
-//        traceClient.saveTrace(trace);
         orderPersistencePort.saveOrder(orderModel, ordersDishesModels);
     }
 
@@ -165,15 +146,6 @@ public class OrderUseCase implements IOrderServicePort {
         orderModel.get().setEmailChef(employeeModel.get());
         orderModel.get().setState(Constants.ORDER_PREPARATION_STATE);
 
-//        Trace traceId = traceClient.getTrace(orderPersistencePort.getOrderById(orderId).get().getId());
-//
-//        Trace trace = new Trace();
-//        trace.setOrderId(traceId.getOrderId());
-//        trace.setNewState("EN_PREPARACION");
-//        trace.setPreviousState("PENDIENTE");
-//        trace.setEmployeeId("");
-//        trace.setEmployeeEmail(employeeModel.get().getUserEmail());
-//        traceClient.putTrace(trace);
         return  orderPersistencePort.saveOrderToOrderWithDishes(orderModel.get());
     }
 

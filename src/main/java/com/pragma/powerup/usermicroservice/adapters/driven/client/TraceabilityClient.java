@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface TraceabilityClient {
 
     @GetMapping(value = "/{id}")
-    Trace getTrace(@PathVariable("id") Long id);
+    Trace getTrace(@PathVariable("id") String id);
 
     @PostMapping("/saveTrace")
     void saveTrace(@RequestBody Trace trace);
