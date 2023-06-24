@@ -50,8 +50,9 @@ public class BeanConfiguration {
     // Order
     @Bean
     public IOrderPersistencePort orderPersistencePort(IOrderRepository orderRepository, IOrderEntityMapper orderEntityMapper,
-                                                      IOrderDishRepository orderDishRepository, IOrderDishEntityMapper orderDishEntityMapper){
-        return new OrderJpaAdapter(orderRepository, orderEntityMapper, orderDishRepository, orderDishEntityMapper);
+                                                      IOrderDishRepository orderDishRepository, IOrderDishEntityMapper orderDishEntityMapper,
+                                                        TraceabilityClient traceClient){
+        return new OrderJpaAdapter(orderRepository, orderEntityMapper, orderDishRepository, orderDishEntityMapper, traceClient);
     }
     @Bean
     public IOrderServicePort orderServicePort(IRestaurantPersistencePort restaurantPersistencePort,
@@ -59,9 +60,8 @@ public class BeanConfiguration {
                                               IOrderPersistencePort orderPersistencePort,
                                               IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort,
                                               IMessagingPersistencePort messagingClient,
-                                              UserClient userClient,
-                                              TraceabilityClient traceClient) {
-        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient, traceClient);
+                                              UserClient userClient) {
+        return new OrderUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient, messagingClient);
     }
     // Dish
     @Bean

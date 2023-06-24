@@ -1,5 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.client.TraceabilityClient;
+import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.Trace;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrderStateType;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrderEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.OrdersDishesEntity;
@@ -25,6 +27,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     private final IOrderEntityMapper orderEntityMapper;
     private final IOrderDishRepository orderDishRepository;
     private final IOrderDishEntityMapper orderDishEntityMapper;
+    private final TraceabilityClient traceClient;
 
     @Override
     public OrderModel getOrder(Long id) {
@@ -43,6 +46,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
                 .peek(orderDishEntity -> orderDishEntity.setOrder(orderEntity))
                 .collect(Collectors.toList());
 
+//      createLoggOrder(orderEntity, "", Constants.ORDER_PENDING_STATE);
         orderDishRepository.saveAll(ordersDishesEntities);
     }
 
@@ -123,4 +127,18 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         return stateToProcess;
     }
 
+    private void createLoggOrder(OrderEntity order, String previousStatus, String currentStatus){
+        Trace trace = initializeTracking(order, previousStatus, currentStatus);
+        traceClient.saveTrace(trace);
+    }
+
+    private Trace initializeTracking(OrderEntity order, String previousStatus, String currentStatus){
+        Trace trace = new Trace();
+        trace.setOrderId(String.valueOf(order.getId()));
+        trace.setEmployeeEmail(String.valueOf(order.getEmailChef()));
+        trace.setClientId(String.valueOf(order.getIdClient()));
+        trace.setPreviousState(previousStatus);
+        trace.setNewState(currentStatus);
+        return trace;
+    }
 }

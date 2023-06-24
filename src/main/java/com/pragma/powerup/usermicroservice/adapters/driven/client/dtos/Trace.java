@@ -1,22 +1,17 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.client.dtos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class Trace implements Serializable {
-    private Long id;
-    private Long orderId;
+public class Trace {
+    private String id;
+    private String orderId;
     private String clientId;
     private String clientEmail;
     private String date;
