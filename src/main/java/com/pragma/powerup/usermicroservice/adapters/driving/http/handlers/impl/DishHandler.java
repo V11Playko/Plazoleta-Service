@@ -150,12 +150,11 @@ public class DishHandler implements IDishHandler {
     /**
      * Calculates the average price of all the dishes corresponding to the category they belong to
      *
-     * @param idOwner
      * @return List of the categories and the average price of all the dishes that belong to the corresponding category
      */
     @Override
-    public List<CategoryAveragePriceResponseDto> calculateAverageByCategory(String idOwner) {
-        List<CategoryAveragePriceModel> priceAverage = dishServicePort.calculateAverageByCategory(idOwner);
+    public List<CategoryAveragePriceResponseDto> calculateAverageByCategory() {
+        List<CategoryAveragePriceModel> priceAverage = dishServicePort.calculateAverageByCategory();
 
         return priceAverage.stream()
                 .map(dishesAveragePerCategoryMapper::toDto)

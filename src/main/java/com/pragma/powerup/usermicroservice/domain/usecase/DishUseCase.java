@@ -148,16 +148,11 @@ public class DishUseCase implements IDishServicePort {
     /**
      * Calculates the average price of all the dishes corresponding to the category they belong to
      *
-     * @param idOwner
      * @throws UserNotIsOwner - user is not owner
      * @return List of the categories and the average price of all the dishes that belong to the corresponding category
      */
     @Override
-    public List<CategoryAveragePriceModel> calculateAverageByCategory(String idOwner) {
-        User user = userClient.getOwner(idOwner);
-        if (!user.getIdRole().equals("2")) {
-            throw new UserNotIsOwner();
-        }
+    public List<CategoryAveragePriceModel> calculateAverageByCategory() {
         List<DishModel> dishes = dishPersistencePort.listDishes();
         List<CategoryDishModel> categories = dishPersistencePort.listCategory();
 

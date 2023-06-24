@@ -103,7 +103,7 @@ public class OwnerRestController {
         return new ResponseEntity<>(this.dishHandler.createEmployee(createEmployeeRequestDto, idRestaurant, emailEmployee), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get dish",
+    @Operation(summary = "Get category dishes average",
             responses = {
                     @ApiResponse(responseCode = "200", description = "The dish returned",
                             content = @Content(mediaType = "application/json",
@@ -111,8 +111,7 @@ public class OwnerRestController {
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @GetMapping("/dishes-average")
-    public ResponseEntity<List<CategoryAveragePriceResponseDto>> getDishesPerCategory(
-            @RequestParam String idOwner) {
-        return ResponseEntity.ok(dishHandler.calculateAverageByCategory(idOwner));
+    public ResponseEntity<List<CategoryAveragePriceResponseDto>> getDishesPerCategory() {
+        return ResponseEntity.ok(dishHandler.calculateAverageByCategory());
     }
 }

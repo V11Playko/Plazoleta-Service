@@ -19,6 +19,6 @@ public interface IDishHandler {
     void updateState(UpdateDishStateRequestDto updateDishStateRequestDto, String idOwner);
     RestaurantEmployeeResponseDto createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto, String idRestaurant, String emailEmployee);
     List<CategoryDishesResponseDto> getDishesCategorizedByRestaurant(String idRestaurant, int page, int elementsXpage);
-    List<CategoryAveragePriceResponseDto> calculateAverageByCategory(String idOwner);
+    List<CategoryAveragePriceResponseDto> calculateAverageByCategory();
 
 }
