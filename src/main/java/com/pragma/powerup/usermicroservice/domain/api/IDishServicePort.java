@@ -8,7 +8,6 @@ import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IDishServicePort {
     void saveDish(DishModel dishModel, String idOwner);

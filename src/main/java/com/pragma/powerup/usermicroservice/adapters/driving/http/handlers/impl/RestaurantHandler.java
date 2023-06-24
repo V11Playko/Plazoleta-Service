@@ -8,7 +8,6 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListRes
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IRestaurantRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IRestaurantResponseMapper;
 import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
-import com.pragma.powerup.usermicroservice.domain.exceptions.ValidateRoleOwner;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

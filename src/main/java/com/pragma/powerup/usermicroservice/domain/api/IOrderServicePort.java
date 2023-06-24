@@ -5,7 +5,6 @@ import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IOrderServicePort {
     OrderModel getOrder(Long id);
