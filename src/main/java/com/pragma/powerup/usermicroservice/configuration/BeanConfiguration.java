@@ -8,11 +8,13 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.Dis
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.OrderJpaAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.RestaurantEmployeeJpaAdapter;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.RestaurantJpaAdapter;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.ICategoryEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOrderDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IOrderEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEmployeeEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.ICategoryRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderDishRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IOrderRepository;
@@ -65,8 +67,11 @@ public class BeanConfiguration {
     }
     // Dish
     @Bean
-    public IDishPersistencePort dishPersistencePort(IDishRepository dishRepository, IDishEntityMapper dishEntityMapper) {
-        return new DishJpaAdapter(dishRepository, dishEntityMapper);
+    public IDishPersistencePort dishPersistencePort(IDishRepository dishRepository,
+                                                    ICategoryRepository categoryRepository,
+                                                    IDishEntityMapper dishEntityMapper,
+                                                    ICategoryEntityMapper categoryEntityMapper) {
+        return new DishJpaAdapter(dishRepository, categoryRepository ,dishEntityMapper, categoryEntityMapper);
     }
     @Bean
     public IDishServicePort dishServicePort(IDishPersistencePort dishPersistencePort,
