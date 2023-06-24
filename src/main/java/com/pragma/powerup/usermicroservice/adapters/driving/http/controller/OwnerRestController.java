@@ -4,6 +4,7 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Cre
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryAveragePriceResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
@@ -25,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/food-court/v1/owner")
@@ -51,7 +55,7 @@ public class OwnerRestController {
                     @ApiResponse(responseCode = "404", description = "No data found",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @GetMapping("/dish/{id}")
-    public ResponseEntity<DishResponseDto> getRole(@PathVariable Long id) {
+    public ResponseEntity<DishResponseDto> getDish(@PathVariable Long id) {
         return ResponseEntity.ok(dishHandler.getDish(id));
     }
 
@@ -97,5 +101,18 @@ public class OwnerRestController {
             @RequestParam("idRestaurant") String idRestaurant,
             @RequestParam("emailEmployee") String emailEmployee) {
         return new ResponseEntity<>(this.dishHandler.createEmployee(createEmployeeRequestDto, idRestaurant, emailEmployee), HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Get dish",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "The dish returned",
+                            content = @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = DishResponseDto.class)))),
+                    @ApiResponse(responseCode = "404", description = "No data found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @GetMapping("/dishes-average")
+    public ResponseEntity<List<CategoryAveragePriceResponseDto>> getDishesPerCategory(
+            @RequestParam String idOwner) {
+        return ResponseEntity.ok(dishHandler.calculateAverageByCategory(idOwner));
     }
 }
