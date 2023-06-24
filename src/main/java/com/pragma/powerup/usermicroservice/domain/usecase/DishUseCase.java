@@ -7,6 +7,8 @@ import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.UserNotIsOwner;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryAveragePriceModel;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
@@ -15,8 +17,13 @@ import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -136,6 +143,55 @@ public class DishUseCase implements IDishServicePort {
         List<DishModel> dishes = dishPersistencePort.listDishesByRestaurant(idRestaurant, page, elementsXpage);
 
         return dishesGroupByCategory(dishes);
+    }
+
+    /**
+     * Calculates the average price of all the dishes corresponding to the category they belong to
+     *
+     * @param idOwner
+     * @throws UserNotIsOwner - user is not owner
+     * @return List of the categories and the average price of all the dishes that belong to the corresponding category
+     */
+    @Override
+    public List<CategoryAveragePriceModel> calculateAverageByCategory(String idOwner) {
+        User user = userClient.getOwner(idOwner);
+        if (!user.getIdRole().equals("2")) {
+            throw new UserNotIsOwner();
+        }
+        List<DishModel> dishes = dishPersistencePort.listDishes();
+        List<CategoryDishModel> categories = dishPersistencePort.listCategory();
+
+        // Crear la lista de resultados
+        List<CategoryAveragePriceModel> results = new ArrayList<>();
+
+        // Iterar por las categorías
+        for (CategoryDishModel category : categories) {
+            CategoryAveragePriceModel categoryAverage = new CategoryAveragePriceModel();
+            categoryAverage.setName(category.getName());
+
+            // Buscar los platos que corresponden a la categoría actual
+            List<DishModel> categoryDishes = dishes.stream()
+                    .filter(dish -> dish.getCategory().getId().equals(category.getId()))
+                    .collect(Collectors.toList());
+
+            // Calcular el promedio para la categoría actual
+            double categoryAveragePrice = categoryDishes.stream()
+                    .mapToDouble(DishModel::getPrice)
+                    .average()
+                    .orElse(0.0);
+
+            // Redondear el valor del promedio a dos decimales
+            BigDecimal roundedAverage = BigDecimal.valueOf(categoryAveragePrice)
+                    .setScale(2, RoundingMode.HALF_UP);
+            // Formatear el promedio como un valor monetario con el signo de dólar
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
+            String formattedAverage = currencyFormatter.format(roundedAverage);
+
+            categoryAverage.setAveragePerDish(formattedAverage);
+            results.add(categoryAverage);
+        }
+
+        return results;
     }
 
     /**
