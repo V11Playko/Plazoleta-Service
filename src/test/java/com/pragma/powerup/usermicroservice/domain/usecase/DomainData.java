@@ -1,5 +1,6 @@
 package com.pragma.powerup.usermicroservice.domain.usecase;
 
+import com.pragma.powerup.usermicroservice.domain.model.CategoryAveragePriceModel;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
@@ -69,5 +70,13 @@ public class DomainData {
         orderDishModel.setDish(dishModel);
         orderDishModel.setAmount(amount);
         return orderDishModel;
+    }
+
+    public static CategoryAveragePriceModel getCategoryAverage() {
+        CategoryAveragePriceModel averagePriceModel = new CategoryAveragePriceModel();
+        averagePriceModel.setId(1L);
+        averagePriceModel.setName("Frutas");
+        averagePriceModel.setAveragePerDish("$5,333.33");
+        return averagePriceModel;
     }
 }

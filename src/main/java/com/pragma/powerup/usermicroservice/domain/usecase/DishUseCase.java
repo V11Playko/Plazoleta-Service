@@ -178,6 +178,7 @@ public class DishUseCase implements IDishServicePort {
             // Redondear el valor del promedio a dos decimales
             BigDecimal roundedAverage = BigDecimal.valueOf(categoryAveragePrice)
                     .setScale(2, RoundingMode.HALF_UP);
+
             // Formatear el promedio como un valor monetario con el signo de dólar
             NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
             String formattedAverage = currencyFormatter.format(roundedAverage);
