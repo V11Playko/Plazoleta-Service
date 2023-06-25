@@ -9,7 +9,6 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.Ca
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
-import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 
 import java.util.List;
 
