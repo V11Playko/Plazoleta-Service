@@ -1,8 +1,12 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.CategoryEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.DishEntity;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.ICategoryEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDishEntityMapper;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.ICategoryRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +20,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DishJpaAdapter implements IDishPersistencePort {
     private final IDishRepository dishRepository;
+    private final ICategoryRepository categoryRepository;
     private final IDishEntityMapper dishEntityMapper;
+    private final ICategoryEntityMapper categoryEntityMapper;
 
     @Override
     public DishEntity saveDish(DishModel dishModel) {
@@ -48,4 +54,23 @@ public class DishJpaAdapter implements IDishPersistencePort {
                 .map(dishEntityMapper::toDishModel)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DishModel> listDishes() {
+        List<DishEntity> dishEntityList = dishRepository.findAll();
+
+        return dishEntityList.stream()
+                .map(dishEntityMapper::toDishModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CategoryDishModel> listCategory() {
+        List<CategoryEntity> categoryDish = categoryRepository.findAll();
+
+        return categoryDish.stream()
+                .map(categoryEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
 }

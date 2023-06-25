@@ -5,6 +5,7 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.Cre
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.UpdateDishStateRequestDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryAveragePriceResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
@@ -12,11 +13,13 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishH
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.ICreateEmployeeRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishRequestMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IDishResponseMapper;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListDishesAveragePerCategoryMapper;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.mapper.IListDishesCategoryByRestaurantMapper;
 import com.pragma.powerup.usermicroservice.domain.api.IDishServicePort;
 import com.pragma.powerup.usermicroservice.domain.api.IRestaurantServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryAveragePriceModel;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
@@ -40,6 +43,7 @@ public class DishHandler implements IDishHandler {
     private final IDishResponseMapper dishResponseMapper;
     private final IListDishesCategoryByRestaurantMapper listDishesCategoryByRestaurantMapper;
     private final ICreateEmployeeRequestMapper createEmployeeRequestMapper;
+    private final IListDishesAveragePerCategoryMapper dishesAveragePerCategoryMapper;
 
     /**
      * Creates a new dish
@@ -138,6 +142,20 @@ public class DishHandler implements IDishHandler {
         }
         return categoryWithDishes.stream()
                 .map(listDishesCategoryByRestaurantMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Calculates the average price of all the dishes corresponding to the category they belong to
+     *
+     * @return List of the categories and the average price of all the dishes that belong to the corresponding category
+     */
+    @Override
+    public List<CategoryAveragePriceResponseDto> calculateAverageByCategory() {
+        List<CategoryAveragePriceModel> priceAverage = dishServicePort.calculateAverageByCategory();
+
+        return priceAverage.stream()
+                .map(dishesAveragePerCategoryMapper::toDto)
                 .collect(Collectors.toList());
     }
 }
