@@ -200,4 +200,30 @@ class DishUseCaseTest {
         verify(dishPersistencePort, times(1)).listDishes();
         verify(dishPersistencePort, times(1)).listCategory();
     }
+
+    @Test
+    void searchDishByPreferences() {
+        // Arrange
+        double minPrice = 10.0;
+        double maxPrice = 20.0;
+        String preference = "Vegetarian";
+
+        // Mock the result from the persistence port
+        RestaurantModel restaurantModel = DomainData.obtainRestaurant();
+        CategoryDishModel categoryModel = DomainData.getCategoryModel();
+        DishModel dish1 = DomainData.obtainDish(categoryModel, restaurantModel);
+        DishModel dish2 = DomainData.obtainDish(categoryModel, restaurantModel);
+        List<DishModel> expectedDishes = Arrays.asList(dish1, dish2);
+        Mockito.when(dishPersistencePort.searchDishesByPriceAndPreference(minPrice, maxPrice, preference))
+                .thenReturn(expectedDishes);
+
+        // Act
+        List<DishModel> result = dishPersistencePort.searchDishesByPriceAndPreference(minPrice, maxPrice, preference);
+
+        // Assert
+        Assertions.assertEquals(expectedDishes, result);
+        Mockito.verify(dishPersistencePort, Mockito.times(1))
+                .searchDishesByPriceAndPreference(minPrice, maxPrice, preference);
+
+    }
 }
