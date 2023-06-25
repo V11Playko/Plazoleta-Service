@@ -189,6 +189,11 @@ public class DishUseCase implements IDishServicePort {
         return results;
     }
 
+    @Override
+    public List<DishModel> searchDishByPreferences(double minPrice, double maxPrice, String preference) {
+        return dishPersistencePort.searchDishesByPriceAndPreference(minPrice, maxPrice, preference);
+    }
+
     /**
      * Groups a list of dishes by category
      *

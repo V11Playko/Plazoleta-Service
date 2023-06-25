@@ -158,4 +158,16 @@ public class DishHandler implements IDishHandler {
                 .map(dishesAveragePerCategoryMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DishResponseDto> searchDishByPreferences(double minPrice, double maxPrice, String preference) {
+        List<DishModel> dishModelList = dishServicePort.searchDishByPreferences(
+                minPrice,
+                maxPrice,
+                preference);
+
+        return dishModelList.stream()
+                .map(dishResponseMapper::toResponseDish)
+                .collect(Collectors.toList());
+    }
 }
