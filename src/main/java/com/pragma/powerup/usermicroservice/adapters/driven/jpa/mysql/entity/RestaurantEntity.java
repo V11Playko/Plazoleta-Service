@@ -34,6 +34,7 @@ public class RestaurantEntity implements Serializable {
     private String idOwner;
     private String phone;
     private String urlLogo;
+    private String state;
     @Column(unique = true, nullable = false, length = 20)
     private String nit;
     @OneToMany(mappedBy = "restaurant")

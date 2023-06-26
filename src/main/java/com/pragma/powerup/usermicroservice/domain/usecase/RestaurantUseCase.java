@@ -30,6 +30,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     @Override
     public void saveRestaurant(RestaurantModel restaurantModel) {
         //Traer usuario con el usecase
+        restaurantModel.setState("READY");
         try {
             User user = userClient.getUser(restaurantModel.getIdOwner());
             if (user.getIdRole().equals("2")) {
