@@ -17,4 +17,5 @@ public interface IDishServicePort {
     RestaurantEmployeeModel createEmployee(User user, Long idRestaurant, String emailEmployee);
     List<CategoryWithDishesModel> getDishesCategorizedByRestaurant(String idRestaurant, int page, int elementsXpage);
     List<CategoryAveragePriceModel> calculateAverageByCategory();
+    List<DishModel> searchDishByPreferences(double minPrice, double maxPrice, String preference);
 }

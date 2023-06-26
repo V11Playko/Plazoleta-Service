@@ -2,6 +2,7 @@ package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.OrderRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.CategoryDishesResponseDto;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.ListRestaurantForClientResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.OrderResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
@@ -97,5 +98,19 @@ public class ClientRestController {
             @RequestParam("clientEmail") @Valid String clientEmail) {
         orderHandler.cancelOrder(orderId, clientEmail);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Get dishes by price range and preference")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Dishes list returned", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Dishes already exists", content = @Content)
+    })
+    @GetMapping("/list-dishes-by-range")
+    public ResponseEntity<List<DishResponseDto>> getListDishesByPriceRangeAndPreference(
+            @RequestParam double minPrice,
+            @RequestParam double maxPrice,
+            @RequestParam(required = false) String preference
+    ) {
+        return ResponseEntity.ok(dishHandler.searchDishByPreferences(minPrice, maxPrice, preference));
     }
 }

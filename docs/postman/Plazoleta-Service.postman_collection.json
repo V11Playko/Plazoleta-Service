@@ -11,6 +11,52 @@
 			"name": "Admin",
 			"item": [
 				{
+					"name": "Get Dishes By Price Range And Preference Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZWlubmVyQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNjg0NTU3OTAzLCJleHAiOjE2ODgxNTc5MDN9.K7Pis9rWsnSlnQbijDg9NUbMxmLCRCNd1gGEqwdS4yGB2lbSjiu5CV29JCs62JoWHSADNdyyYXWv9805OKnDrQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/client/list-dishes-by-range?minPrice=3500&maxPrice=10000&preference=Caldos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"client",
+								"list-dishes-by-range"
+							],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "3500"
+								},
+								{
+									"key": "maxPrice",
+									"value": "10000"
+								},
+								{
+									"key": "preference",
+									"value": "Caldos"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Post Restaurant",
 					"protocolProfileBehavior": {
 						"disabledSystemHeaders": {}
@@ -30,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Reino de Goa\",\r\n  \"address\": \"101 Cll. Este Azul\",\r\n  \"phone\": \"+57 3137894262\",\r\n  \"idOwner\": 3,\r\n  \"urlLogo\": \"https://reinoGoa.com/\",\r\n  \"nit\": \"156456879239920\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Alabasta\",\r\n  \"address\": \"82 Cll. Desert Yellow\",\r\n  \"phone\": \"+57 3134965231\",\r\n  \"idOwner\": 3,\r\n  \"urlLogo\": \"https://Alabasta.com/\",\r\n  \"nit\": \"1533151566451\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -93,6 +139,45 @@
 					"response": []
 				},
 				{
+					"name": "Get Dishes Average",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/owner/dishes-average",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"owner",
+								"dishes-average"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Save Dish",
 					"request": {
 						"auth": {
@@ -109,7 +194,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Hamburguesa Carmel\",\r\n  \"category\": \"1\",\r\n  \"description\": \"Que delicia\",\r\n  \"price\": \"4500\",\r\n  \"restaurant\": \"2\",\r\n  \"urlImage\": \"https://hamburguesa.com/images/hamburguesa.jpg\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Caldo de huevo\",\r\n  \"category\": \"3\",\r\n  \"description\": \"Nutritivo\",\r\n  \"price\": \"6000\",\r\n  \"restaurant\": \"3\",\r\n  \"urlImage\": \"https://DondeChucho.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -156,7 +241,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n  \"name\": \"Juan\",\r\n  \"surname\": \"Vega\",\r\n  \"phone\": \"+57 3134659323\",\r\n  \"dniNumber\": \"1512346545\",\r\n  \"email\": \"juan@gmail.com\",\r\n  \"password\": \"Vega\"\r\n}",
+							"raw": "{\r\n    \"id\": \"12\",\r\n  \"name\": \"Emilio\",\r\n  \"surname\": \"Salazar\",\r\n  \"phone\": \"+57 3134525353\",\r\n  \"dniNumber\": \"1132315135315\",\r\n  \"email\": \"emilio@gmail.com\",\r\n  \"password\": \"Salazar\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,7 +249,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/employee?idRestaurant=1&emailEmployee=juan@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/owner/employee?idRestaurant=2&emailEmployee=emilio@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -179,11 +264,11 @@
 							"query": [
 								{
 									"key": "idRestaurant",
-									"value": "1"
+									"value": "2"
 								},
 								{
 									"key": "emailEmployee",
-									"value": "juan@gmail.com"
+									"value": "emilio@gmail.com"
 								}
 							]
 						}
@@ -207,7 +292,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Ya tu sabe jeje\",\r\n    \"price\": 9500\r\n}",
+							"raw": "{\r\n    \"description\": \"Ricoooooo\",\r\n    \"price\": 12500\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,7 +300,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/putDish/1?idOwner=2",
+							"raw": "http://localhost:8092/food-court/v1/owner/putDish/8?idOwner=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -226,7 +311,7 @@
 								"v1",
 								"owner",
 								"putDish",
-								"1"
+								"8"
 							],
 							"query": [
 								{
@@ -263,7 +348,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/putDishState/1?idOwner=2",
+							"raw": "http://localhost:8092/food-court/v1/owner/putDishState/4?idOwner=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -274,7 +359,7 @@
 								"v1",
 								"owner",
 								"putDishState",
-								"1"
+								"4"
 							],
 							"query": [
 								{
@@ -319,7 +404,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/employee/orders?employeeEmail=juan@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/employee/orders?employeeEmail=emilio@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -334,7 +419,7 @@
 							"query": [
 								{
 									"key": "employeeEmail",
-									"value": "juan@gmail.com"
+									"value": "emilio@gmail.com"
 								}
 							]
 						}
@@ -358,7 +443,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[6]",
+							"raw": "[9]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -404,7 +489,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/employee/order-ready?orderId=4&employeeEmail=juan@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/employee/order-ready?orderId=8&employeeEmail=emilio@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -419,11 +504,11 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "4"
+									"value": "8"
 								},
 								{
 									"key": "employeeEmail",
-									"value": "juan@gmail.com"
+									"value": "emilio@gmail.com"
 								}
 							]
 						}
@@ -446,7 +531,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/employee/order-delivered?orderId=4&employeeEmail=juan@gmail.com&securityCode=902857",
+							"raw": "http://localhost:8092/food-court/v1/employee/order-delivered?orderId=8&employeeEmail=emilio@gmail.com&securityCode=849196",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -461,15 +546,15 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "4"
+									"value": "8"
 								},
 								{
 									"key": "employeeEmail",
-									"value": "juan@gmail.com"
+									"value": "emilio@gmail.com"
 								},
 								{
 									"key": "securityCode",
-									"value": "902857"
+									"value": "849196"
 								}
 							]
 						}
@@ -481,6 +566,39 @@
 		{
 			"name": "Client",
 			"item": [
+				{
+					"name": "Get Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJWZWdhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl0sImlhdCI6MTY4NjIyNjIzOSwiZXhwIjoxNjg5ODI2MjM5fQ.DpwSbJQRRQC7s5vO4cwujTCK2tWfOMCdZqYdzNu1S7ek1YyU9uN3DhxuHr9ve1-IeDWKTwM48JseExR0j4tVbg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/client/order/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"client",
+								"order",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Get All Restaurant By Page",
 					"request": {
@@ -497,7 +615,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/list-restaurants?page=0&elementsXPage=1",
+							"raw": "http://localhost:8092/food-court/v1/client/list-restaurants?page=0&elementsXPage=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -516,7 +634,7 @@
 								},
 								{
 									"key": "elementsXPage",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -539,7 +657,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/list-dishes-restaurant?idRestaurant=1&page=0&elementsXPage=3",
+							"raw": "http://localhost:8092/food-court/v1/client/list-dishes-restaurant?idRestaurant=2&page=0&elementsXPage=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -554,7 +672,7 @@
 							"query": [
 								{
 									"key": "idRestaurant",
-									"value": "1"
+									"value": "2"
 								},
 								{
 									"key": "page",
@@ -562,7 +680,53 @@
 								},
 								{
 									"key": "elementsXPage",
-									"value": "3"
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Dishes By Price Range And Preference",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJWZWdhQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQ0xJRU5UIl0sImlhdCI6MTY4NjIyNjIzOSwiZXhwIjoxNjg5ODI2MjM5fQ.DpwSbJQRRQC7s5vO4cwujTCK2tWfOMCdZqYdzNu1S7ek1YyU9uN3DhxuHr9ve1-IeDWKTwM48JseExR0j4tVbg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/client/list-dishes-by-range?minPrice=3500&maxPrice=10000&preference=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"client",
+								"list-dishes-by-range"
+							],
+							"query": [
+								{
+									"key": "minPrice",
+									"value": "3500"
+								},
+								{
+									"key": "maxPrice",
+									"value": "10000"
+								},
+								{
+									"key": "preference",
+									"value": ""
 								}
 							]
 						}
@@ -586,7 +750,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idRestaurant\": \"1\",\r\n    \"dishes\": [\r\n        {\r\n            \"idDish\": 1,\r\n            \"amount\": 4\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"idRestaurant\": \"2\",\r\n    \"dishes\": [\r\n        {\r\n            \"idDish\":4,\r\n            \"amount\": 4\r\n        },\r\n        {\r\n            \"idDish\": 5,\r\n            \"amount\": 3\r\n        },\r\n        {\r\n            \"idDish\": 6,\r\n            \"amount\": 1\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -594,7 +758,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/new-order?idClient=8",
+							"raw": "http://localhost:8092/food-court/v1/client/new-order?idClient=11",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -609,7 +773,7 @@
 							"query": [
 								{
 									"key": "idClient",
-									"value": "8"
+									"value": "11"
 								}
 							]
 						}
@@ -632,7 +796,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/order-cancel?orderId=6&clientEmail=urek@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/client/order-cancel?orderId=9&clientEmail=yazmin@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -647,11 +811,11 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "6"
+									"value": "9"
 								},
 								{
 									"key": "clientEmail",
-									"value": "urek@gmail.com"
+									"value": "yazmin@gmail.com"
 								}
 							]
 						}

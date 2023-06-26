@@ -20,5 +20,6 @@ public interface IDishHandler {
     RestaurantEmployeeResponseDto createEmployee(CreateEmployeeRequestDto createEmployeeRequestDto, String idRestaurant, String emailEmployee);
     List<CategoryDishesResponseDto> getDishesCategorizedByRestaurant(String idRestaurant, int page, int elementsXpage);
     List<CategoryAveragePriceResponseDto> calculateAverageByCategory();
+    List<DishResponseDto> searchDishByPreferences(double minPrice, double maxPrice, String preference);
 
 }
