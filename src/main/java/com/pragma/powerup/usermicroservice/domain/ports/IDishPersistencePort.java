@@ -16,4 +16,7 @@ public interface IDishPersistencePort {
     List<CategoryDishModel> listCategory();
     List<DishModel> searchDishesByPriceAndPreference(double minPrice, double maxPrice, String preference);
 
+    List<DishModel> getDishesByRestaurantId(Long id);
+
+    void deleteDishById(Long id);
 }
