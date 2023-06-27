@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 
@@ -33,6 +35,7 @@ public class OrdersDishesEntity implements Serializable {
     private OrderEntity order;
     @ManyToOne
     @JoinColumn(name="dish_id")
+    @OnDelete(action = OnDeleteAction.CASCADE) // Configuración de eliminación en cascada
     private DishEntity dish;
     @Column(name = "amount", nullable = false)
     private int amount;

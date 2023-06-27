@@ -1,5 +1,6 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,11 +35,14 @@ public class RestaurantEntity implements Serializable {
     private String idOwner;
     private String phone;
     private String urlLogo;
+    @Column(name = "state")
     private String state;
     @Column(unique = true, nullable = false, length = 20)
     private String nit;
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<OrderEntity> orders;
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<DishEntity> dishes;
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<RestaurantEmployeeEntity> restaurantEmployees;
 }
