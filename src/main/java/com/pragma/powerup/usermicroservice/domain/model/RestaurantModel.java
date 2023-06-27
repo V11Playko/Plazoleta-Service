@@ -8,8 +8,9 @@ public class RestaurantModel {
     private String phone;
     private String urlLogo;
     private String nit;
+    private String state;
 
-    public RestaurantModel(Long id, String name, String address, String idOwner, String phone, String urlLogo, String nit) {
+    public RestaurantModel(Long id, String name, String address, String idOwner, String phone, String urlLogo, String nit, String state) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -17,6 +18,7 @@ public class RestaurantModel {
         this.phone = phone;
         this.urlLogo = urlLogo;
         this.nit = nit;
+        this.state = state;
     }
 
     public RestaurantModel() {
@@ -77,5 +79,13 @@ public class RestaurantModel {
 
     public void setNit(String nit) {
         this.nit = nit;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

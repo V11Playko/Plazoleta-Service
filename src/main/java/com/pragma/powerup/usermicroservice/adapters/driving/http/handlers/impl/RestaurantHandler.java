@@ -56,4 +56,13 @@ public class RestaurantHandler implements IRestaurantHandler {
                 .map(listRestaurantClientMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     *  Delete Restaurant
+     * @param id
+     */
+    @Override
+    public void deleteRestaurant(Long id) {
+        restaurantServicePort.deleteRestaurant(id);
+    }
 }

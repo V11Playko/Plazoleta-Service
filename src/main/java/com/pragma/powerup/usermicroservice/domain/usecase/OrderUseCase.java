@@ -12,12 +12,14 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderStateCannotChange;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantPendingDeleteException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SecurityCodeIncorrectException;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
@@ -72,9 +74,13 @@ public class OrderUseCase implements IOrderServicePort {
         if (orderWithStatePendingPreparingOrReady != null && orderWithStatePendingPreparingOrReady > 0) {
             throw new UserHaveOrderException();
         }
+        RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurant(Long.valueOf(idRestaurant));
+        if (restaurantModel.getState().equals("PENDING_DELETE")) {
+            throw new RestaurantPendingDeleteException();
+        }
 
         OrderModel orderModel = new OrderModel();
-        orderModel.setRestaurant(restaurantPersistencePort.getRestaurant(Long.valueOf(idRestaurant)));
+        orderModel.setRestaurant(restaurantModel);
         orderModel.setIdClient(idClient);
         orderModel.setDate(LocalDateTime.now());
         orderModel.setState(Constants.ORDER_PENDING_STATE);

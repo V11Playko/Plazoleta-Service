@@ -7,7 +7,9 @@ import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class RestaurantEmployeeJpaAdapter implements IRestaurantEmployeePersistencePort {
@@ -27,5 +29,23 @@ public class RestaurantEmployeeJpaAdapter implements IRestaurantEmployeePersiste
         RestaurantEmployeeEntity restaurantEmployeeEntity = restaurantEmployeeRepository
                 .findById(email).orElse(null);
         return Optional.ofNullable(restaurantEmployeeEntityMapper.toModel(restaurantEmployeeEntity));
+    }
+
+    @Override
+    public List<RestaurantEmployeeModel> getEmployeesByRestaurantId(Long id) {
+        List<RestaurantEmployeeEntity> employeeEntities = restaurantEmployeeRepository.findByRestaurantId(id);
+        return employeeEntities.stream()
+                .map(restaurantEmployeeEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteEmployeeByEmailAndRestaurantId(String mail, Long id) {
+        List<RestaurantEmployeeEntity> employees = restaurantEmployeeRepository.findByRestaurantId(id);
+        for (RestaurantEmployeeEntity employee : employees) {
+            if (employee.getUserEmail().equals(mail)) {
+                restaurantEmployeeRepository.delete(employee);
+            }
+        }
     }
 }

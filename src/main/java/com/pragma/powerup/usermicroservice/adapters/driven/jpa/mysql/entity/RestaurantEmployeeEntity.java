@@ -1,5 +1,6 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ public class RestaurantEmployeeEntity {
     @Column(name = "email_persona", nullable = false)
     private String userEmail;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_restaurante", nullable = false)
     private RestaurantEntity restaurant;
 

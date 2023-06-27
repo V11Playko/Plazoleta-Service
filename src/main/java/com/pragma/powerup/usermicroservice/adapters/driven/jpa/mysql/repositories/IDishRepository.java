@@ -2,6 +2,7 @@ package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositori
 
 
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.DishEntity;
+import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +28,8 @@ public interface IDishRepository extends JpaRepository<DishEntity, Long> {
     @Query(value = "SELECT * FROM dish d WHERE d.price >= :minPrice AND d.price <= :maxPrice", nativeQuery = true)
     List<DishEntity> searchDishesByPriceRange(@Param("minPrice") double minPrice,
                                               @Param("maxPrice") double maxPrice);
+
+    @Query("SELECT d FROM DishEntity d WHERE d.restaurant.id = :restaurantId")
+    List<DishEntity> getDishesByRestaurantId(@Param("restaurantId") Long restaurantId);
 
 }
