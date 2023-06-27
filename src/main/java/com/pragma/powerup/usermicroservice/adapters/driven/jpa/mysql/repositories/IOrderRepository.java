@@ -28,4 +28,11 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     Optional<OrderEntity> findByRestaurantIdAndId(Long restaurantId, Long orderId);
 
     List<OrderEntity> findBySecurityPinAndState(String securityPin, OrderStateType orderStateType);
+
+    @Query("SELECT COUNT(o) FROM OrderEntity o WHERE o.state = 'PENDIENTE' AND o.restaurant.id = :restaurantId")
+    Integer countPendingOrdersByRestaurantId(@Param("restaurantId") Long restaurantId);
+
+    @Query("SELECT o FROM OrderEntity o WHERE o.restaurant.id = :restaurantId")
+    List<OrderEntity> getOrdersByRestaurantId(Long restaurantId);
+
 }
