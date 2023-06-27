@@ -19,8 +19,10 @@ import com.pragma.powerup.usermicroservice.domain.exceptions.NotificationNotSend
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderStateCannotChange;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantHaveOrdersPending;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantPendingDeleteException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SecurityCodeIncorrectException;
@@ -55,8 +57,10 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_HAVE_ORDERS_PENDING;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_HAVE_THESE_DISHES;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_PENDING_DELETE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.SAME_STATE;
@@ -257,5 +261,19 @@ public class ControllerAdvisor {
             CancelOrderErrorException cancelOrderErrorException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, CANCEL_ORDER_ERROR));
+    }
+
+    @ExceptionHandler(RestaurantPendingDeleteException.class)
+    public ResponseEntity<Map<String, String>> handlePendingDeleteRestaurant(
+            RestaurantPendingDeleteException restaurantPendingDeleteException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_PENDING_DELETE));
+    }
+
+    @ExceptionHandler(RestaurantHaveOrdersPending.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantOrdersPendingException(
+            RestaurantHaveOrdersPending restaurantHaveOrdersPending) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_HAVE_ORDERS_PENDING));
     }
 }
