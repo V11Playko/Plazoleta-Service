@@ -268,6 +268,12 @@ public class OrderUseCase implements IOrderServicePort {
         orderPersistencePort.saveOnlyOrder(orderModel.get());
     }
 
+    /**
+     * Cancel orders after a specific time
+     *
+     * @param timeLimit
+     * @throws NoOrdersExceedingTimeLimitException - No order exceeds the time limit
+     */
     @Override
     public void cancelOrderByWaitingTime(int timeLimit) {
         List<OrderModel> orders = orderPersistencePort.getAllOrders();
@@ -294,6 +300,13 @@ public class OrderUseCase implements IOrderServicePort {
         }
     }
 
+    /**
+     * Checks if an order has exceeded the given time limit
+     *
+     * @param order
+     * @param time
+     * @return boolean
+     */
     private boolean exceedsWaitingTime(OrderModel order, int time) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime timeLimit = order.getDate().plusMinutes(time);
