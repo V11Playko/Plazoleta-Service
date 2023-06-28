@@ -149,4 +149,9 @@ public class OrderHandler implements IOrderHandler {
 
         orderServicePort.cancelOrder(emailClient, orderId);
     }
+
+    @Override
+    public void cancelOrderByWaitingTime(int timeLimit) {
+        orderServicePort.cancelOrderByWaitingTime(timeLimit);
+    }
 }

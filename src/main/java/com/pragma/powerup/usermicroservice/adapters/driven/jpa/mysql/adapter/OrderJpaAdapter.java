@@ -119,6 +119,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
         orderRepository.deleteById(id);
     }
 
+    @Override
+    public List<OrderModel> getAllOrders() {
+        List<OrderEntity> orderEntities = orderRepository.findAll();
+
+        return orderEntities.stream()
+                .map(orderEntityMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
     private OrderStateType convertStringToOrderStateType(String state) {
         OrderStateType stateToProcess;
         switch (state) {

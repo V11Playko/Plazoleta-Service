@@ -15,4 +15,5 @@ public interface IOrderHandler {
     void changeOrderToReady(Long orderId, String employeeEmail);
     void changeOrderToDelivered(Long orderId, String employeeEmail, String securityCode);
     void cancelOrder(Long orderId, String clientEmail);
+    void cancelOrderByWaitingTime(int timeLimit);
 }
