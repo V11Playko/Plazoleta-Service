@@ -2,7 +2,6 @@ package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositori
 
 
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.DishEntity;
-import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
