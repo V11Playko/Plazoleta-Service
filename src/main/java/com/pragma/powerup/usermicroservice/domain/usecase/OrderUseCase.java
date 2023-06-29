@@ -6,18 +6,21 @@ import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.api.IOrderServicePort;
 import com.pragma.powerup.usermicroservice.domain.exceptions.CancelOrderErrorException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.EmployeeNotBelongAnyRestaurant;
+import com.pragma.powerup.usermicroservice.domain.exceptions.NoOrdersExceedingTimeLimitException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NotificationNotSend;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderStateCannotChange;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantPendingDeleteException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SecurityCodeIncorrectException;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderWithDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrdersDishesModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantEmployeeModel;
+import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IDishPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
@@ -72,9 +75,13 @@ public class OrderUseCase implements IOrderServicePort {
         if (orderWithStatePendingPreparingOrReady != null && orderWithStatePendingPreparingOrReady > 0) {
             throw new UserHaveOrderException();
         }
+        RestaurantModel restaurantModel = restaurantPersistencePort.getRestaurant(Long.valueOf(idRestaurant));
+        if (restaurantModel.getState().equals("PENDING_DELETE")) {
+            throw new RestaurantPendingDeleteException();
+        }
 
         OrderModel orderModel = new OrderModel();
-        orderModel.setRestaurant(restaurantPersistencePort.getRestaurant(Long.valueOf(idRestaurant)));
+        orderModel.setRestaurant(restaurantModel);
         orderModel.setIdClient(idClient);
         orderModel.setDate(LocalDateTime.now());
         orderModel.setState(Constants.ORDER_PENDING_STATE);
@@ -121,7 +128,7 @@ public class OrderUseCase implements IOrderServicePort {
      * @param employeeEmail - employee email to assign to the order
      * @throws EmployeeNotBelongAnyRestaurant - employee doesn't have a restaurant assigned
      * @throws OrderNotExist - order with the id specified couldn't be found
-     * @throws OrderAssignedOrProcessException - Order is already assigned or in process"
+     * @throws OrderAssignedOrProcessException - Order is already assigned or in process
      * */
     @Override
     public OrderWithDishesModel assignOrder(String employeeEmail, Long orderId) {
@@ -261,6 +268,50 @@ public class OrderUseCase implements IOrderServicePort {
         orderPersistencePort.saveOnlyOrder(orderModel.get());
     }
 
+    /**
+     * Cancel orders after a specific time
+     *
+     * @param timeLimit
+     * @throws NoOrdersExceedingTimeLimitException - No order exceeds the time limit
+     */
+    @Override
+    public void cancelOrderByWaitingTime(int timeLimit) {
+        List<OrderModel> orders = orderPersistencePort.getAllOrders();
+        boolean orderExceededTimeLimit = false;
+
+        for (OrderModel order : orders) {
+            if (order.getState().equals(Constants.ORDER_CANCELED_STATE)) {
+                // Ignorar las órdenes que tienen el estado "CANCELADO"
+                continue;
+            }
+
+            if (exceedsWaitingTime(order, timeLimit)) {
+                order.setState(Constants.ORDER_CANCELED_STATE);
+                orderPersistencePort.saveOnlyOrder(order);
+                User user = userClient.getClientByOwner(order.getIdClient());
+                String messageToSend = Constants.ORDER_CANCELED_MESSAGE_TO_USER;
+                messagingClient.notifyClient(messageToSend, user.getPhone());
+                orderExceededTimeLimit = true;
+            }
+        }
+
+        if (!orderExceededTimeLimit) {
+            throw new NoOrdersExceedingTimeLimitException();
+        }
+    }
+
+    /**
+     * Checks if an order has exceeded the given time limit
+     *
+     * @param order
+     * @param time
+     * @return boolean
+     */
+    private boolean exceedsWaitingTime(OrderModel order, int time) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime timeLimit = order.getDate().plusMinutes(time);
+        return now.isAfter(timeLimit);
+    }
     /**
      * Generates a PIN Code of 6 digits randomly
      *

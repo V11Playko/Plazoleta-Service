@@ -28,4 +28,7 @@ public interface IDishRepository extends JpaRepository<DishEntity, Long> {
     List<DishEntity> searchDishesByPriceRange(@Param("minPrice") double minPrice,
                                               @Param("maxPrice") double maxPrice);
 
+    @Query("SELECT d FROM DishEntity d WHERE d.restaurant.id = :restaurantId")
+    List<DishEntity> getDishesByRestaurantId(@Param("restaurantId") Long restaurantId);
+
 }

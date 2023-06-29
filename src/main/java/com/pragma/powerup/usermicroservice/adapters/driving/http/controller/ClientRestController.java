@@ -88,7 +88,7 @@ public class ClientRestController {
 
     @Operation(summary = "Change order to canceled state")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "State changed or notified that can't be cancelled", content = @Content),
+            @ApiResponse(responseCode = "200", description = "Status changed and notified that the order was canceled", content = @Content),
             @ApiResponse(responseCode = "404", description = "Order not found", content = @Content),
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
     })

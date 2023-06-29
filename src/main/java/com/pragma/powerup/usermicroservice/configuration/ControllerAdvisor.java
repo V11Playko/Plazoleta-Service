@@ -15,12 +15,15 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RoleNotFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.NoOrdersExceedingTimeLimitException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NotificationNotSend;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderStateCannotChange;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantHaveOrdersPending;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotExist;
 import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantNotHaveTheseDishes;
+import com.pragma.powerup.usermicroservice.domain.exceptions.RestaurantPendingDeleteException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SameStateException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.SecurityCodeIncorrectException;
@@ -49,14 +52,17 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.MAIL_A
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NIT_ALREADY_EXISTS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NOTIFICATION_NOT_SEND;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_ORDERS_EXCEEDGING_TIME;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_ALREADY_ASSIGNED_OR_PROCESS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_STATE_CANNOT_CHANGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_ALREADY_EXISTS_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.PERSON_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESPONSE_ERROR_MESSAGE_KEY;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_HAVE_ORDERS_PENDING;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_NOT_HAVE_THESE_DISHES;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.RESTAURANT_PENDING_DELETE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_ALLOWED_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ROLE_NOT_FOUND_MESSAGE;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.SAME_STATE;
@@ -257,5 +263,26 @@ public class ControllerAdvisor {
             CancelOrderErrorException cancelOrderErrorException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, CANCEL_ORDER_ERROR));
+    }
+
+    @ExceptionHandler(RestaurantPendingDeleteException.class)
+    public ResponseEntity<Map<String, String>> handlePendingDeleteRestaurant(
+            RestaurantPendingDeleteException restaurantPendingDeleteException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_PENDING_DELETE));
+    }
+
+    @ExceptionHandler(RestaurantHaveOrdersPending.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantOrdersPendingException(
+            RestaurantHaveOrdersPending restaurantHaveOrdersPending) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_HAVE_ORDERS_PENDING));
+    }
+
+    @ExceptionHandler(NoOrdersExceedingTimeLimitException.class)
+    public ResponseEntity<Map<String, String>> handleNoOrdersExceedingTime(
+            NoOrdersExceedingTimeLimitException noOrdersExceedingTimeLimitException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, NO_ORDERS_EXCEEDGING_TIME));
     }
 }

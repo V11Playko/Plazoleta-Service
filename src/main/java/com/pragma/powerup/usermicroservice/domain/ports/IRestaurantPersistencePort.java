@@ -9,4 +9,7 @@ public interface IRestaurantPersistencePort {
     RestaurantEntity saveRestaurant(RestaurantModel restaurantModel);
     RestaurantModel getRestaurant(Long id);
     List<RestaurantModel> listByPageAndElements(int page, int numbersOfElements);
+    void deleteRestaurantById(Long id);
+    Integer getNumberOfOrdersWithStateInPending(Long id);
+    void updateRestaurant(RestaurantModel restaurant);
 }

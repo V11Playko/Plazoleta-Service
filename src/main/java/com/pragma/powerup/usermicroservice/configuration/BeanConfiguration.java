@@ -40,13 +40,17 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
     // Restaurant
     @Bean
-    public IRestaurantPersistencePort restaurantPersistencePort(IRestaurantRepository restaurantRepository, IRestaurantEntityMapper restaurantEntityMapper) {
-        return new RestaurantJpaAdapter(restaurantRepository, restaurantEntityMapper);
+    public IRestaurantPersistencePort restaurantPersistencePort(IRestaurantRepository restaurantRepository, IOrderRepository orderRepository,IRestaurantEntityMapper restaurantEntityMapper) {
+        return new RestaurantJpaAdapter(restaurantRepository, orderRepository, restaurantEntityMapper);
     }
 
     @Bean
-    public IRestaurantServicePort restaurantServicePort(IRestaurantPersistencePort restaurantPersistencePort, UserClient userClient){
-        return new RestaurantUseCase(restaurantPersistencePort, userClient);
+    public IRestaurantServicePort restaurantServicePort(IRestaurantPersistencePort restaurantPersistencePort,
+                                                        IDishPersistencePort dishPersistencePort,
+                                                        IOrderPersistencePort orderPersistencePort,
+                                                        IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort,
+                                                        UserClient userClient){
+        return new RestaurantUseCase(restaurantPersistencePort, dishPersistencePort, orderPersistencePort, restaurantEmployeePersistencePort, userClient);
     }
 
     // Order

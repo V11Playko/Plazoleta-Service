@@ -45,6 +45,7 @@ public class Constants {
     public static final String ORDER_CANCELED_STATE = "CANCELED";
     public static final String ORDER_READY_STATE = "READY";
     public static final String ORDER_DELIVERED_STATE = "DELIVERED";
+    public static final String PENDING_DELETE = "PENDING_DELETE";
 
     public static final String USER_HAVE_A_ORDER = "The user already has an order pending, in preparation or ready.";
     public static final String ORDER_CREATED = "Order created successfully";
@@ -59,4 +60,9 @@ public class Constants {
     public static final String SECURITY_CODE_INCORRECT = "Wrong security code";
     public static final String MESSAGE_CANCEL_ORDER = "Sorry, your order is already being prepared and cannot be canceled";
     public static final String CANCEL_ORDER_ERROR = "Order cannot be cancelled";
+    public static final String RESTAURANT_PENDING_DELETE = "The restaurant is pending to eliminate.";
+    public static final String RESTAURANT_HAVE_ORDERS_PENDING = "The restaurant has orders with a pending status.";
+    public static final String ORDERS_CANCELED_TIME = "Orders were canceled after the specified time: ";
+    public static final String ORDER_CANCELED_MESSAGE_TO_USER = "The order was canceled due to non-compliance with the delivery deadline.";
+    public static final String NO_ORDERS_EXCEEDGING_TIME = "There are no orders that exceed the specified time limit.";
 }

@@ -18,4 +18,10 @@ public interface IOrderPersistencePort {
     OrderWithDishesModel saveOrderToOrderWithDishes(OrderModel orderModel);
     List<OrderModel> getOrdersReadyBySecurityCode(String securityPin);
     Optional<OrderModel> getOrderById(Long id);
+
+    List<OrderModel> getOrdersByRestaurantId(Long id);
+
+    void deleteOrderById(Long id);
+
+    List<OrderModel> getAllOrders();
 }

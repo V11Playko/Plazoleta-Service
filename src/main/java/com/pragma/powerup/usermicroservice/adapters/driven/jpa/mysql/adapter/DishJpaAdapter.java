@@ -93,4 +93,15 @@ public class DishJpaAdapter implements IDishPersistencePort {
                 .map(dishEntityMapper::toDishModel)
                 .collect(Collectors.toList());
     }
+    public List<DishModel> getDishesByRestaurantId(Long id) {
+        List<DishEntity> dishEntities = dishRepository.getDishesByRestaurantId(id);
+        return dishEntities.stream()
+                .map(dishEntityMapper::toDishModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteDishById(Long id) {
+        dishRepository.deleteById(id);
+    }
 }

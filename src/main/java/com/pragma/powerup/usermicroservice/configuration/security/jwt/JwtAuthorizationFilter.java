@@ -37,8 +37,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String endpoint = request.getRequestURI();
         Map<String, List<String>> rolesEndpointsMap = new HashMap<>();
         // Agrega más roles y sus respectivos endpoints según sea necesario
-        rolesEndpointsMap.put("ROLE_ADMIN", Arrays.asList("/food-court/v1/admin/restaurant", "/food-court/v1/client/list-dishes-by-range"));
-        rolesEndpointsMap.put("ROLE_OWNER", Arrays.asList("/food-court/v1/owner/dish", "/food-court/v1/owner/dish/{id}", "/food-court/v1/owner/putDish/{id}", "/food-court/v1/owner/putDishState/{id}", "/food-court/v1/owner/employee", "/food-court/v1/owner/dishes-average"));
+        rolesEndpointsMap.put("ROLE_ADMIN", Arrays.asList("/food-court/v1/admin/restaurant", "/food-court/v1/admin/delete-restaurant/{id}", "/food-court/v1/client/list-dishes-by-range"));
+        rolesEndpointsMap.put("ROLE_OWNER", Arrays.asList("/food-court/v1/owner/dish", "/food-court/v1/owner/dish/{id}", "/food-court/v1/owner/putDish/{id}", "/food-court/v1/owner/putDishState/{id}", "/food-court/v1/owner/employee", "/food-court/v1/owner/dishes-average", "/food-court/v1/owner/cancel-orders"));
         rolesEndpointsMap.put("ROLE_EMPLOYEE", Arrays.asList("/food-court/v1/employee/orders", "/food-court/v1/employee/assign-orders", "/food-court/v1/employee/order-ready", "/food-court/v1/employee/order-delivered"));
         rolesEndpointsMap.put("ROLE_CLIENT", Arrays.asList("/food-court/v1/client/list-restaurants", "/food-court/v1/client/list-dishes-restaurant", "/food-court/v1/client/new-order", "/food-court/v1/client/order-cancel", "/food-court/v1/client/order/{id}", "/food-court/v1/client/list-dishes-by-range"));
 

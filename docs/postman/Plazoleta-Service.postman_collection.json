@@ -76,7 +76,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Alabasta\",\r\n  \"address\": \"82 Cll. Desert Yellow\",\r\n  \"phone\": \"+57 3134965231\",\r\n  \"idOwner\": 3,\r\n  \"urlLogo\": \"https://Alabasta.com/\",\r\n  \"nit\": \"1533151566451\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Alabasta\",\r\n  \"address\": \"82 Cll. Desert Yellow\",\r\n  \"phone\": \"+57 3134965231\",\r\n  \"idOwner\": 3,\r\n  \"urlLogo\": \"https://Alabasta.com/\",\r\n  \"nit\": \"75447775752\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -95,6 +95,42 @@
 								"v1",
 								"admin",
 								"restaurant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Restaurant",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZWlubmVyQGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaWF0IjoxNjg0NTU3OTAzLCJleHAiOjE2ODgxNTc5MDN9.K7Pis9rWsnSlnQbijDg9NUbMxmLCRCNd1gGEqwdS4yGB2lbSjiu5CV29JCs62JoWHSADNdyyYXWv9805OKnDrQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/admin/delete-restaurant/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"admin",
+								"delete-restaurant",
+								"4"
 							]
 						}
 					},
@@ -194,7 +230,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Caldo de huevo\",\r\n  \"category\": \"3\",\r\n  \"description\": \"Nutritivo\",\r\n  \"price\": \"6000\",\r\n  \"restaurant\": \"3\",\r\n  \"urlImage\": \"https://DondeChucho.com\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Caldo de huevo\",\r\n  \"category\": \"3\",\r\n  \"description\": \"Nutritivo\",\r\n  \"price\": \"6000\",\r\n  \"restaurant\": \"4\",\r\n  \"urlImage\": \"https://DondeChucho.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -241,7 +277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"12\",\r\n  \"name\": \"Emilio\",\r\n  \"surname\": \"Salazar\",\r\n  \"phone\": \"+57 3134525353\",\r\n  \"dniNumber\": \"1132315135315\",\r\n  \"email\": \"emilio@gmail.com\",\r\n  \"password\": \"Salazar\"\r\n}",
+							"raw": "{\r\n    \"id\":13,\r\n  \"name\": \"Roberto\",\r\n  \"surname\": \"Velez\",\r\n  \"phone\": \"+57 3134859626\",\r\n  \"dniNumber\": \"13246887\",\r\n  \"email\": \"roberto@gmail.com\",\r\n  \"password\": \"Velez\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -249,7 +285,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/employee?idRestaurant=2&emailEmployee=emilio@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/owner/employee?idRestaurant=4&emailEmployee=roberto@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -264,12 +300,53 @@
 							"query": [
 								{
 									"key": "idRestaurant",
-									"value": "2"
+									"value": "4"
 								},
 								{
 									"key": "emailEmployee",
-									"value": "emilio@gmail.com"
+									"value": "roberto@gmail.com"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYWRGYXRoZXJAZ21haWwuY29tIiwicm9sZXMiOlsiUk9MRV9PV05FUiJdLCJpYXQiOjE2ODYyMjU5MTAsImV4cCI6MTY4OTgyNTkxMH0.8bAKKuLoQL66i9P6e1nmjElhbABLAf-afWZMeDSpwRNlffhdjdYC674RC8ro2e7gMGo7ewKtfUwQbgpYpDManA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"time\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8092/food-court/v1/owner/cancel-orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8092",
+							"path": [
+								"food-court",
+								"v1",
+								"owner",
+								"cancel-orders"
 							]
 						}
 					},
@@ -300,7 +377,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/owner/putDish/8?idOwner=2",
+							"raw": "http://localhost:8092/food-court/v1/owner/putDish/13?idOwner=3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -311,12 +388,12 @@
 								"v1",
 								"owner",
 								"putDish",
-								"8"
+								"13"
 							],
 							"query": [
 								{
 									"key": "idOwner",
-									"value": "2"
+									"value": "3"
 								}
 							]
 						}
@@ -443,7 +520,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[9]",
+							"raw": "[2]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -451,7 +528,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/employee/assign-orders?employeeEmail=juan@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/employee/assign-orders?employeeEmail=roberto@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -466,7 +543,7 @@
 							"query": [
 								{
 									"key": "employeeEmail",
-									"value": "juan@gmail.com"
+									"value": "roberto@gmail.com"
 								}
 							]
 						}
@@ -489,7 +566,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/employee/order-ready?orderId=8&employeeEmail=emilio@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/employee/order-ready?orderId=3&employeeEmail=juan@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -504,11 +581,11 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "8"
+									"value": "3"
 								},
 								{
 									"key": "employeeEmail",
-									"value": "emilio@gmail.com"
+									"value": "juan@gmail.com"
 								}
 							]
 						}
@@ -750,7 +827,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idRestaurant\": \"2\",\r\n    \"dishes\": [\r\n        {\r\n            \"idDish\":4,\r\n            \"amount\": 4\r\n        },\r\n        {\r\n            \"idDish\": 5,\r\n            \"amount\": 3\r\n        },\r\n        {\r\n            \"idDish\": 6,\r\n            \"amount\": 1\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"idRestaurant\": \"1\",\r\n    \"dishes\": [\r\n        {\r\n            \"idDish\": 1,\r\n            \"amount\": 4\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -758,7 +835,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/new-order?idClient=11",
+							"raw": "http://localhost:8092/food-court/v1/client/new-order?idClient=5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -773,7 +850,7 @@
 							"query": [
 								{
 									"key": "idClient",
-									"value": "11"
+									"value": "5"
 								}
 							]
 						}
@@ -796,7 +873,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8092/food-court/v1/client/order-cancel?orderId=9&clientEmail=yazmin@gmail.com",
+							"raw": "http://localhost:8092/food-court/v1/client/order-cancel?orderId=3&clientEmail=arevalo@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -811,11 +888,11 @@
 							"query": [
 								{
 									"key": "orderId",
-									"value": "9"
+									"value": "3"
 								},
 								{
 									"key": "clientEmail",
-									"value": "yazmin@gmail.com"
+									"value": "arevalo@gmail.com"
 								}
 							]
 						}

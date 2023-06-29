@@ -39,7 +39,7 @@ public class DishEntity implements Serializable {
     private String description;
     private Long price;
     @ManyToOne
-    @JoinColumn(name = "id_Restaurant", nullable = false)
+    @JoinColumn(name = "idRestaurant", nullable = false)
     private RestaurantEntity restaurant;
     private String urlImage;
     private boolean active;
