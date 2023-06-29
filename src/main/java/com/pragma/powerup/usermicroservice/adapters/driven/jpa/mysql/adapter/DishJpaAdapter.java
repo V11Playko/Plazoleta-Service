@@ -77,20 +77,22 @@ public class DishJpaAdapter implements IDishPersistencePort {
 
     @Override
     public List<DishModel> searchDishesByPriceAndPreference(double minPrice, double maxPrice, String preference) {
-        List<DishEntity> dishEntities;
-
-        if (preference == null || preference.isEmpty()) {
-            dishEntities = dishRepository.searchDishesByPriceRange(minPrice, maxPrice);
-        } else {
-            dishEntities = dishRepository.searchDishesByPriceAndPreference(minPrice, maxPrice, preference);
-        }
+        List<DishEntity> dishEntities =
+                dishRepository.searchDishesByPriceAndPreference(minPrice, maxPrice, preference);
 
         return dishEntities.stream()
-                .map(this::mapToDishModel)
+                .map(dishEntityMapper::toDishModel)
                 .collect(Collectors.toList());
     }
 
     @Override
+    public List<DishModel> searchDishesByPriceRange(double minPrice, double maxPrice) {
+        List<DishEntity> dishEntities =
+                dishRepository.searchDishesByPriceRange(minPrice, maxPrice);
+        return dishEntities.stream()
+                .map(dishEntityMapper::toDishModel)
+                .collect(Collectors.toList());
+    }
     public List<DishModel> getDishesByRestaurantId(Long id) {
         List<DishEntity> dishEntities = dishRepository.getDishesByRestaurantId(id);
         return dishEntities.stream()
@@ -101,32 +103,5 @@ public class DishJpaAdapter implements IDishPersistencePort {
     @Override
     public void deleteDishById(Long id) {
         dishRepository.deleteById(id);
-    }
-
-    private DishModel mapToDishModel(DishEntity dishEntity) {
-        DishModel dishModel = new DishModel();
-        dishModel.setId(dishEntity.getId());
-        dishModel.setName(dishEntity.getName());
-        dishModel.setDescription(dishEntity.getDescription());
-        dishModel.setPrice(dishEntity.getPrice());
-        dishModel.setUrlImage(dishEntity.getUrlImage());
-        dishModel.setRestaurant(mapToRestaurantModel(dishEntity.getRestaurant()));
-        dishModel.setActive(dishEntity.isActive());
-
-        CategoryDishModel categoryModel = new CategoryDishModel();
-        categoryModel.setId(dishEntity.getCategory().getId());
-        categoryModel.setName(dishEntity.getCategory().getName());
-        categoryModel.setDescription(dishEntity.getCategory().getDescription());
-        dishModel.setCategory(categoryModel);
-
-        return dishModel;
-    }
-
-    private RestaurantModel mapToRestaurantModel(RestaurantEntity restaurantEntity) {
-        RestaurantModel restaurantModel = new RestaurantModel();
-        restaurantModel.setId(restaurantEntity.getId());
-        restaurantModel.setName(restaurantEntity.getName());
-
-        return restaurantModel;
     }
 }
