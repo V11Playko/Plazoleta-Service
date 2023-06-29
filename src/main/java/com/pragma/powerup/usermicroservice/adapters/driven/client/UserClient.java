@@ -15,8 +15,8 @@ public interface UserClient {
 
     @GetMapping(value = "/admin/owner/{id}")
     User getUser(@PathVariable("id") String id);
-    @GetMapping(value = "/owner/{id}")
-    User getOwner(@PathVariable("id") String id);
+    @GetMapping(value = "/owner/client/{id}")
+    User getClientByOwner(@PathVariable("id") String id);
     @GetMapping(value = "/employee/client/{id}")
     User getClientByEmployee(@PathVariable("id") String id);
     @GetMapping(value = "/auth/getUser")

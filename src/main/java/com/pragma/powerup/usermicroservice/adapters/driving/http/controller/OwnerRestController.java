@@ -1,5 +1,6 @@
 package com.pragma.powerup.usermicroservice.adapters.driving.http.controller;
 
+import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.CancelOrderByWaitingTime;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.CreateEmployeeRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishRequestDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.request.DishUpdateRequest;
@@ -8,6 +9,8 @@ import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.Ca
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.DishResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.dto.response.RestaurantEmployeeResponseDto;
 import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IDishHandler;
+import com.pragma.powerup.usermicroservice.adapters.driving.http.handlers.IOrderHandler;
+import com.pragma.powerup.usermicroservice.configuration.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,13 +30,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/food-court/v1/owner")
 @RequiredArgsConstructor
 public class OwnerRestController {
     private final IDishHandler dishHandler;
+    private final IOrderHandler orderHandler;
 
     @Operation(summary = "Add a new Dish")
     @ApiResponses(value = {
@@ -112,5 +118,21 @@ public class OwnerRestController {
     @GetMapping("/dishes-average")
     public ResponseEntity<List<CategoryAveragePriceResponseDto>> getDishesPerCategory() {
         return ResponseEntity.ok(dishHandler.calculateAverageByCategory());
+    }
+
+    @Operation(summary = "Change order to canceled state")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Status changed and notified that the order was canceled", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Order not found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Bad request", content = @Content)
+    })
+    @PostMapping("/cancel-orders")
+    public ResponseEntity<Map<String,String>> cancelOrderByWaitingTime(@RequestBody CancelOrderByWaitingTime cancelOrder) {
+        int tiempoLimite = cancelOrder.getTime();
+        orderHandler.cancelOrderByWaitingTime(tiempoLimite);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY,
+                        Constants.ORDERS_CANCELED_TIME + tiempoLimite + " minutes.")
+        );
     }
 }

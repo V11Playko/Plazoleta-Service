@@ -14,4 +14,5 @@ public interface IOrderServicePort {
     OrderModel changeOrderToReady(String employeeEmail, Long orderId);
     OrderModel changeOrderToDelivered(String employeeEmail, Long orderId, String securityCode);
     void cancelOrder(String clientEmail, Long orderId);
+    void cancelOrderByWaitingTime(int timeLimit);
 }

@@ -5,6 +5,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.client.UserClient;
 import com.pragma.powerup.usermicroservice.adapters.driven.client.dtos.User;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserHaveOrderException;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
+import com.pragma.powerup.usermicroservice.domain.exceptions.NoOrdersExceedingTimeLimitException;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.OrderModel;
@@ -53,12 +54,16 @@ class OrderUseCaseTest {
 
     @Mock
     IOrderPersistencePort orderPersistencePort;
+
     @Mock
     IRestaurantEmployeePersistencePort restaurantEmployeePersistencePort;
+
     @Mock
     UserClient userClient;
+
     @Mock
     IMessagingPersistencePort messagingClient;
+
     @Mock
     TraceabilityClient traceClient;
 
@@ -71,7 +76,7 @@ class OrderUseCaseTest {
     }
 
     @Test
-    void testNewOrder_UserHaveOrder_ThrowsUserHaveOrderException() {
+    void newOrder_UserHaveOrder_ThrowsUserHaveOrderException() {
         String idRestaurant = "1";
         String idClient = "1";
 
@@ -229,5 +234,20 @@ class OrderUseCaseTest {
 
         Assertions.assertEquals(Constants.ORDER_CANCELED_STATE, orderModel.getState());
         verify(orderPersistencePort, times(1)).saveOnlyOrder(orderModel);
+    }
+
+    @Test
+    void cancelOrderByWaitingTime_NoOrdersToCancel_ThrowsNoOrdersExceedingTimeLimitException() {
+        // Configura el comportamiento esperado del ordenPersistencePort
+        when(orderPersistencePort.getAllOrders()).thenReturn(Collections.emptyList());
+
+        // Llama al método que se va a probar y verifica que lance la excepción adecuada
+        assertThrows(NoOrdersExceedingTimeLimitException.class, () -> orderUseCase.cancelOrderByWaitingTime(8));
+
+        // Verifica que no se haya guardado ninguna orden cancelada
+        verify(orderPersistencePort, never()).saveOnlyOrder(any(OrderModel.class));
+
+        // Verifica que no se haya notificado a ningún cliente
+        verify(messagingClient, never()).notifyClient(anyString(), anyString());
     }
 }

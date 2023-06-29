@@ -62,4 +62,7 @@ public class Constants {
     public static final String CANCEL_ORDER_ERROR = "Order cannot be cancelled";
     public static final String RESTAURANT_PENDING_DELETE = "The restaurant is pending to eliminate.";
     public static final String RESTAURANT_HAVE_ORDERS_PENDING = "The restaurant has orders with a pending status.";
+    public static final String ORDERS_CANCELED_TIME = "Orders were canceled after the specified time: ";
+    public static final String ORDER_CANCELED_MESSAGE_TO_USER = "The order was canceled due to non-compliance with the delivery deadline.";
+    public static final String NO_ORDERS_EXCEEDGING_TIME = "There are no orders that exceed the specified time limit.";
 }

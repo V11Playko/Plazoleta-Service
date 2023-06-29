@@ -15,6 +15,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RoleNotFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserAlreadyExistsException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.UserNotFoundException;
+import com.pragma.powerup.usermicroservice.domain.exceptions.NoOrdersExceedingTimeLimitException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.NotificationNotSend;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderAssignedOrProcessException;
 import com.pragma.powerup.usermicroservice.domain.exceptions.OrderNotExist;
@@ -51,6 +52,7 @@ import static com.pragma.powerup.usermicroservice.configuration.Constants.MAIL_A
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NIT_ALREADY_EXISTS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NOTIFICATION_NOT_SEND;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_DATA_FOUND_MESSAGE;
+import static com.pragma.powerup.usermicroservice.configuration.Constants.NO_ORDERS_EXCEEDGING_TIME;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_ALREADY_ASSIGNED_OR_PROCESS;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_NOT_EXIST;
 import static com.pragma.powerup.usermicroservice.configuration.Constants.ORDER_STATE_CANNOT_CHANGE;
@@ -275,5 +277,12 @@ public class ControllerAdvisor {
             RestaurantHaveOrdersPending restaurantHaveOrdersPending) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_HAVE_ORDERS_PENDING));
+    }
+
+    @ExceptionHandler(NoOrdersExceedingTimeLimitException.class)
+    public ResponseEntity<Map<String, String>> handleNoOrdersExceedingTime(
+            NoOrdersExceedingTimeLimitException noOrdersExceedingTimeLimitException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, NO_ORDERS_EXCEEDGING_TIME));
     }
 }

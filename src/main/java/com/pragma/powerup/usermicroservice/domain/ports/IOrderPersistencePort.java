@@ -22,4 +22,6 @@ public interface IOrderPersistencePort {
     List<OrderModel> getOrdersByRestaurantId(Long id);
 
     void deleteOrderById(Long id);
+
+    List<OrderModel> getAllOrders();
 }
