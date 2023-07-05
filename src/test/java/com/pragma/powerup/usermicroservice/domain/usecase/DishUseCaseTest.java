@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -149,53 +150,30 @@ class DishUseCaseTest {
 
     @Test
     void calculateAverageByCategory() {
-        // Crear datos de prueba
-        CategoryDishModel category1 = new CategoryDishModel();
-        category1.setId(1L);
-        category1.setName("Frutas");
-        category1.setDescription("Saludables");
+        // Mock de los resultados de la consulta
+        List<Object[]> results = new ArrayList<>();
+        results.add(new Object[]{"Carnes", 10.5});
+        results.add(new Object[]{"Pollo", 8.2});
 
-        CategoryDishModel category2 = new CategoryDishModel();
-        category2.setId(2L);
-        category2.setName("Caldos");
-        category2.setDescription("Nutritivos");
+        // Configuración del mock del port
+        Mockito.when(dishPersistencePort.calculateAverageByCategoryNative()).thenReturn(results);
 
-        DishModel dish1 = new DishModel();
-        dish1.setCategory(category1);
-        dish1.setPrice(10L);
+        // Llamada al método que se va a probar
+        List<CategoryAveragePriceModel> averagePrices = dishUseCase.calculateAverageByCategory();
 
-        DishModel dish2 = new DishModel();
-        dish2.setCategory(category1);
-        dish2.setPrice(15L);
+        // Verificación de los resultados esperados
+        Assertions.assertEquals(2, averagePrices.size());
 
-        DishModel dish3 = new DishModel();
-        dish3.setCategory(category2);
-        dish3.setPrice(20L);
+        CategoryAveragePriceModel category1 = averagePrices.get(0);
+        Assertions.assertEquals("Carnes", category1.getName());
+        Assertions.assertEquals("$10.50", category1.getAveragePerDish());
 
-        List<DishModel> dishes = Arrays.asList(dish1, dish2, dish3);
-        List<CategoryDishModel> categories = Arrays.asList(category1, category2);
+        CategoryAveragePriceModel category2 = averagePrices.get(1);
+        Assertions.assertEquals("Pollo", category2.getName());
+        Assertions.assertEquals("$8.20", category2.getAveragePerDish());
 
-        // Mockear el comportamiento de los puertos de persistencia
-        when(dishPersistencePort.listDishes()).thenReturn(dishes);
-        when(dishPersistencePort.listCategory()).thenReturn(categories);
-
-        // Ejecutar el método a probar
-        List<CategoryAveragePriceModel> results = dishUseCase.calculateAverageByCategory();
-
-        // Verificar los resultados
-        assertEquals(2, results.size());
-
-        CategoryAveragePriceModel result1 = results.get(0);
-        assertEquals("Frutas", result1.getName());
-        assertEquals("$12.50", result1.getAveragePerDish());
-
-        CategoryAveragePriceModel result2 = results.get(1);
-        assertEquals("Caldos", result2.getName());
-        assertEquals("$20.00", result2.getAveragePerDish());
-
-        // Verificar que se llamaron los métodos necesarios en los mocks
-        verify(dishPersistencePort, times(1)).listDishes();
-        verify(dishPersistencePort, times(1)).listCategory();
+        // Verificación de que el método del port se haya llamado una vez
+        Mockito.verify(dishPersistencePort, Mockito.times(1)).calculateAverageByCategoryNative();
     }
 
     @Test

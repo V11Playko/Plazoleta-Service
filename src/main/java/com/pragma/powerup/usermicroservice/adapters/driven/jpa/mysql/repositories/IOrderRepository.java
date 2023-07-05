@@ -5,6 +5,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.Orde
 import feign.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -35,4 +36,11 @@ public interface IOrderRepository extends JpaRepository<OrderEntity, Long> {
     @Query("SELECT o FROM OrderEntity o WHERE o.restaurant.id = :restaurantId")
     List<OrderEntity> getOrdersByRestaurantId(Long restaurantId);
 
+    @Modifying
+    @Query(value = "UPDATE orders o " +
+            "SET o.state = 'CANCELADO' " +
+            "WHERE o.state NOT IN ('CANCELADO', 'LISTO', 'ENTREGADO') " +
+            "AND TIMESTAMPDIFF(MINUTE, o.date_order, NOW()) > :timeLimit",
+            nativeQuery = true)
+    Integer cancelOrdersByWaitingTime(@Param("timeLimit") int timeLimit);
 }
