@@ -26,6 +26,7 @@ import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePor
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -280,8 +281,10 @@ public class OrderUseCase implements IOrderServicePort {
         boolean orderExceededTimeLimit = false;
 
         for (OrderModel order : orders) {
-            if (order.getState().equals(Constants.ORDER_CANCELED_STATE)) {
-                // Ignorar las órdenes que tienen el estado "CANCELADO"
+            if (order.getState().equals(Constants.ORDER_CANCELED_STATE) ||
+                    order.getState().equals(Constants.ORDER_READY_STATE) ||
+                    order.getState().equals(Constants.ORDER_DELIVERED_STATE)) {
+                // Ignorar las órdenes que tienen el estado "CANCELADO", "LISTO" o "ENTREGADO"
                 continue;
             }
 

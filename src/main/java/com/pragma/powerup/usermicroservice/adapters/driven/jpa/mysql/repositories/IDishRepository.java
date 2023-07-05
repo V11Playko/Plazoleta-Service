@@ -31,4 +31,10 @@ public interface IDishRepository extends JpaRepository<DishEntity, Long> {
     @Query("SELECT d FROM DishEntity d WHERE d.restaurant.id = :restaurantId")
     List<DishEntity> getDishesByRestaurantId(@Param("restaurantId") Long restaurantId);
 
+    @Query(value = "SELECT c.name, AVG(d.price) AS averagePrice " +
+            "FROM category c " +
+            "JOIN dish d ON d.category_id = c.category_id " +
+            "GROUP BY c.name",
+            nativeQuery = true)
+    List<Object[]> calculateAverageByCategoryNative();
 }

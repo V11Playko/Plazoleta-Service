@@ -19,7 +19,6 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.hibernate:hibernate-core:6.1.7.Final'
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config:4.0.2'
