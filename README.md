@@ -12,6 +12,16 @@ This is a pragma challenge. In this repository will be all the logic of the plaz
 * ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 * ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 
+<!-- INTRODUCTION -->
+## Introduction
+This project consists of 4 services that will make up a food court, which are:
+- [User Service](https://github.com/V11Playko/User-Service)
+- [Plazoleta Service](https://github.com/V11Playko/Plazoleta-Service)
+- [Traceability Service](https://github.com/V11Playko/Traceability-Service)
+- [Messaging Service](https://github.com/V11Playko/Messaging-Service)
+
+If you want to find more information about the project,
+click [here](docs/information/Information.pdf)
 
 <!-- GETTING STARTED -->
 ## Getting Started
