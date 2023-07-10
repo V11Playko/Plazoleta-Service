@@ -26,6 +26,7 @@ import com.pragma.powerup.usermicroservice.domain.ports.IMessagingPersistencePor
 import com.pragma.powerup.usermicroservice.domain.ports.IOrderPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantEmployeePersistencePort;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -277,40 +278,21 @@ public class OrderUseCase implements IOrderServicePort {
     @Override
     public void cancelOrderByWaitingTime(int timeLimit) {
         List<OrderModel> orders = orderPersistencePort.getAllOrders();
-        boolean orderExceededTimeLimit = false;
+        boolean ordersUpdated = false;
 
         for (OrderModel order : orders) {
-            if (order.getState().equals(Constants.ORDER_CANCELED_STATE)) {
-                // Ignorar las órdenes que tienen el estado "CANCELADO"
-                continue;
-            }
-
-            if (exceedsWaitingTime(order, timeLimit)) {
-                order.setState(Constants.ORDER_CANCELED_STATE);
-                orderPersistencePort.saveOnlyOrder(order);
+            int result = orderPersistencePort.cancelOrdersByWaitingTime(timeLimit);
+            if (result > 0) {
+                ordersUpdated = true;
                 User user = userClient.getClientByOwner(order.getIdClient());
                 String messageToSend = Constants.ORDER_CANCELED_MESSAGE_TO_USER;
                 messagingClient.notifyClient(messageToSend, user.getPhone());
-                orderExceededTimeLimit = true;
             }
         }
 
-        if (!orderExceededTimeLimit) {
+        if (!ordersUpdated) {
             throw new NoOrdersExceedingTimeLimitException();
         }
-    }
-
-    /**
-     * Checks if an order has exceeded the given time limit
-     *
-     * @param order
-     * @param time
-     * @return boolean
-     */
-    private boolean exceedsWaitingTime(OrderModel order, int time) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime timeLimit = order.getDate().plusMinutes(time);
-        return now.isAfter(timeLimit);
     }
     /**
      * Generates a PIN Code of 6 digits randomly

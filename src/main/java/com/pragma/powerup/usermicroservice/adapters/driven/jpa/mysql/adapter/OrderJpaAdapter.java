@@ -128,6 +128,11 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Integer cancelOrdersByWaitingTime(int timeLimit) {
+        return orderRepository.cancelOrdersByWaitingTime(timeLimit);
+    }
+
     private OrderStateType convertStringToOrderStateType(String state) {
         OrderStateType stateToProcess;
         switch (state) {

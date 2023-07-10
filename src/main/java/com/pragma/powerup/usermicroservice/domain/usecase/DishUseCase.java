@@ -152,30 +152,16 @@ public class DishUseCase implements IDishServicePort {
      */
     @Override
     public List<CategoryAveragePriceModel> calculateAverageByCategory() {
-        List<DishModel> dishes = dishPersistencePort.listDishes();
-        List<CategoryDishModel> categories = dishPersistencePort.listCategory();
+        List<Object[]> results = dishPersistencePort.calculateAverageByCategoryNative();
+        List<CategoryAveragePriceModel> averagePrices = new ArrayList<>();
 
-        // Crear la lista de resultados
-        List<CategoryAveragePriceModel> results = new ArrayList<>();
-
-        // Iterar por las categorías
-        for (CategoryDishModel category : categories) {
+        for (Object[] result : results) {
             CategoryAveragePriceModel categoryAverage = new CategoryAveragePriceModel();
-            categoryAverage.setName(category.getName());
-
-            // Buscar los platos que corresponden a la categoría actual
-            List<DishModel> categoryDishes = dishes.stream()
-                    .filter(dish -> dish.getCategory().getId().equals(category.getId()))
-                    .collect(Collectors.toList());
-
-            // Calcular el promedio para la categoría actual
-            double categoryAveragePrice = categoryDishes.stream()
-                    .mapToDouble(DishModel::getPrice)
-                    .average()
-                    .orElse(0.0);
+            categoryAverage.setName((String) result[0]);
+            double averagePrice = ((Number) result[1]).doubleValue();
 
             // Redondear el valor del promedio a dos decimales
-            BigDecimal roundedAverage = BigDecimal.valueOf(categoryAveragePrice)
+            BigDecimal roundedAverage = BigDecimal.valueOf(averagePrice)
                     .setScale(2, RoundingMode.HALF_UP);
 
             // Formatear el promedio como un valor monetario con el signo de dólar
@@ -183,11 +169,12 @@ public class DishUseCase implements IDishServicePort {
             String formattedAverage = currencyFormatter.format(roundedAverage);
 
             categoryAverage.setAveragePerDish(formattedAverage);
-            results.add(categoryAverage);
+            averagePrices.add(categoryAverage);
         }
 
-        return results;
+        return averagePrices;
     }
+
 
     @Override
     public List<DishModel> searchDishByPreferences(double minPrice, double maxPrice, String preference) {

@@ -8,7 +8,9 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositorie
 import com.pragma.powerup.usermicroservice.configuration.Constants;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
 import com.pragma.powerup.usermicroservice.domain.ports.IRestaurantPersistencePort;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,9 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     private final IRestaurantRepository restaurantRepository;
     private final IOrderRepository orderRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
+
+    @Autowired
+    private EntityManager entityManager;
     @Override
     public RestaurantEntity saveRestaurant(RestaurantModel restaurantModel) {
         RestaurantEntity restaurantEntity = restaurantEntityMapper.toEntityRestaurant(restaurantModel);
@@ -60,6 +65,11 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
         RestaurantEntity restaurantEntity = restaurantRepository.findById(restaurant.getId()).orElseThrow();
         restaurantEntity.setState(restaurant.getState());
 
-        restaurantRepository.updateRestaurantState(restaurantEntity.getId(), Constants.PENDING_DELETE);
+        // Establecer relaciones como null
+        restaurantEntity.setOrders(null);
+        restaurantEntity.setDishes(null);
+        restaurantEntity.setRestaurantEmployees(null);
+
+        restaurantRepository.save(restaurantEntity);
     }
 }

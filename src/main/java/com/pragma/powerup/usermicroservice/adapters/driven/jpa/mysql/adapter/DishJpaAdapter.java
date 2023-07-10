@@ -7,6 +7,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.ICa
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.ICategoryRepository;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
+import com.pragma.powerup.usermicroservice.domain.model.CategoryAveragePriceModel;
 import com.pragma.powerup.usermicroservice.domain.model.CategoryDishModel;
 import com.pragma.powerup.usermicroservice.domain.model.DishModel;
 import com.pragma.powerup.usermicroservice.domain.model.RestaurantModel;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -103,5 +105,10 @@ public class DishJpaAdapter implements IDishPersistencePort {
     @Override
     public void deleteDishById(Long id) {
         dishRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Object[]> calculateAverageByCategoryNative() {
+        return dishRepository.calculateAverageByCategoryNative();
     }
 }
